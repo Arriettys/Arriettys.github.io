@@ -286,7 +286,7 @@ ps.在导入**spring-boot-starter-parent**出现这种情况：
 </dependencies>
 ```
 5.创建resources文件夹和application.properties文件
-![](https://s2.ax1x.com/2019/03/20/AK9TDP.png)
+![](https://s2.ax1x.com/2019/03/25/AtL8SS.png)
 6.写代码
 ![](https://s2.ax1x.com/2019/03/20/AlCpT0.png)
 在src/main/java处创建Example.java，代码依旧是之前写的hello world
