@@ -1,8 +1,8 @@
 ---
 title: SpringBoot：开始你的第一个SpringBoot应用
 date: 2019-03-19 22:49:26
-tags: Spring
-categories: 框架
+tags: SpringBoot
+categories: Spring
 ---
 ![](https://s2.ax1x.com/2019/03/22/A3f1u4.jpg)
 <!--more-->
