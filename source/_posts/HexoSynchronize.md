@@ -6,7 +6,7 @@ categories: Web
 ---
 最近一直在折腾Hexo博客, 玩的可谓是不亦乐乎啊，但也遇到了些问题我想在不同的终端进行github+Hexo的博客发布更新该如何进行呢，在Google中搜了一些教程，并自身进行了简化与实践！主体的思路是将博文内容相关文件放在Github项目中master中，将Hexo配置写博客用的相关文件放在Github项目的hexo分支上，这个是关键，多终端的同步只需要对分支hexo进行操作。下面是详细的步骤讲解：
 <!--more-->
-**首先，你得有个Hexo博客，没搭的看这里{% post_list HexoWeb%}**
+**首先，你得有个Hexo博客，没搭的看这里，**{% post_list HexoWeb%}
 ### 1. Hexo 本地文件同步
 将Github+Hexo搭建自己的博客时安装的配置文件push到github的username.githun.io的hexo分支上
 
