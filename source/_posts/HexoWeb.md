@@ -143,7 +143,7 @@ ps.第一次使用git连接的，还需要配置用户账号账号
 	Hi Arriettys! You've successfully authenticated, but GitHub does not provide shell access.
 
 ### 4.1 站点配置
-修改修改_config.yml（在站点目录下）。文件末尾修改为：
+修改_config.yml（在站点目录下）。文件末尾修改为：
 
 	# Deployment
 	## Docs: https://hexo.io/docs/deployment.html
