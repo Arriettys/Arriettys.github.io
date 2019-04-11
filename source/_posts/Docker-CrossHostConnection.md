@@ -5,10 +5,11 @@ tags: Docker
 categories: 虚拟化
 ---
 ![](https://s2.ax1x.com/2019/02/18/kcaap8.jpg)
+<!--more-->
 这里指的是不同宿主机之间的容器连接
 ## Docker网桥实现跨主机容器连接
 docker网桥实现跨主机连接的网络拓扑图如下：
-![](https://img-blog.csdn.net/20180528020606566)
+![](https://s2.ax1x.com/2019/04/11/AHiDAg.png)
 在同一个docker主机中，docker容器通过虚拟网桥连接(docker0)，如果将连接容器的网桥docker0也桥接到宿主机提供的网卡上，将docker0分配的IP地址和宿主机的IP地址设置为同一个网段，就相当于将docker容器和宿主机连接到了一起，这样就可以实现跨主机的docker容器通信。
 
 主机端，修改/etc/network/interfaces 文件添加网桥
@@ -42,7 +43,7 @@ docker端，修改/etc/default/docker 文件
 ## Open vSwitch实现跨主机容器连接
 Open vSwitch是一个高质量、多层虚拟交换机。使用Apache2.0许可协议，旨在通过编程扩展，使庞大的网络自动化（配置、管理、维护），同时还支持标准的管理接口和协议。
 网络拓扑如下：
-![](https://img-blog.csdn.net/20180528020637777)
+![](https://s2.ax1x.com/2019/04/11/AHic3n.jpg)
 这张图中蓝色部分就是我们上一节介绍的虚拟网桥br0，容器通过虚拟网桥实现同主机之间的连接。而其上层黄色部分open vSwitch创建的ovs网桥obr0，ovs通过gre隧道协议接口实现跨主机的网络连接。
 
 GRE是通用路由协议封装；隧道技术（Tunneling）是一种通过使用互联网络的基础设施在网络之间传递数据的方式。使用隧道传递的数据（或负载）可以是不同协议的数据帧或包。隧道协议将其它协议的数据帧或包重新封装然后通过隧道发送。新的帧头提供路由信息，以便通过互联网传递被封装的负载数据。
@@ -89,7 +90,7 @@ $ sudo ip route add 192.168.2.0/24 via 192.168.59.104(主机)
 
 ## 使用weave实现跨主机容器连接
 Weave是由weaveworks公司开发的解决Docker跨主机网络的解决方案，它能够创建一个虚拟网络，用于连接多台主机上的Docker容器，这样容器就像被接入了同一个网络交换机，那些使用网络的应用程序不必去配置端口映射和链接等信息。
-![](https://img-blog.csdn.net/20180528020700646)
+![](https://s2.ax1x.com/2019/04/11/AHi5EF.png)
 Weave会在主机上创建一个网桥,每一个容器通过 veth pair 连接到该网桥上，同时网桥上有个 Weave router 的容器与之连接，该router会通过连接在网桥上的接口来抓取网络包(该接口工作在Promiscuous模式)。
 
 在每一个部署Docker的主机(可能是物理机也可能是虚拟机)上都部署有一个W(即Weave router)，它本身也可以以一个容器的形式部署。Weave run的时候就可以给每个veth的容器端分配一个ip和相应的掩码。veth的网桥这端就是Weave router容器，并在Weave launch的时候分配好ip和掩码。
