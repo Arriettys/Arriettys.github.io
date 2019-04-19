@@ -20,7 +20,7 @@ public void insertSort(int[] li)
 	{
 		int insertNum = li[i];
 		int last = i - 1;
-		while lastj>=0 && insertNum<li[last])
+		while last>=0 && insertNum<li[last])
 		{
 			li[last + 1] = li[last];
 			last--;
