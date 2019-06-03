@@ -167,7 +167,7 @@ public static void selectSort(int[] li)
 	public static void quickSort(int[] li, int start, int end)
 	{
 		int len = li.length;
-		if (len<0 || start<0 || end>=len || start>=end) return;
+		if (len<0 || start>=end) return;
 		int mid = (int) (start + Math.random()*(end - start + 1));
 		int sortIndex = start - 1;
 		swap(li, mid, end);
@@ -182,7 +182,7 @@ public static void selectSort(int[] li)
 				}
 			}
 		}
-		if (start<sortIndex && sortIndex<end)
+		if (start<=sortIndex && sortIndex<=end)
 		{
 			quickSort(li, start, sortIndex-1);
 			quickSort(li, sortIndex+1, end);
