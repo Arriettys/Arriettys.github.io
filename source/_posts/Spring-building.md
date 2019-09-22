@@ -7,8 +7,6 @@ categories: Spring
 
 <!--more-->
 
-
-
 ## Gradle安装
 
 先决条件：已安装Java JDK orJRE且版本为7或者以上，可通过命令$:java -version查看JDK版本。
