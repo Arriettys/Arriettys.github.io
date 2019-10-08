@@ -57,8 +57,9 @@ curl，zlib，openssl，expat，libiconv
 安装Hexo，在命令行运行：
 	
 	npm install -g hexo-cli
-npm就是之前node.js解压包中自带的，我们通过ln建立软连接所以直接使用
 ps.这里建议在/usr/local/node-v10.15.3-linux-x64/bin/目录中运行命令，之后目录中hexo文件，之后我们有许多命令要用到它，这里也用ln建立软连接
+
+npm就是之前node.js解压包中自带的，我们通过ln建立软连接所以直接使用
 
 	ln -s /usr/local/node-v10.15.3-linux-x64/bin/hexo	/usr/local/bin/
 至此hexo的环境就完成了
@@ -127,17 +128,17 @@ ps.第一次使用git连接的，还需要配置用户账号账号
 我们先检查本机是否已存在ssh密钥
 
 	cd ~/.ssh
-	
+
 如果提示：No such file or directory 说明没有，则我们自己生成
 
 	ssh-keygen -t rsa -C "你的密钥"
-	
+
 然后连续3次回车，最终会生成一个文件在用户目录下，打开用户目录，找到.ssh\id_rsa.pub文件，记事本打开并复制里面的内容，打开你的github主页，进入个人设置 -> SSH and GPG keys -> New SSH key：
 ![](https://s2.ax1x.com/2019/03/10/A9tLNT.png)
 测试一下
 	
 	ssh -T git@github.com 
-	
+
 第一次连接会提示 Are you sure you want to continue connecting (yes/no)?，输入yes，成功会看到
 
 	Hi Arriettys! You've successfully authenticated, but GitHub does not provide shell access.
@@ -154,14 +155,14 @@ ps.第一次使用git连接的，还需要配置用户账号账号
   	
   注意：上面仓库地址写ssh地址，不写http地址。
   推送命令：
-  
+
   	hexo g
   	hexo d
   返回INFO Deploy done: git即成功推送
   等待1分钟左右，浏览器访问网址： https://username.github.io或域名
-  
 
-	
+
+​	
 
 
 
