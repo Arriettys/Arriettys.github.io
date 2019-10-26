@@ -58,7 +58,7 @@ boolean isPrime(int n)
 
 埃氏筛的定义是枚举n内所有素数，并将其倍数剔除。先用2去，把2留下，其倍数剔除，2筛完后，剩余最小的数一定是素数，因为其前面小于它的数都不是它的合数，如3，不断重复下去，直到n，这个过程同时需要一个长度为n的空间记录
 
-![](https://pic.leetcode-cn.com/23d348bef930ca4bb73f749500f664ccffc5e41467aac0ba9787025392ca207b-1.gif)
+![](https://s2.ax1x.com/2019/10/26/K0T9hj.gif)
 
 ~~~java
 boolean isPrime(int n)
