@@ -28,12 +28,18 @@ boolean isPrime(int n)
 ~~~
 
 优化版本：从2开始枚举到不大于sqrt(n)的所有正整数，假设n存在大于或等于sqrt(n)的因子y，则z=n/y必同时为n的因子，且其值小于或等于sqrt(n)，例如12
-$$
-... \\
-3 * 4 = 12 \\
-\sqrt{12} * \sqrt{12} = 12 \\
-4 * 3 = 12
-$$
+
+...
+
+3 * 4 = 12
+
+sqrt(12) * sqrt(12) = 12
+
+4 * 3 = 21
+
+...
+
+
 
 ~~~java
 boolean isPrime(int n)
