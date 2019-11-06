@@ -47,7 +47,7 @@ img：cv读取到的图片，如上文的img
 ```python
 cv.imshow('image', img)
 k = cv.waitKey(0) # k 为按键值
-cv.destroyAllWindow()
+cv.destroyAllWindows()
 ```
 
 实际使用时，第一句只会弹出显示图片的窗口，但没有图片
