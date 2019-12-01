@@ -11,6 +11,8 @@ categories: 图像处理
 
 几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码
 
+<!--more-->
+
 ### 访问和操作图片像素
 
 对于BGR图片来说，它的像素组成可以用一个三维矩阵表示，行列以及三基色值，如
@@ -26,6 +28,8 @@ categories: 图像处理
 ### 图片对象属性
 
 这些属性包括行列、像素通道、图像数据类型(dtype调试时是非常重要的,因为大量的OpenCV-Python代码中的错误是由于无效的数据类型)、像素数量等，值得注意的是，正常图片shape属性会返回行列数、通道数，而灰度图片只有行列数
+
+![QevsH0.png](https://s2.ax1x.com/2019/12/01/QevsH0.png)
 
 
 
@@ -43,7 +47,7 @@ cv.imshow('image2', ball)
 cv.waitKey(0)
 ```
 
-![](https://s2.ax1x.com/2019/11/06/MirA5d.png)
+[![QevoHx.md.png](https://s2.ax1x.com/2019/12/01/QevoHx.md.png)](https://imgse.com/i/QevoHx)
 
 ### 分裂和合并图像通道
 
@@ -139,5 +143,46 @@ ps.两张的尺寸要相同，否则矩阵运算会出错
 
 ### 逐位运算
 
-这包括与、或、非和异或操作，在对图片做提取、定义和操作非矩形ROI等操作时经常用到。
+这包括与、或、非和异或操作，在对图片做提取、定义和操作非矩形ROI等操作时经常用到。接下来让我们看看怎样改变图像的特定区域。
 
+我想在例图上添加OpenCV logo，假如使用叠加，那么OpenCV的黑色背景会覆盖例图；假如使用混合则会造成透明效果，这是可以使用逐位运算解决
+
+```Python
+# 读取图片
+img1 = cv.imread('messi5.jpg')
+img2 = cv.imread('opencv-logo-white.png')
+# 因为我想把logo放在右上角，所以我需要创建一个ROI
+rows,cols,channels = img2.shape
+roi = img1[0:rows, 0:cols]
+# 将img2由BGR色域转为GRAY
+img2gray = cv.cvtColor(img2,cv.COLOR_BGR2GRAY)
+# 阀值分割 
+ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
+mask_inv = cv.bitwise_not(mask)
+
+img1_bg = cv.bitwise_and(roi, roi, mask = mask_inv)
+img2_fg = cv.bitwise_and(img2, img2, mask = mask)
+dst = cv.add(img1_bg, img2_fg)
+img1[0:rows, 0:cols ] = dst
+cv.imshow('res',img1)
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+
+
+
+上述代码中cv.cvtColor()将img2由BGR色域转为GRAY
+
+![Qmw9eO.png](https://s2.ax1x.com/2019/12/01/Qmw9eO.png)
+
+cv.threshold()设置阀值
+
+![QmwUmT.png](https://s2.ax1x.com/2019/12/01/QmwUmT.png)
+
+cv.bitwise_not()进行异位操作
+
+![QmwkYd.png](https://s2.ax1x.com/2019/12/01/QmwkYd.png)
+
+这样便可以在背景图与logo图中精准抠图，在相互叠加
+
+[![QmGg3T.md.png](https://s2.ax1x.com/2019/12/01/QmGg3T.md.png)
