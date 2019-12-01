@@ -3,6 +3,7 @@ title: 树和二叉树
 date: 2019-11-10 12:55:51
 tags: Java
 categories: 数据结构与算法
+mathjax: true
 ---
 
 树(Tree)的基本概念
