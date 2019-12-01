@@ -1229,8 +1229,371 @@ private void rebuild(Node<T> node)
 
 #### 删除
 
+将红黑树内的某一个节点删除。需要执行的操作依次是：首先，将红黑树当作一颗二叉查找树，将该节点从二叉查找树中删除；然后，通过"旋转和重新着色"等一系列来修正该树，使之重新成为一棵红黑树
+
+
+
+**第一步：将红黑树当作一颗二叉查找树，将节点删除**
+
 二叉树删除结点找替代结点有3种情情景：
 
 + 情景1：若删除结点无子结点，直接删除
 + 情景2：若删除结点只有一个子结点用子结点替换删除结点
-+ 情景3：若删除结点有两个子结点，用后继结点替换删除结点
++ 情景3：若删除结点有两个子结点，那么，先找出它的后继节点；然后把“它的后继节点的内容”复制给“该节点的内容”；之后，删除“它的后继节点”。在这里，后继节点相当于替身，在将后继节点的内容复制给"被删除节点"之后，再将后继节点删除。这样就巧妙的将问题转换为"删除后继节点"的情况了，下面就考虑后继节点。 在"被删除节点"有两个非空子节点的情况下，它的后继节点不可能是双子非空。既然"的后继节点"不可能双子都非空，就意味着"该节点的后继节点"要么没有儿子，要么只有一个儿子。若没有儿子，则按"情景1 "进行处理；若只有一个儿子，则按"情景2 "进行处理
+
+![](https://s2.ax1x.com/2019/11/24/MXkWDA.png)
+
+即使简化了还是有9种情景！但跟插入操作一样，存在左右对称的情景，只是方向变了，没有本质区别。同样的，我们还是来约定下
+
+![](https://s2.ax1x.com/2019/11/24/MXAaRS.png)
+
+R表示替代结点，P表示替代结点的父结点，S表示替代结点的兄弟结点，SL表示兄弟结点的左子结点，SR表示兄弟结点的右子结点。灰色结点表示它可以是红色也可以是黑色
+
+值得特别提醒的是，**R是即将被替换到删除结点的位置的替代结点，在删除前，它还在原来所在位置参与树的子平衡，平衡后再替换到删除结点的位置，才算删除完成。**
+
+##### 情景1：替换结点是红色结点
+
+我们把替换结点换到了删除结点的位置时，由于替换结点时红色，删除也了不会影响红黑树的平衡，只要把替换结点的颜色设为删除的结点的颜色即可重新平衡。
+
+**处理：颜色变为删除结点的颜色**
+
+##### 情景2：替换结点是黑结点
+
+当替换结点是黑色时，我们就不得不进行自平衡处理了。我们必须还得考虑替换结点是其父结点的左子结点还是右子结点，来做不同的旋转操作，使树重新平衡。
+
+##### **情景2.1：替换结点是其父结点的左子结点**
+
+##### **情景2.1.1：替换结点的兄弟结点是红结点**
+
+若兄弟结点是红结点，那么根据性质4，兄弟结点的父结点和子结点肯定为黑色，不会有其他子情景，我们按图处理，得到删除情景2.1.2.3（后续讲解）
+
+![](https://s2.ax1x.com/2019/11/24/MXVwHs.png)
+
+**处理：**
+
+- **将S设为黑色**
+- **将P设为红色**
+- **对P进行左旋，得到情景2.1.2.3**
+- **进行情景2.1.2.3的处理**
+
+##### **情景2.1.2：替换结点的兄弟结点是黑结点**
+
+![QSBqte.png](https://s2.ax1x.com/2019/11/26/QSBqte.png)
+
+当兄弟结点为黑时，其父结点和子结点的具体颜色也无法确定（如果也不考虑自底向上的情况，子结点非红即为叶子结点Nil，Nil结点为黑结点），此时又得考虑多种子情景。
+
+##### **情景2.1.2.1：替换结点的兄弟结点的右子结点是红结点，左子结点任意颜色**
+
+![QSDmn0.png](https://s2.ax1x.com/2019/11/26/QSDmn0.png)
+
+删除的左子树的一个黑色结点，左子树的就黑色结点少1了，然而右子树又有红色结点，那么我们直接向右子树“借”个红结点来补充黑结点就好啦，此时肯定需要用旋转处理了。
+
+**处理：**
+
+- **将S的颜色设为P的颜色**
+- **将P设为黑色**
+- **将SR设为黑色**
+- **对P进行左旋**
+
+[![QSDbD0.md.png](https://s2.ax1x.com/2019/11/26/QSDbD0.md.png)](https://imgchr.com/i/QSDbD0)
+
+前文提醒过，R是即将替换的，它还参与树的自平衡，平衡后再替换到删除结点的位置，所以R最终可以看作是删除的
+
+##### **情景2.1.2.2：替换结点的兄弟结点的右子结点为黑结点，左子结点为红结点**
+
+![QSrxdf.png](https://s2.ax1x.com/2019/11/26/QSrxdf.png)
+
+兄弟结点所在的子树有红结点，我们总是可以向兄弟子树借个红结点过来，显然该情景可以转换为情景2.1.2.1
+
+**处理：**
+
+- **将S设为红色**
+- **将SL设为黑色**
+- **对S进行右旋，得到情景2.1.2.1**
+- **进行情景2.1.2.1的处理**
+
+[![QSsFQs.md.png](https://s2.ax1x.com/2019/11/26/QSsFQs.md.png)](https://imgchr.com/i/QSsFQs)
+
+##### **情景2.2.2.3：替换结点的兄弟结点的子结点都为黑结点**
+
+![QSycuR.png](https://s2.ax1x.com/2019/11/26/QSycuR.png)
+
+好了，此次兄弟子树都没红结点“借”了，兄弟帮忙不了，找父母呗，这种情景我们把兄弟结点设为红色，再把父结点当作替代结点，自底向上处理，去找父结点的兄弟结点去“借”。但为什么需要把兄弟结点设为红色呢？显然是为了在P所在的子树中保证平衡（R即将删除，少了一个黑色结点，子树也需要少一个），后续的平衡工作交给父辈们考虑了，还是那句，当每棵子树都保持平衡时，最终整棵总是平衡的。
+
+**处理：**
+
+- **将S设为红色**
+- **把P作为新的替换结点**
+- **重新进行删除结点情景处理**
+
+[![QS21Zn.md.png](https://s2.ax1x.com/2019/11/26/QS21Zn.md.png)](https://imgchr.com/i/QS21Zn)
+
+##### **情景2.2：替换结点是其父结点的右子结点**
+
+好啦，右边的操作也是方向相反，不做过多说明了，相信理解了删除情景2.1后，肯定可以理解2.2。
+
+##### **情景2.2.1：替换结点的兄弟结点是红结点**
+
+- **将S设为黑色**
+- **将P设为红色**
+- **对P进行右旋，得到情景2.2.2.3**
+- **进行情景2.2.2.3的处理**
+
+[![QS2YGT.md.png](https://s2.ax1x.com/2019/11/26/QS2YGT.md.png)](https://imgchr.com/i/QS2YGT)
+
+##### **情景2.2.2：替换结点的兄弟结点是黑结点**
+
+##### **情景2.2.2.1：替换结点的兄弟结点的左子结点是红结点，右子结点任意颜色**
+
+**处理：**
+
+- **将S的颜色设为P的颜色**
+- **将P设为黑色**
+- **将SL设为黑色**
+- **对P进行右旋**
+
+[![QS2Dd1.md.png](https://s2.ax1x.com/2019/11/26/QS2Dd1.md.png)](https://imgchr.com/i/QS2Dd1)
+
+##### **情景2.2.2.2：替换结点的兄弟结点的左子结点为黑结点，右子结点为红结点**
+
+**处理：**
+
+- **将S设为红色**
+- **将SR设为黑色**
+- **对S进行左旋，得到情景2.2.2.1**
+- **进行情景2.2.2.1的处理**
+
+[![QS2gzD.md.png](https://s2.ax1x.com/2019/11/26/QS2gzD.md.png)](https://imgchr.com/i/QS2gzD)
+
+##### **情景2.2.2.3：替换结点的兄弟结点的子结点都为黑结点**
+
+**处理：**
+
+- **将S设为红色**
+- **把P作为新的替换结点**
+- **重新进行删除结点情景处理**
+
+[![QS2fLd.md.png](https://s2.ax1x.com/2019/11/26/QS2fLd.md.png)](https://imgchr.com/i/QS2fLd)
+
+综上，红黑树删除后自平衡的处理可以总结为：
+
+1. 自己能搞定的自消化（情景1）
+2. 自己不能搞定的叫兄弟帮忙（除了情景1、情景2.1.2.3和情景2.2.2.3）
+3. 兄弟都帮忙不了的，通过父母，找远方亲戚（情景2.1.2.3和情景2.2.2.3）
+
+代码
+
+```java
+/**
+	 * 删除结点
+	 * @param node 删除的结点
+	 */
+private void remove(Node<T> node)
+{
+    Node<T> child, parent;
+    boolean color;
+
+    // 被删除结点的左右结点不为空的情况
+    if ((node.left != null) && (node.right != null))
+    {
+        // 被删除结点的后继结点
+        // 用它取代被删除结点的位置
+        Node<T> replace = node.right;
+        while (replace.left != null)
+            replace = replace.left;
+        // "node节点"不是根节点(只有根节点不存在父节点)
+        if (parentOf(node) != null)
+        {
+            if (parentOf(node).left == node)
+                parentOf(node).left = replace;
+            else
+                parentOf(node).right = replace;
+        } else
+        {
+            // "node节点"是根节点，更新根节点。
+            this.root = replace;
+        }
+
+        // child是"取代节点"的右孩子，也是需要"调整的节点"。
+        // "取代节点"肯定不存在左孩子！因为它是一个后继节点。
+        child = replace.right;
+        parent = parentOf(replace);
+        color = colorOf(replace);
+
+        // "被删除节点"是"它的后继节点的父节点"
+        if (parent == node)
+        {
+            parent = replace;
+        } else
+        {
+            if (child != null)
+                setParent(child, parent);
+            parent.left = child;
+            replace.right = node.right;
+            setParent(node.right, replace); 
+        }
+        replace.parent = node.parent;
+        replace.color = node.color;
+        replace.left = node.left;
+        node.left.parent = replace;
+
+        if (color == BLACK)
+            removeFixUp(child, parent);
+        node = null;
+        return ;
+    }
+    if (node.left != null)
+        child = node.left;
+    else
+        child = node.right;
+    parent = node.parent;
+    color = node.color;
+    if (child != null)
+        child.parent = parent;
+    if (parent != null)
+    {
+        if (parent.left == node)
+            parent.left = child;
+        else
+            parent.right = child;
+    } else
+    {
+        this.root = child;
+    }
+
+    if (color == BLACK)
+        removeFixUp(child, parent);
+    node = null;
+}
+
+public void remove(T val)
+{
+    Node<T> node;
+    if ((node = search(this.root, val)) != null)
+        remove(node);
+}
+
+/**
+	 * 红黑树删除修正函数
+	 * @param node 待修正的节点
+	 * @param parent
+	 */
+public void removeFixUp(Node<T> node, Node<T> parent)
+{
+    Node<T> other;
+    while ((node == null || isBlack(node)) && (node != this.root))
+    {
+        if (parent.left == node)
+        {
+            other = parent.right;
+            if (isRed(other))
+            {
+                // Case 2.1.1 : node的兄弟other是红色的
+                setBlack(other);
+                setRed(parent);
+                leftRotation(parent);
+                other = parent.right;
+            }
+
+            if ((other.left == null || isBlack(other.left)) 
+                && (other.right == null || isBlack(other.right)))
+            {
+                // Case 2.1.2.3 : node的兄弟other是黑色，且other的两个孩子也都是黑色
+                setRed(other);
+                node = parent;
+                parent = parentOf(node);
+            } else
+            {
+                if (other.right == null || isBlack(other.right))
+                {
+                    // Case 2.1.2.2 : node的兄弟是黑色的，并且other的左结点是红色，右结点是黑色或null
+                    setBlack(other.left);
+                    setRed(other);
+                    rightRotation(other);
+                    other = parent.right;
+                }
+                // Case 2.1.2.1 : node的兄弟other是黑色的；并且other的右孩子是红色的，左孩子任意颜色。
+                setColor(other, colorOf(parent));
+                setBlack(parent);
+                setBlack(other.right);
+                leftRotation(parent);
+                node = this.root;
+                break;
+            }
+        } else
+        {
+            other = parent.left;
+            if (isRed(other))
+            {
+                // Case 2.1.1 : node的兄弟other是红色的
+                setBlack(other);
+                setRed(parent);
+                rightRotation(parent);
+                other = parent.left;
+            }
+
+            if ((other.left == null || isBlack(other.left)) 
+                && (other.right == null || isBlack(other.right)))
+            {
+                // node的兄弟other是黑色，且other的俩个孩子也都是黑色的  
+                setRed(other);
+                node = parent;
+                parent = parentOf(node);
+            } else
+            {
+                if (other.left == null || isBlack(other.left))
+                {
+                    // node的兄弟other是黑色的，并且other的左孩子是红色，右孩子为黑色。
+                    setBlack(other.right);
+                    setRed(other);
+                    leftRotation(other);
+                    other = parent.left;
+                }
+                // node的兄弟other是黑色的；并且other的右孩子是红色的，左孩子任意颜色。
+                setColor(other, colorOf(parent));
+                setBlack(parent);
+                setBlack(other.left);
+                rightRotation(parent);
+                node = this.root;
+                break;
+            }
+        }
+    }
+    if (node != null)
+        setBlack(node);
+}
+```
+
+
+
+最后再做个习题加深理解（请不熟悉的同学务必动手画下）：
+
+请画出图29的删除自平衡处理过程。
+
+[![QSWZjg.md.png](https://s2.ax1x.com/2019/11/26/QSWZjg.md.png)](https://imgchr.com/i/QSWZjg)
+
+答：
+
+[![QSWuHs.md.png](https://s2.ax1x.com/2019/11/26/QSWuHs.md.png)](https://imgchr.com/i/QSWuHs)
+
+
+
+### B树
+
+B树(B-Tree)是一种自平衡的树,它是一种多路搜索树（并不是二叉的），能够保证数据有序。同时它还保证了在查找、插入、删除等操作时性能都能保持在`O(logn)`，为大块数据的读写操作做了优化,同时它也可以用来描述外部存储(支持对保存在磁盘或者网络上的符号表进行外部查找)
+
+**一棵m阶的B 树 (m叉树)的特性如下**：**
+
++ **定义任意非叶子结点最多只有M个儿子；且M>2**
++ **根结点的儿子数为[2, M]**
++ **除根结点以外的非叶子结点的儿子数为[M/2, M]**
++ **每个结点存放至少M/2-1（取上整）和至多M-1个关键字；（至少2个关键字）**
++ **非叶子结点的关键字个数=指向儿子的指针个数-1**
++ **非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] < K[i+1]**
++ 非叶子结点的指针：`P[1], P[2], …, P[M]`，其中`P[1]`指向关键字小于`K[1]`的子树，`P[M]`指向关键字大于`K[M-1]`的子树，其它`P[i]`指向关键字属于`(K[i-1], K[i])`的子树
++ **所有叶子结点位于同一层**
+
+![QVvf9H.png](https://s2.ax1x.com/2019/11/30/QVvf9H.png)
+
+**添加/删除也是一样的，要考虑添加/删除孩子后，父节点是否还满足子树 k 介于 M/2 和 M 的条件，不满足就得从别的节点拆子树甚至修改相关子树结构来保持平衡。**
+
