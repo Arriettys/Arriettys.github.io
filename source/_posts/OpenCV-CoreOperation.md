@@ -7,8 +7,6 @@ tags:
 categories: 图像处理
 ---
 
-## 
-
 几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码
 
 <!--more-->
