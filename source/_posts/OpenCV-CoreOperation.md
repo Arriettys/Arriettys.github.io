@@ -1,5 +1,5 @@
 ---
-title: OpenCV-CoreOperation
+title: OpenCV-核心操作
 date: 2019-11-06 20:17:51
 tags:
 	-Python
@@ -7,7 +7,7 @@ tags:
 categories: 图像处理
 ---
 
-## OpenCV-核心操作
+## 
 
 几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码
 
