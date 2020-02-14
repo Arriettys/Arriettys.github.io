@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hadoop,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近参照网上的教程搭建Hadoop集群，在自己动手操作时出现了一些教程上没有出现的错误，头痛了好几天，索性得遇大神指点才找出问题所在，这里分享我的历程">
+<meta name="keywords" content="Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop-分布式模式">
+<meta property="og:url" content="http://yoursite.com/2019/04/16/Hadoop-Mode-PseudoDistrubuted/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="最近参照网上的教程搭建Hadoop集群，在自己动手操作时出现了一些教程上没有出现的错误，头痛了好几天，索性得遇大神指点才找出问题所在，这里分享我的历程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/17/Az92Y6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/17/AzieoR.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/17/AzkaM8.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/17/AzAJw4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/17/AzAy0e.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop-分布式模式">
+<meta name="twitter:description" content="最近参照网上的教程搭建Hadoop集群，在自己动手操作时出现了一些教程上没有出现的错误，头痛了好几天，索性得遇大神指点才找出问题所在，这里分享我的历程">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/17/Az92Y6.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/16/Hadoop-Mode-PseudoDistrubuted/">
+
+
+
+
+
+  <title>Hadoop-分布式模式 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/16/Hadoop-Mode-PseudoDistrubuted/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hadoop-分布式模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-16T11:24:07+08:00">
+                2019-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式集群/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式集群</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近参照网上的教程搭建Hadoop集群，在自己动手操作时出现了一些教程上没有出现的错误，头痛了好几天，索性得遇大神指点才找出问题所在，这里分享我的历程<br><a id="more"></a><br>以下教程参考自：<br><a href="https://www.cnblogs.com/zhangyinhua/p/7647686.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyinhua/p/7647686.html</a><br><a href="https://www.yiibai.com/hadoop/hadoop_enviornment_setup.html" target="_blank" rel="noopener">https://www.yiibai.com/hadoop/hadoop_enviornment_setup.html</a></p>
+<h1 id="Hadoop的三种运行模式（启动模式）"><a href="#Hadoop的三种运行模式（启动模式）" class="headerlink" title="Hadoop的三种运行模式（启动模式）"></a>Hadoop的三种运行模式（启动模式）</h1><p>运行的前提是Hadoop环境配置完毕，这里就不多说，想了解的<a href="https://www.yiibai.com/hadoop/hadoop_enviornment_setup.html" target="_blank" rel="noopener">看这里</a></p>
+<h2 id="单机模式（独立模式）（Local或Standalone-Mode）"><a href="#单机模式（独立模式）（Local或Standalone-Mode）" class="headerlink" title="单机模式（独立模式）（Local或Standalone  Mode）"></a>单机模式（独立模式）（Local或Standalone  Mode）</h2><p>单机模式其实很简单，没出什么问题，我这里就简单介绍下。</p>
+<ul>
+<li>默认情况下，Hadoop即处于该模式，用于开发和调式。</li>
+<li>不对配置文件进行修改。</li>
+<li>使用本地文件系统，而不是分布式文件系统。</li>
+<li>Hadoop不会启动NameNode、DataNode、JobTracker、TaskTracker等守护进程，Map()和Reduce()任务作为同一个进程的不同部分来执行的。</li>
+<li>用于对MapReduce程序的逻辑进行调试，确保程序的正确。</li>
+</ul>
+<h2 id="伪分布式模式（Pseudo-Distrubuted-Mode）"><a href="#伪分布式模式（Pseudo-Distrubuted-Mode）" class="headerlink" title="伪分布式模式（Pseudo-Distrubuted Mode）"></a>伪分布式模式（Pseudo-Distrubuted Mode）</h2><p><strong>重点来了</strong></p>
+<ul>
+<li>Hadoop的守护进程运行在本机机器，模拟一个小规模的集群　</li>
+<li>在一台主机模拟多主机。</li>
+<li>Hadoop启动NameNode、DataNode、JobTracker、TaskTracker这些守护进程都在同一台机器上运行，是相互独立的Java进程。</li>
+<li>在这种模式下，Hadoop使用的是分布式文件系统，各个作业也是由JobTraker服务，来管理的独立进程。在单机模式之上增加了代码调试功能，允许检查内存使用情况，HDFS输入输出，以及其他的守护进程交互。类似于完全分布式模式，因此，这种模式常用来开发测试Hadoop程序的执行是否正确。</li>
+<li>修改3个配置文件：core-site.xml（Hadoop集群的特性，作用于全部进程及客户端）、hdfs-site.xml（配置HDFS集群的工作属性）、mapred-site.xml（配置MapReduce集群的属性）</li>
+<li>格式化文件系统</li>
+</ul>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>这里我们之为实验需求而设置，具体配置文件作用，参数意义不多说，想看详细解析的，来<a href="/2019/04/17/Hadoop-ConfigurationFile/" title="Hadoop-配置文件">Hadoop-配置文件</a><br>这些文件都在hadoop-3.1.2/etc/hadoop/中</p>
+<h4 id="hadoop-env-sh"><a href="#hadoop-env-sh" class="headerlink" title="hadoop-env.sh"></a>hadoop-env.sh</h4><pre><code>export JAVA_HOME=${JAVA_HOME}改成export JAVA_HOME=/opt/jdk
+</code></pre><p>改为你电脑上Java的局对路径<br><img src="https://s2.ax1x.com/2019/04/17/Az92Y6.png" alt><br>ps.在配置文件中有提示我们怎么设置，我们一般不删除，而是选择注释它</p>
+<h4 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml　"></a>core-site.xml　</h4><pre><code>&lt;configuration&gt;
+                &lt;property&gt;
+                    &lt;name&gt;fs.defaultFS&lt;/name&gt;
+                    &lt;value&gt;hdfs://1.0.0.5:9000&lt;/value&gt;   
+                &lt;/property&gt;
+ &lt;/configuration&gt;
+</code></pre><p>1.0.0.5是你主节点所在主机的ip，而9000为端口<br>注意，第一个问题来了，如果你是使用云服务器做实验，碰巧用的还是阿里云，那你会在最后测试时出现9000端口拒绝服务但是通过natstat -nplt 并没有看到9000有被占用的情况。</p>
+<p>解决：阿里云服务器有公网ip，和私网ip，两个节点之间的通信通过公网ip进行，但是开启namenode，9000要用内网ip<br>在core-site.xml的配里应如下设定：</p>
+<pre><code>&lt;property&gt;
+                &lt;name&gt;fs.defaultFS&lt;/name&gt;
+                &lt;value&gt;hdfs://内网ip:9000&lt;/value&gt;
+&lt;/property&gt;
+</code></pre><p>同理 hdfs-site.xml的配置中对于50070或9870端口也要用内网IP。<br>ps.若你后面要更改，一定要全部重启，且重新对HDFS集群进行格式化，否则还是会拒绝连接<br>参考自：<br><a href="https://blog.csdn.net/weixin_43322061/article/details/84194325" target="_blank" rel="noopener">https://blog.csdn.net/weixin_43322061/article/details/84194325</a></p>
+<h4 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml　　"></a>hdfs-site.xml　　</h4><p>创建相关目录</p>
+<pre><code>$ sudo mkdir -p /data/hadoop/hdfs/nn
+$ sudo mkdir -p /data/hadoop/hdfs/dn
+$ sudo mkdir -p /data/hadoop/hdfs/snn
+$ sudo mkdir -p /data/hadoop/yarn/nm
+</code></pre><p>ps.如果使用sudo启动hadoop的相关进程，这几目录的权限可以不用管。如果是使用当前的用户启动相关进程，对于opt目录，当前用户得有读写权限，对于/data目录也需要读写权限。</p>
+<pre><code>&lt;configuration&gt;
+                &lt;property&gt;
+                    &lt;name&gt;dfs.nameservices&lt;/name&gt;
+                    &lt;value&gt;hadoop-cluster&lt;/value&gt;
+                &lt;/property&gt;
+                &lt;property&gt;
+                    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+                    &lt;value&gt;file:///data/hadoop/hdfs/nn&lt;/value&gt;
+                &lt;/property&gt;
+                &lt;property&gt;
+                    &lt;name&gt;dfs.namenode.ch
+                    eckpoint.dir&lt;/name&gt;
+                    &lt;value&gt;file:///data/hadoop/hdfs/snn&lt;/value&gt;
+                &lt;/property&gt;
+                &lt;property&gt;
+                    &lt;name&gt;dfs.namenode.checkpoint.edits.dir&lt;/name&gt;
+                    &lt;value&gt;file:///data/hadoop/hdfs/snn&lt;/value&gt;
+                &lt;/property&gt;
+                &lt;property&gt;
+                    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+                    &lt;value&gt;file:///data/hadoop/hdfs/dn&lt;/value&gt;
+                &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h4 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h4><p>如果你使用的版本没有这个文件，有一个mapred-site.xml.template文件，将该文件复制一份为mapred-site.xml</p>
+<pre><code>$ cp mapred-site.xml.template mapred-site.xml
+</code></pre><pre><code>&lt;configuration&gt;
+                &lt;property&gt;
+                    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+                    &lt;value&gt;yarn&lt;/value&gt;
+                &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h4 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h4><pre><code>&lt;configuration&gt;
+        &lt;property&gt;
+                &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+                &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+        &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h3 id="启动集群"><a href="#启动集群" class="headerlink" title="启动集群"></a>启动集群</h3><p>1.对HDFS集群进行格式化，HDFS集群是用来存储数据的。</p>
+<pre><code>hdfs namenode -format
+</code></pre><p>2.启动HDFS集群　</p>
+<pre><code>hadoop-daemon.sh start namenode 启动主节点
+</code></pre><p>　　hadoop-daemon.sh start datanode 启动从节点<br>ps.好像Hadoop3Hadoop-daemon命令被hdfs,yarn等取代了，3以上版本用下面的命令</p>
+<pre><code>hdfs --daemon start namenode
+hdfs --daemon start datanode
+</code></pre><p>3.启动YARN集群</p>
+<pre><code>yarn-daemon.sh start resourcemanager
+</code></pre><p>　　yarn-daemon.sh start nodemanager<br>3以上版本：</p>
+<pre><code>yarn --daemon start resourcemanager
+yarn --daemon start nodemanager
+</code></pre><p>4.启动作业历史服务器</p>
+<pre><code>mr-jobhistory-daemon.sh start historyserver
+</code></pre><p>3以上版本：</p>
+<pre><code>mapred --daemon start historyserver
+</code></pre><p>5.jps命令查看是否启动成功<br><img src="https://s2.ax1x.com/2019/04/17/AzieoR.png" alt></p>
+<p>其实使用命令可以一起启动的</p>
+<pre><code>$ start-all.sh
+</code></pre><p>但我使用时，使用jps查看只启动了Jps和ResourceManager两项，具体原因我也不清楚，只好老老实实一条条启动</p>
+<p>关闭合集（重启时先关闭再启动）：</p>
+<pre><code>hadoop-daemon.sh stop namenode 
+hadoop-daemon.sh stop datanode 
+yarn-daemon.sh stop resourcemanager
+yarn-daemon.sh stop nodemanager
+mr-jobhistory-daemon.sh stop historyserver
+||
+hdfs --daemon stop namenode
+hdfs --daemon stop datanode
+yarn --daemon stop resourcemanager
+yarn --daemon stop nodemanager
+mapred --daemon stop historyserver
+</code></pre><p>6.HDFS集群的简单操作命令</p>
+<pre><code>hdfs dfs -ls /
+</code></pre><p>如果出现9000拒绝连接，且你使用的是阿里云服务器<br><img src="https://s2.ax1x.com/2019/04/17/AzkaM8.png" alt><br>可能是你core-site.xml设置的是外网ip，改为内网ip，使用ifconfig查看内网ip</p>
+<h3 id="WEB监控页面"><a href="#WEB监控页面" class="headerlink" title="WEB监控页面"></a>WEB监控页面</h3><p>HDFS：<a href="http://ip:50070" target="_blank" rel="noopener">http://ip:50070</a><br>ps.3版本默认端口由50070改为9870<br><img src="https://s2.ax1x.com/2019/04/17/AzAJw4.png" alt><br>如果拒绝访问，则可以在hdfs-site.xml中，更改开放端口的绑定IP：</p>
+<pre><code>&lt;property&gt;
+                &lt;name&gt;dfs.http.address&lt;/name&gt;
+                &lt;value&gt;ip:50070&lt;/value&gt; 
+                &lt;!--&lt;value&gt;ip:9870&lt;/value&gt;--&gt;
+ &lt;/property&gt;
+</code></pre><p>ps.阿里云服务器的ip需为内网ip</p>
+<p>YARN：<a href="http://ip:8088" target="_blank" rel="noopener">http://ip:8088</a><br><img src="https://s2.ax1x.com/2019/04/17/AzAy0e.png" alt></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/13/Docker-Compose/" rel="next" title="Docker-Compose">
+                <i class="fa fa-chevron-left"></i> Docker-Compose
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/17/Hadoop-ConfigurationFile/" rel="prev" title="Hadoop-配置文件">
+                Hadoop-配置文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hadoop的三种运行模式（启动模式）"><span class="nav-number">1.</span> <span class="nav-text">Hadoop的三种运行模式（启动模式）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单机模式（独立模式）（Local或Standalone-Mode）"><span class="nav-number">1.1.</span> <span class="nav-text">单机模式（独立模式）（Local或Standalone  Mode）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伪分布式模式（Pseudo-Distrubuted-Mode）"><span class="nav-number">1.2.</span> <span class="nav-text">伪分布式模式（Pseudo-Distrubuted Mode）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">1.2.1.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hadoop-env-sh"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">hadoop-env.sh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#core-site-xml"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">core-site.xml　</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hdfs-site-xml"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">hdfs-site.xml　　</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mapred-site-xml"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">mapred-site.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yarn-site-xml"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">yarn-site.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动集群"><span class="nav-number">1.2.2.</span> <span class="nav-text">启动集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WEB监控页面"><span class="nav-number">1.2.3.</span> <span class="nav-text">WEB监控页面</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

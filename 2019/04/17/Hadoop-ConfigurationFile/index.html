@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hadoop,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下">
+<meta name="keywords" content="Hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop-配置文件">
+<meta property="og:url" content="http://yoursite.com/2019/04/17/Hadoop-ConfigurationFile/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop-配置文件">
+<meta name="twitter:description" content="最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/17/Hadoop-ConfigurationFile/">
+
+
+
+
+
+  <title>Hadoop-配置文件 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/17/Hadoop-ConfigurationFile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hadoop-配置文件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-17T09:26:36+08:00">
+                2019-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式集群/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式集群</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下<br><a id="more"></a></p>
+<h2 id="etc-hadoop-core-site-xml"><a href="#etc-hadoop-core-site-xml" class="headerlink" title="etc/hadoop/core-site.xml"></a>etc/hadoop/core-site.xml</h2><p>顾名思义，是全局配置文件</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fs.defaultFS</td>
+<td>NameNode URI</td>
+<td>hdfs://host:port/</td>
+</tr>
+<tr>
+<td>io.file.buffer.size</td>
+<td>131072</td>
+<td>SequenceFiles文件中.读写缓存size设定</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;fs.defaultFS&lt;/name&gt;
+        &lt;value&gt;hdfs://192.168.1.100:9000&lt;/value&gt;
+        &lt;description&gt;192.168.1.100为服务器IP地址，其实也可以使用主机名，不能填localhost&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;io.file.buffer.size&lt;/name&gt;
+        &lt;value&gt;131072&lt;/value&gt;
+        &lt;description&gt;该属性值单位为KB，131072KB即为默认的64M&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><p>ps.以上只是列出了常用的几个，完整的参数解释<a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/core-default.xml" target="_blank" rel="noopener">看这里</a>，后面的配置文件也是如此</p>
+<h2 id="etc-hadoop-hdfs-site-xml"><a href="#etc-hadoop-hdfs-site-xml" class="headerlink" title="etc/hadoop/hdfs-site.xml"></a>etc/hadoop/hdfs-site.xml</h2><p>对hdfs的局部配置</p>
+<p>###配置NameNode</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dfs.namenode.name.dir</td>
+<td>在本地文件系统所在的NameNode的存储空间和持续化处理日志</td>
+<td>如果这是一个以逗号分隔的目录列表，然后将名称表被复制的所有目录，以备不时之需。</td>
+</tr>
+<tr>
+<td>dfs.namenode.hosts/dfs.namenode.hosts.exclude</td>
+<td>Datanodes permitted/excluded列表</td>
+<td>如有必要，可以使用这些文件来控制允许 数据节点的列表</td>
+</tr>
+<tr>
+<td>dfs.blocksize</td>
+<td>268435456</td>
+<td>大型的文件系统HDFS块大小为256MB</td>
+</tr>
+<tr>
+<td>dfs.namenode.handler.count</td>
+<td>100</td>
+<td>设置更多的namenode线程，处理从 datanode发出的大量RPC请求</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.replication&lt;/name&gt;
+        &lt;value&gt;1&lt;/value&gt;
+        &lt;description&gt;分片数量，伪分布式将其配置成1即可&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+        &lt;value&gt;file:///usr/local/hadoop/tmp/namenode&lt;/value&gt;
+        &lt;description&gt;命名空间和事务在本地文件系统永久存储的路径，ps.file://为开头&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.hosts&lt;/name&gt;
+        &lt;value&gt;datanode1, datanode2&lt;/value&gt;
+        &lt;description&gt;datanode1, datanode2分别对应DataNode所在服务器主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.blocksize&lt;/name&gt;
+        &lt;value&gt;268435456&lt;/value&gt;
+        &lt;description&gt;大文件系统HDFS块大小为256M，默认值为64M&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.namenode.handler.count&lt;/name&gt;
+        &lt;value&gt;100&lt;/value&gt;
+        &lt;description&gt;更多的NameNode服务器线程处理来自DataNodes的RPCS&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h3 id="配置DataNode"><a href="#配置DataNode" class="headerlink" title="配置DataNode"></a>配置DataNode</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dfs.datanode.data.dir</td>
+<td>逗号分隔的一个DataNode上，它应该保存它的块的本地文件系统的路径列表</td>
+<td>如果这是一个以逗号分隔的目录列表，那么数据将被存储在所有命名的目录，通常在不同的设备</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+        &lt;value&gt;file:///usr/local/hadoop/tmp/datanode&lt;/value&gt;
+        &lt;description&gt;DataNode在本地文件系统中存放块的路径&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><p>完整参数<a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml" target="_blank" rel="noopener">看这里</a></p>
+<h2 id="etc-hadoop-yarn-site-xml"><a href="#etc-hadoop-yarn-site-xml" class="headerlink" title="etc/hadoop/yarn-site.xml"></a>etc/hadoop/yarn-site.xml</h2><p>配置yarn，yarn是一种新的 Hadoop 资源管理器，职能就是将资源调度和任务调度分开。资源管理器ResourceManager全局管理所有应用程序计算资源的分配，每一个job的ApplicationMaster负责相应任务的调度和协调。</p>
+<ul>
+<li>ResourceManager做的事情是负责协调集群上计算资源的分配。调度、启动每一个 Job 所属的 ApplicationMaster、另外监控 ApplicationMaster 的存在情况。</li>
+<li>NodeManager 功能比较专一，根据要求启动和监视集群中机器的计算容器container。负责 Container 状态的维护，并向 RM 保持心跳汇报该节点资源使用情况。</li>
+<li>ApplicationMaster 负责一个 Job 生命周期内的所有工作。注意每一个Job都有一个 ApplicationMaster。它和MapReduce任务一样在容器中运行。AM通过与RM交互获取资源，然后然后通过与NM交互，启动计算任务。</li>
+<li>容器是由ResourceManager进行统一管理和分配的。有两类container：一类是AM运行需要的container；另一类是AP为执行任务向RM申请的。<h3 id="配置ResourceManager"><a href="#配置ResourceManager" class="headerlink" title="配置ResourceManager"></a>配置ResourceManager</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yarn.resourcemanager.address</td>
+<td>客户端对ResourceManager主机通过 host:port 提交作业</td>
+<td>host:port</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.scheduler.address</td>
+<td>ApplicationMasters 通过ResourceManager主机访问host:port跟踪调度程序获资源</td>
+<td>host:port</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.resource-tracker.address</td>
+<td>NodeManagers通过ResourceManager主机访问host:port</td>
+<td>host:port</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.admin.address</td>
+<td>管理命令通过ResourceManager主机访问host:port</td>
+<td>host:port</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.webapp.address</td>
+<td>ResourceManager web页面host:port</td>
+<td>host:port</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.scheduler.class</td>
+<td>ResourceManager 调度类（Scheduler class）</td>
+<td>CapacityScheduler（推荐），FairScheduler（也推荐），orFifoScheduler</td>
+</tr>
+<tr>
+<td>yarn.scheduler.minimum-allocation-mb</td>
+<td>每个容器内存最低限额分配到的资源管理器要求</td>
+<td>以MB为单位</td>
+</tr>
+<tr>
+<td>yarn.scheduler.maximum-allocation-mb</td>
+<td>资源管理器分配给每个容器的内存最大限制</td>
+<td>以MB为单位</td>
+</tr>
+<tr>
+<td>yarn.resourcemanager.nodes.include-path/yarn.resourcemanager.nodes.exclude-path</td>
+<td>NodeManagers的permitted/excluded列表</td>
+<td>如有必要，可使用这些文件来控制允许NodeManagers列表</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:8081&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:8082&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:8083&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:8084&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:8085&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.scheduler.class&lt;/name&gt;
+        &lt;value&gt;FairScheduler&lt;/value&gt;
+        &lt;description&gt;常用类：CapacityScheduler、FairScheduler、orFifoScheduler&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.scheduler.minimum&lt;/name&gt;
+        &lt;value&gt;100&lt;/value&gt;
+        &lt;description&gt;单位：MB&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.scheduler.maximum&lt;/name&gt;
+        &lt;value&gt;256&lt;/value&gt;
+        &lt;description&gt;单位：MB&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.resourcemanager.nodes.include-path&lt;/name&gt;
+        &lt;value&gt;nodeManager1, nodeManager2&lt;/value&gt;
+        &lt;description&gt;nodeManager1, nodeManager2分别对应服务器主机名&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h3 id="配置NodeManager"><a href="#配置NodeManager" class="headerlink" title="配置NodeManager"></a>配置NodeManager</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yarn.nodemanager.resource.memory-mb</td>
+<td>givenNodeManager即资源的可用物理内存，以MB为单位</td>
+<td>定义在节点管理器总的可用资源，以提供给运行容器</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.vmem-pmem-ratio</td>
+<td>最大比率为一些任务的虚拟内存使用量可能会超过物理内存率</td>
+<td>每个任务的虚拟内存的使用可以通过这个比例超过了物理内存的限制。虚拟内存的使用上的节点管理器任务的总量可以通过这个比率超过其物理内存的使用</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.local-dirs</td>
+<td>数据写入本地文件系统路径的列表用逗号分隔</td>
+<td>多条存储路径可以提高磁盘的读写速度</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.log-dirs</td>
+<td>本地文件系统日志路径的列表逗号分隔</td>
+<td>多条存储路径可以提高磁盘的读写速度</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.log.retain-seconds</td>
+<td>10800</td>
+<td>如果日志聚合被禁用。默认的时间（以秒为单位）保留在节点管理器只适用日志文件</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.remote-app-log-dir</td>
+<td>logs</td>
+<td>HDFS目录下的应用程序日志移动应用上完成。需要设置相应的权限。仅适用日志聚合功能</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.remote-app-log-dir-suffix</td>
+<td>logs</td>
+<td>后缀追加到远程日志目录。日志将被汇总到yarn.nodemanager.remote­app­logdir/{user}/${thisParam} 仅适用日志聚合功能。</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.aux-services</td>
+<td>mapreduce-shuffle</td>
+<td>Shuffle service 需要加以设置的Map Reduce的应用程序服务</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;
+        &lt;value&gt;256&lt;/value&gt;
+        &lt;description&gt;单位为MB&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;
+        &lt;value&gt;90&lt;/value&gt;
+        &lt;description&gt;百分比&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.local-dirs&lt;/name&gt;
+        &lt;value&gt;/usr/local/hadoop/tmp/nodemanager&lt;/value&gt;
+        &lt;description&gt;列表用逗号分隔&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.log-dirs&lt;/name&gt;
+        &lt;value&gt;/usr/local/hadoop/tmp/nodemanager/logs&lt;/value&gt;
+        &lt;description&gt;列表用逗号分隔&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.log.retain-seconds&lt;/name&gt;
+        &lt;value&gt;10800&lt;/value&gt;
+        &lt;description&gt;单位为S&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+        &lt;value&gt;mapreduce-shuffle&lt;/value&gt;
+        &lt;description&gt;Shuffle service 需要加以设置的MapReduce的应用程序服务&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><p>完整参数<a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-yarn/hadoop-yarn-common/yarn-default.xml" target="_blank" rel="noopener">看这里</a></p>
+<h2 id="etc-hadoop-mapred-site-xml"><a href="#etc-hadoop-mapred-site-xml" class="headerlink" title="etc/hadoop/mapred-site.xml"></a>etc/hadoop/mapred-site.xml</h2><p>MapReduce的局部配置，MapReduce是一个分布式的计算框架，核心功能是将用户编写的业务逻辑代码和自带默认组件整合成一个完整的分布式运算框架，并发运行在hadoop集群上。引入MapReduce框架后，开发人员可以将绝大部分的工作集中于业务逻辑上的开发，具体的计算只需要交给框架就可以。</p>
+<h3 id="配置mapreduce"><a href="#配置mapreduce" class="headerlink" title="配置mapreduce"></a>配置mapreduce</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mapreduce.framework.name</td>
+<td>yarn</td>
+<td>执行框架设置为 Hadoop YARN.</td>
+</tr>
+<tr>
+<td>mapreduce.map.memory.mb</td>
+<td>1536</td>
+<td>对maps更大的资源限制的.</td>
+</tr>
+<tr>
+<td>mapreduce.map.java.opts</td>
+<td>-Xmx2014M</td>
+<td>maps中对jvm child设置更大的堆大小</td>
+</tr>
+<tr>
+<td>mapreduce.reduce.memory.mb</td>
+<td>3072</td>
+<td>设置 reduces对于较大的资源限制</td>
+</tr>
+<tr>
+<td>mapreduce.reduce.java.opts</td>
+<td>-Xmx2560M</td>
+<td>reduces对 jvm child设置更大的堆大小</td>
+</tr>
+<tr>
+<td>mapreduce.task.io.sort.mb</td>
+<td>512</td>
+<td>更高的内存限制，而对数据进行排序的效率</td>
+</tr>
+<tr>
+<td>mapreduce.task.io.sort.factor</td>
+<td>100</td>
+<td>在文件排序中更多的流合并为一次</td>
+</tr>
+<tr>
+<td>mapreduce.reduce.shuffle.parallelcopies</td>
+<td>50</td>
+<td>通过reduces从很多的map中读取较多的平行 副本</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt; mapreduce.framework.name&lt;/name&gt;
+        &lt;value&gt;yarn&lt;/value&gt;
+        &lt;description&gt;执行框架设置为Hadoop YARN&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;
+        &lt;value&gt;1536&lt;/value&gt;
+        &lt;description&gt;对maps更大的资源限制的&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;
+        &lt;value&gt;-Xmx2014M&lt;/value&gt;
+        &lt;description&gt;maps中对jvm child设置更大的堆大小&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;
+        &lt;value&gt;3072&lt;/value&gt;
+        &lt;description&gt;设置 reduces对于较大的资源限制&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;
+        &lt;value&gt;-Xmx2560M&lt;/value&gt;
+        &lt;description&gt;reduces对 jvm child设置更大的堆大小&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.task.io.sort&lt;/name&gt;
+        &lt;value&gt;512&lt;/value&gt;
+        &lt;description&gt;更高的内存限制，而对数据进行排序的效率&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.task.io.sort.factor&lt;/name&gt;
+        &lt;value&gt;100&lt;/value&gt;
+        &lt;description&gt;在文件排序中更多的流合并为一次&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.reduce.shuffle.parallelcopies&lt;/name&gt;
+        &lt;value&gt;50&lt;/value&gt;
+        &lt;description&gt;通过reduces从很多的map中读取较多的平行副本&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><h3 id="配置mapreduce的JobHistory服务器"><a href="#配置mapreduce的JobHistory服务器" class="headerlink" title="配置mapreduce的JobHistory服务器"></a>配置mapreduce的JobHistory服务器</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>maprecude.jobhistory.address</td>
+<td>MapReduce JobHistory Server host:port</td>
+<td>默认端口号 10020</td>
+</tr>
+<tr>
+<td>mapreduce.jobhistory.webapp.address</td>
+<td>MapReduce JobHistory Server Web UIhost:port</td>
+<td>默认端口号 19888</td>
+</tr>
+<tr>
+<td>mapreduce.jobhistory.intermediate-done-dir</td>
+<td>/mr­history/tmp</td>
+<td>在历史文件被写入由MapReduce作业</td>
+</tr>
+<tr>
+<td>mapreduce.jobhistory.done-dir</td>
+<td>/mr­history/done</td>
+<td>目录中的历史文件是由MR JobHistory Server管理</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt; mapreduce.jobhistory.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:10200&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;
+        &lt;value&gt;192.168.1.100:19888&lt;/value&gt;
+        &lt;description&gt;IP地址192.168.1.100可替换为主机名&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.jobhistory.intermediate-done-dir&lt;/name&gt;
+        &lt;value&gt;/usr/local/hadoop/mr­history/tmp&lt;/value&gt;
+        &lt;description&gt;在历史文件被写入由MapReduce作业&lt;/description&gt;
+    &lt;/property&gt;
+    &lt;property&gt;
+        &lt;name&gt;mapreduce.jobhistory.done-dir&lt;/name&gt;
+        &lt;value&gt;/usr/local/hadoop/mr­history/done&lt;/value&gt;
+        &lt;description&gt;目录中的历史文件是由MR JobHistoryServer管理&lt;/description&gt;
+    &lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre><p>完整参数<a href="https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml" target="_blank" rel="noopener">看这里</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/16/Hadoop-Mode-PseudoDistrubuted/" rel="next" title="Hadoop-分布式模式">
+                <i class="fa fa-chevron-left"></i> Hadoop-分布式模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/02/JVM-LineTools/" rel="prev" title="JDK-命令行工具">
+                JDK-命令行工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-hadoop-core-site-xml"><span class="nav-number">1.</span> <span class="nav-text">etc/hadoop/core-site.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-hadoop-hdfs-site-xml"><span class="nav-number">2.</span> <span class="nav-text">etc/hadoop/hdfs-site.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置DataNode"><span class="nav-number">2.1.</span> <span class="nav-text">配置DataNode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-hadoop-yarn-site-xml"><span class="nav-number">3.</span> <span class="nav-text">etc/hadoop/yarn-site.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ResourceManager"><span class="nav-number">3.1.</span> <span class="nav-text">配置ResourceManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置NodeManager"><span class="nav-number">3.2.</span> <span class="nav-text">配置NodeManager</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-hadoop-mapred-site-xml"><span class="nav-number">4.</span> <span class="nav-text">etc/hadoop/mapred-site.xml</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mapreduce"><span class="nav-number">4.1.</span> <span class="nav-text">配置mapreduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mapreduce的JobHistory服务器"><span class="nav-number">4.2.</span> <span class="nav-text">配置mapreduce的JobHistory服务器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

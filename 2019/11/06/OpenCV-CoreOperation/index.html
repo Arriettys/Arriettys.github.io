@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="-Python -OpenCV,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码">
+<meta name="keywords" content="-Python -OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV-核心操作">
+<meta property="og:url" content="http://yoursite.com/2019/11/06/OpenCV-CoreOperation/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/06/MiYIc4.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/06/MiNCzF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/QevsH0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/QevoHx.md.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/06/Miclyq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/11/07/MAhuxU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/Qmw9eO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/QmwUmT.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/QmwkYd.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/12/01/QmGg3T.md.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV-核心操作">
+<meta name="twitter:description" content="几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/11/06/MiYIc4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/06/OpenCV-CoreOperation/">
+
+
+
+
+
+  <title>OpenCV-核心操作 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/06/OpenCV-CoreOperation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenCV-核心操作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-06T20:17:51+08:00">
+                2019-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/图像处理/" itemprop="url" rel="index">
+                    <span itemprop="name">图像处理</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>几乎所有的操作在本节主要是有关Numpy而不是OpenCV，所以掌握好Numpy有利于写好OpenCV代码</p>
+<a id="more"></a>
+<h3 id="访问和操作图片像素"><a href="#访问和操作图片像素" class="headerlink" title="访问和操作图片像素"></a>访问和操作图片像素</h3><p>对于BGR图片来说，它的像素组成可以用一个三维矩阵表示，行列以及三基色值，如</p>
+<p><img src="https://s2.ax1x.com/2019/11/06/MiYIc4.png" alt></p>
+<p>事实上numpy库最大优势是优化矩阵运算，所以进行简单的像素访问修改，反而会有些缓慢</p>
+<p>对于单个像素的访问修改我们可以使用Numpy 矩阵方法：array.item()和array.itemset</p>
+<p><img src="https://s2.ax1x.com/2019/11/06/MiNCzF.png" alt></p>
+<h3 id="图片对象属性"><a href="#图片对象属性" class="headerlink" title="图片对象属性"></a>图片对象属性</h3><p>这些属性包括行列、像素通道、图像数据类型(dtype调试时是非常重要的,因为大量的OpenCV-Python代码中的错误是由于无效的数据类型)、像素数量等，值得注意的是，正常图片shape属性会返回行列数、通道数，而灰度图片只有行列数</p>
+<p><img src="https://s2.ax1x.com/2019/12/01/QevsH0.png" alt="QevsH0.png"></p>
+<h3 id="图片ROI"><a href="#图片ROI" class="headerlink" title="图片ROI"></a>图片ROI</h3><p>ROI是region of images首字母的简写，翻译为图片的区域。有时处理图片的时候只对其中的一部分图片的区域进行处理，例如我们想在图片某个区域打马赛克，为了性能考虑我们可以只让程序对这一部分信息进行处理而将其他部分忽略，这时我们就要设置图片感性趣的区域。设置完感性趣的区域后其实是指针指到了ROI区域的左上角，好像我们截取了一张小图片一样，我们只对这张小图片进行处理就可以了，因其ROI指向的还是原图只在告诉它图片的起始位置和大小变了，所以在对ROI区操作会影响原图。</p>
+<pre><code class="python">import numpy as np
+import cv2 as cv
+img = cv.imread(&#39;image.jpg&#39;)
+ball = img[280:340, 330:390]
+cv.imshow(&#39;image1&#39;, img)
+cv.imshow(&#39;image2&#39;, ball)
+cv.waitKey(0)
+</code></pre>
+<p><a href="https://imgse.com/i/QevoHx" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/12/01/QevoHx.md.png" alt="QevoHx.md.png"></a></p>
+<h3 id="分裂和合并图像通道"><a href="#分裂和合并图像通道" class="headerlink" title="分裂和合并图像通道"></a>分裂和合并图像通道</h3><p>有时你需要对图像的单通道进行操作，这种情况你可以从图片的矩阵中分割出单独通道矩阵进行操作，或者将几个单独的通道矩阵合并</p>
+<pre><code class="python">b, g, r = cv.split(img) 
+# 或者 b = img[:, :, 0]
+# cv.split操作效率低，建议多使用Numpy array的操作
+img = cv.merge((b, g, r))
+</code></pre>
+<h3 id="制作图像边界"><a href="#制作图像边界" class="headerlink" title="制作图像边界"></a>制作图像边界</h3><p>如果你想要给图像加上相框一样的边界，可以使用 <strong>cv.copyMakeBorder()</strong>，这个方法还可以用作卷积和零填充等方面上，它需要如下参数：</p>
+<ul>
+<li><strong>src</strong>：图片对象</li>
+<li><strong>top, bottom, left, right</strong>：相应方向上边界像素大小</li>
+<li>borderType：边界类型，有一下几种<ul>
+<li><strong><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5aed2e4346047e265c8c5a6d0276dcd838" target="_blank" rel="noopener">cv.BORDER_CONSTANT</a></strong>：色彩的边界。色彩值应该为下一个参数</li>
+<li><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5a815c8a89b7cb206dcba14d11b7560f4b" target="_blank" rel="noopener"><strong>cv.BORDER_REFLECT</strong></a>：边界将镜面反射边界的元素，像这样：<em>fedcba|abcdefgh|hgfedcb</em></li>
+<li><strong><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5ab3c5a6143d8120b95005fa7105a10bb4" target="_blank" rel="noopener">cv.BORDER_REFLECT_101</a></strong> or <strong><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5afe14c13a4ea8b8e3b3ef399013dbae01" target="_blank" rel="noopener">cv.BORDER_DEFAULT</a></strong>：同上，但有些不同，像：<em>gfedcb|abcdefgh|gfedcba</em></li>
+<li><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5aa1de4cff95e3377d6d0cbe7569bd4e9f" target="_blank" rel="noopener"><strong>cv.BORDER_REPLICATE</strong></a>：最后的元素将被一直复制，像这样：<em>aaaaaa|abcdefgh|hhhhhhh</em></li>
+<li><a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gga209f2f4869e304c82d07739337eae7c5a697c1b011884a7c2bdc0e5caf7955661" target="_blank" rel="noopener"><strong>cv.BORDER_WRAP</strong></a>：</li>
+</ul>
+</li>
+<li><strong>value</strong>：边界色彩</li>
+</ul>
+<pre><code class="Python">import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
+BLUE = [255,0,0]
+img1 = cv.imread(&#39;opencv-logo.png&#39;)
+replicate = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REPLICATE)
+reflect = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REFLECT)
+reflect101 = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_REFLECT_101)
+wrap = cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_WRAP)
+constant= cv.copyMakeBorder(img1,10,10,10,10,cv.BORDER_CONSTANT,value=BLUE)
+plt.subplot(231),plt.imshow(img1,&#39;gray&#39;),plt.title(&#39;ORIGINAL&#39;)
+plt.subplot(232),plt.imshow(replicate,&#39;gray&#39;),plt.title(&#39;REPLICATE&#39;)
+plt.subplot(233),plt.imshow(reflect,&#39;gray&#39;),plt.title(&#39;REFLECT&#39;)
+plt.subplot(234),plt.imshow(reflect101,&#39;gray&#39;),plt.title(&#39;REFLECT_101&#39;)
+plt.subplot(235),plt.imshow(wrap,&#39;gray&#39;),plt.title(&#39;WRAP&#39;)
+plt.subplot(236),plt.imshow(constant,&#39;gray&#39;),plt.title(&#39;CONSTANT&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/11/06/Miclyq.png" alt></p>
+<h2 id="图像运算"><a href="#图像运算" class="headerlink" title="图像运算"></a>图像运算</h2><h3 id="图像加法"><a href="#图像加法" class="headerlink" title="图像加法"></a>图像加法</h3><p>你可以使用OpenCV自带的方法 <a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#ga10ac1bfb180e2cfda1701d06c24fdbd6" target="_blank" rel="noopener">cv.add()</a> ，也可以直接使用Numpy 的矩阵操作，但需要注意的是，OpenCV方法是一种饱和式操作（不超过255），Numpy则是一种模减运算</p>
+<pre><code class="Python">&gt;&gt;&gt; x = np.uint8([250])
+&gt;&gt;&gt; y = np.uint8([10])
+&gt;&gt;&gt; print( cv.add(x,y) ) # 250+10 = 260 =&gt; 255
+[[255]]
+&gt;&gt;&gt; print( x+y )          # 250+10 = 260 % 256 = 4 
+[4]
+</code></pre>
+<p>ps.OpenCV方法能提供更好的结果，尽量使用使用它</p>
+<h3 id="图像混合"><a href="#图像混合" class="headerlink" title="图像混合"></a>图像混合</h3><p>某种意义上来说也是一种加法，不同的是它通过给设置每张图片不同的比重，制造一种混合和透明的感觉</p>
+<p>公式：</p>
+<p>$$<br>g(x) = (1 - α)f_0 + αf_1(x)<br>$$</p>
+<pre><code class="python">img1 = cv.imread(&#39;img1.jpg&#39;)
+img2 = cv.imread(&#39;img2.jpg&#39;)
+dst = cv.addWeighted(img1,0.7,img2,0.3,0)
+cv.imshow(&#39;dst&#39;,dst)
+cv.waitKey(0)
+cv.destroyAllWindows()
+</code></pre>
+<p><img src="https://s2.ax1x.com/2019/11/07/MAhuxU.png" alt></p>
+<p>主要方法：<a href="https://docs.opencv.org/master/d2/de8/group__core__array.html#gafafb2513349db3bcff51f54ee5592a19" target="_blank" rel="noopener">cv.addWeighted()</a></p>
+<p>ps.两张的尺寸要相同，否则矩阵运算会出错</p>
+<h3 id="逐位运算"><a href="#逐位运算" class="headerlink" title="逐位运算"></a>逐位运算</h3><p>这包括与、或、非和异或操作，在对图片做提取、定义和操作非矩形ROI等操作时经常用到。接下来让我们看看怎样改变图像的特定区域。</p>
+<p>我想在例图上添加OpenCV logo，假如使用叠加，那么OpenCV的黑色背景会覆盖例图；假如使用混合则会造成透明效果，这是可以使用逐位运算解决</p>
+<pre><code class="Python"># 读取图片
+img1 = cv.imread(&#39;messi5.jpg&#39;)
+img2 = cv.imread(&#39;opencv-logo-white.png&#39;)
+# 因为我想把logo放在右上角，所以我需要创建一个ROI
+rows,cols,channels = img2.shape
+roi = img1[0:rows, 0:cols]
+# 将img2由BGR色域转为GRAY
+img2gray = cv.cvtColor(img2,cv.COLOR_BGR2GRAY)
+# 阀值分割 
+ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
+mask_inv = cv.bitwise_not(mask)
+
+img1_bg = cv.bitwise_and(roi, roi, mask = mask_inv)
+img2_fg = cv.bitwise_and(img2, img2, mask = mask)
+dst = cv.add(img1_bg, img2_fg)
+img1[0:rows, 0:cols ] = dst
+cv.imshow(&#39;res&#39;,img1)
+cv.waitKey(0)
+cv.destroyAllWindows()
+</code></pre>
+<p>上述代码中cv.cvtColor()将img2由BGR色域转为GRAY</p>
+<p><img src="https://s2.ax1x.com/2019/12/01/Qmw9eO.png" alt="Qmw9eO.png"></p>
+<p>cv.threshold()设置阀值</p>
+<p><img src="https://s2.ax1x.com/2019/12/01/QmwUmT.png" alt="QmwUmT.png"></p>
+<p>cv.bitwise_not()进行异位操作</p>
+<p><img src="https://s2.ax1x.com/2019/12/01/QmwkYd.png" alt="QmwkYd.png"></p>
+<p>这样便可以在背景图与logo图中精准抠图，在相互叠加</p>
+<p>[<img src="https://s2.ax1x.com/2019/12/01/QmGg3T.md.png" alt="QmGg3T.md.png"></p>
+<h3 id="测试性能和改进技术"><a href="#测试性能和改进技术" class="headerlink" title="测试性能和改进技术"></a>测试性能和改进技术</h3><p>在图像处理中，由于你需要每秒处理大量操作，所以您的代码不仅要提供正确的解决方案，还要以最快的方式进行处理</p>
+<p>除了OpenCV，Python也提供了一个<strong>time</strong>模块帮助测试代码执行时间。而另一个模块<strong>profile</strong>有助于获得有关代码的详细报告，例如代码中每个函数占用了多少时间，函数被调用了多少次等等.</p>
+<h4 id="用OpenCV测量性能"><a href="#用OpenCV测量性能" class="headerlink" title="用OpenCV测量性能"></a>用OpenCV测量性能</h4><p><a href="https://docs.opencv.org/master/db/de0/group__core__utils.html#gae73f58000611a1af25dd36d496bf4487" target="_blank" rel="noopener"><strong>cv2.getTickCount</strong>()</a>：</p>
+<p>用于返回从操作系统启动到当前所经的计时周期数</p>
+<p><a href="https://docs.opencv.org/master/db/de0/group__core__utils.html#ga705441a9ef01f47acdc55d87fbe5090c" target="_blank" rel="noopener"> <strong>cv.getTickFrequency()</strong></a>：</p>
+<p>用于返回CPU的频率，这里的单位是秒，也就是一秒内重复的次数</p>
+<p>所以剩下的就很清晰了：<br>总次数/一秒内重复的次数 = 时间(s)<br>1000 *总次数/一秒内重复的次数= 时间(ms)</p>
+<p>我们将用下面的例子来演示。 以下示例应用中值滤波，奇数大小的内核范围为5至49.</p>
+<pre><code class="python">img1 = cv.imread(&#39;messi5.jpg&#39;)
+e1 = cv.getTickCount()
+for i in range(5,49,2):
+    img1 = cv.medianBlur(img1,i)
+e2 = cv.getTickCount()
+t = (e2 - e1)/cv.getTickFrequency()
+print( t )
+# Result I got is 0.521107655 seconds
+</code></pre>
+<blockquote>
+<p>Note</p>
+<p>也可以用时间模块做同样的事情。 使用time.time()函数，取两次的差别</p>
+</blockquote>
+<h4 id="OpenCV中的默认优化"><a href="#OpenCV中的默认优化" class="headerlink" title="OpenCV中的默认优化"></a>OpenCV中的默认优化</h4><p>许多OpenCV功能都使用SSE2，AVX等进行优化。它还包含未优化的代码。 所以如果我们的系统支持这些功能，我们应该利用它们（几乎所有的现代处理器都支持它们）。 编译时默认启用。 因此，OpenCV在启用时运行优化的代码，否则它会运行未优化的代码。 你可以使用<a href="https://docs.opencv.org/master/db/de0/group__core__utils.html#gafa6d5d04eff341825573ec6c0aa6519f" target="_blank" rel="noopener">cv.useOptimized()</a>检查是否启用/禁用，并使用<a href="https://docs.opencv.org/master/db/de0/group__core__utils.html#ga3c8487ea4449e550bc39575ede094c7a" target="_blank" rel="noopener">cv.setUseOptimized()</a>启用/禁用它。 我们来看一个简单的例子</p>
+<pre><code class="Python"># check if optimization is enabled
+In [5]: cv.useOptimized()
+Out[5]: True
+In [6]: %timeit res = cv.medianBlur(img,49)
+10 loops, best of 3: 34.9 ms per loop
+# Disable it
+In [7]: cv.setUseOptimized(False)
+In [8]: cv.useOptimized()
+Out[8]: False
+In [9]: %timeit res = cv.medianBlur(img,49)
+10 loops, best of 3: 64.1 ms per loop
+</code></pre>
+<h4 id="检测IPython中的性能"><a href="#检测IPython中的性能" class="headerlink" title="检测IPython中的性能"></a>检测IPython中的性能</h4><p>有时你可能需要比较两个类似操作的性能。IPython提供了一个魔术命令timeit来执行此操作。 它可以让代码运行几次以获得更准确的结果。它们也适用于测量单行代码。</p>
+<p>例如，你想知道以下哪个加法操作更快吗？</p>
+<p>x = 5; y = x *<em> 2<br>x = 5; y = x </em> x<br>x = np.uint8（[5]）; y = x * x<br>y = np.square（x）<br>我们将在IPython shell中使用timeit得到答案。</p>
+<pre><code class="Python">In [10]: x = 5
+In [11]: %timeit y=x**2
+10000000 loops, best of 3: 73 ns per loop
+In [12]: %timeit y=x*x
+10000000 loops, best of 3: 58.3 ns per loop
+In [15]: z = np.uint8([5])
+In [17]: %timeit y=z*z
+1000000 loops, best of 3: 1.25 us per loop
+In [19]: %timeit y=np.square(z)
+1000000 loops, best of 3: 1.16 us per loop
+</code></pre>
+<p>你可以看到，x = 5; y = x * x是最快的，与Numpy相比快了约20倍。如果你也考虑创建阵列，它可能会快达100倍</p>
+<blockquote>
+<p>Note</p>
+<p>Python标量操作比Numpy标量操作更快。因此对于包含一个或两个元素的操作，Python标量优于Numpy数组。当阵列的大小稍大时，Numpy会占据优势**</p>
+</blockquote>
+<p>我们将再尝试一个例子。 这次，我们将比较同一图像的cv.countNonZero()和np.count_nonzero()的性能</p>
+<pre><code class="Python">In [35]: %timeit z = cv.countNonZero(img)
+100000 loops, best of 3: 15.8 us per loop
+In [36]: %timeit z = np.count_nonzero(img)
+1000 loops, best of 3: 370 us per loop
+</code></pre>
+<h4 id="性能优化技术"><a href="#性能优化技术" class="headerlink" title="性能优化技术"></a>性能优化技术</h4><p>有几种技术和编码方法可以利用Python和Numpy的最大性能。此处仅注明相关的内容，并提供重要来源的链接。这里要注意的主要是，首先尝试以简单的方式实现算法。一旦工作，对其进行分析，找到瓶颈并进行优化</p>
+<ul>
+<li>尽量避免在Python中使用循环，尤其是双层/三层嵌套循环等。它们本身就很慢</li>
+<li>将算法/代码尽量使用向量化操作，因为Numpy和OpenCV针对向量运算进行了优化</li>
+<li>利用高速缓存一致性</li>
+<li>除非需要，否则不要复制数组。尝试使用视图去替代复制数组。数组复制是一项非常浪费资源的操作</li>
+</ul>
+<p>即使在完成所有这些操作之后，如果你的代码仍然很慢，或者使用大型循环是不可避免的，请使用其他库（如Cython）来加快速度</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python-OpenCV/" rel="tag"># -Python -OpenCV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/05/OpenCV-MousePaint/" rel="next" title="OpenCV-鼠标作画和滑块">
+                <i class="fa fa-chevron-left"></i> OpenCV-鼠标作画和滑块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/10/Algorithm-TreeAndBinaryTree/" rel="prev" title="树和二叉树">
+                树和二叉树 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问和操作图片像素"><span class="nav-number">1.</span> <span class="nav-text">访问和操作图片像素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片对象属性"><span class="nav-number">2.</span> <span class="nav-text">图片对象属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片ROI"><span class="nav-number">3.</span> <span class="nav-text">图片ROI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分裂和合并图像通道"><span class="nav-number">4.</span> <span class="nav-text">分裂和合并图像通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#制作图像边界"><span class="nav-number">5.</span> <span class="nav-text">制作图像边界</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#图像运算"><span class="nav-number"></span> <span class="nav-text">图像运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像加法"><span class="nav-number">1.</span> <span class="nav-text">图像加法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像混合"><span class="nav-number">2.</span> <span class="nav-text">图像混合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逐位运算"><span class="nav-number">3.</span> <span class="nav-text">逐位运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试性能和改进技术"><span class="nav-number">4.</span> <span class="nav-text">测试性能和改进技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用OpenCV测量性能"><span class="nav-number">4.1.</span> <span class="nav-text">用OpenCV测量性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenCV中的默认优化"><span class="nav-number">4.2.</span> <span class="nav-text">OpenCV中的默认优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检测IPython中的性能"><span class="nav-number">4.3.</span> <span class="nav-text">检测IPython中的性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性能优化技术"><span class="nav-number">4.4.</span> <span class="nav-text">性能优化技术</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

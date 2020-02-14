@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器/应用程序。">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-安全性">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/Docker-Security/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器/应用程序。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcNvXq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcUcD0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcUvPe.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-安全性">
+<meta name="twitter:description" content="实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器/应用程序。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/03/AcNvXq.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/03/Docker-Security/">
+
+
+
+
+
+  <title>Docker-安全性 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/Docker-Security/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker-安全性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T08:22:52+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>实验环境：Seccomp</strong><br>seccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器/应用程序。<br><a id="more"></a><br><strong>先决条件</strong><br>只有在使用 seccomp 构建 Docker 并且内核配置了 CONFIG_SECCOMP 的情况下，此功能才可用。要检查你的内核是否支持 seccomp：</p>
+<pre><code>$ cat /boot/config-`uname -r` | grep CONFIG_SECCOMP=
+
+CONFIG_SECCOMP=y
+</code></pre><p><strong>为容器传递配置文件</strong><br>默认的 seccomp 配置文件为使用 seccomp 运行容器提供了一个合理的设置，并禁用了大约 44 个超过 300+ 的系统调用。它具有适度的保护性，同时提供广泛的应用兼容性。默认的 Docker 配置文件可以在 <a href="https://github.com/moby/moby/blob/master/profiles/seccomp/default.json" target="_blank" rel="noopener">这里 </a>找到</p>
+<p>该配置文件是白名单，默认情况下阻止访问所有的系统调用，然后将特定的系统调用列入白名单。</p>
+<p>seccomp 有助于以最小权限运行 Docker 容器。不建议更改默认的 seccomp 配置文件，但你可以通过将–security-opt标志传递给docker run命令来覆盖它</p>
+<p>以下示例命令基于Alpine映像启动交互式容器并启动shell进程。它还应用了描述的seccomp配置文件<profile>.json</profile></p>
+<pre><code> $ docker run -it --rm --security-opt seccomp=&lt;profile&gt;.json alpine sh ...
+</code></pre><p>Docker支持许多与安全相关的技术。其他安全相关技术可能会干扰对seccomp配置文件的测试。因此，测试seccomp配置文件效果的最佳方法是添加所有功能并禁用apparmor（一个高效和易于使用的Linux系统安全应用程序）。</p>
+<p>以下docker run命令添加所有功能并禁用apparmor的参数 : –cap-add ALL –security-opt apparmor=unconfined.</p>
+<h2 id="克隆实验室GitHub-repo"><a href="#克隆实验室GitHub-repo" class="headerlink" title="克隆实验室GitHub repo"></a>克隆实验室GitHub repo</h2><p>clone 实验室的GitHub仓库，以便你拥有将用于本实验其余部分的seccomp配置文件</p>
+<pre><code>$ git clone https://github.com/docker/labs
+</code></pre><p>切换到labs/security/seccomp目录</p>
+<pre><code>$ cd labs/security/seccomp
+</code></pre><p>再次目录中，docker run在整个实验中引用各种命令的seccomp配置文件</p>
+<h2 id="测试seccomp配置文件"><a href="#测试seccomp配置文件" class="headerlink" title="测试seccomp配置文件"></a>测试seccomp配置文件</h2><p>此步骤中，将使用seccomp-profiles/deny.json包含的seccomp配置文件。此配置文件具有空的系统调用白名单，这意味着将阻止所有系统调用。作为演示的一部分，将添加所有功能并有效地禁用apparmor，以便你知道只有你的seccomp配置文件阻止了系统调用。</p>
+<p>使用该docker run命令尝试启动一个新容器，其中添加了所有功能，apparmor unconfined，并应用了seccomp-profiles/deny.jsonseccomp配置文件。</p>
+<pre><code>$ docker run --rm -it --cap-add ALL --security-opt apparmor=unconfined --security-opt seccomp=seccomp-profiles/deny.json alpine sh
+</code></pre><p><img src="https://s2.ax1x.com/2019/04/03/AcNvXq.png" alt><br>在这种情况下，Docker实际上没有足够的系统调用来启动容器！</p>
+<h2 id="有选择地删除系统调用"><a href="#有选择地删除系统调用" class="headerlink" title="有选择地删除系统调用"></a>有选择地删除系统调用</h2><p>在此步骤中，你将看到如何对default.json配置文件应用更改是一种很好的方法，可以微调容器可用的系统调用。<br>对default.json概要文件的修改，其中chmod（）、fchmod（）和chmodat（）系统调用从其白名单中删除，得到default-no-chmod.json。</p>
+<p>使用default-no-chmod.json配置文件启动新容器并尝试运行该chmod 777 / -v命令</p>
+<pre><code>$ docker run --rm -it --security-opt seccomp=./seccomp-profiles/default-no-chmod.json alpine sh
+</code></pre><p>然后从容器内部：</p>
+<pre><code>$ chmod 777 / -v
+</code></pre><p><img src="https://s2.ax1x.com/2019/04/03/AcUcD0.png" alt><br>因为chmod 777 / -v命令使用了一些chmod()，fchmod()和chmodat()已经从的白名单中删除的系统调用所以失败。</p>
+<p>退出容器，使用default.json配置文件启动另一个新容器并运行相同的容器chmod 777 / -v<br><img src="https://s2.ax1x.com/2019/04/03/AcUvPe.png" alt><br>该命令成功</p>
+<p>检查两个配置文件的存在chmod()，fchmod()以及chmodat()系统调用</p>
+<pre><code>$ cat ./seccomp-profiles/default.json | grep chmod
+$ cat ./seccomp-profiles/default-no-chmod.json | grep chmod
+</code></pre><h2 id="编写seccomp配置文件"><a href="#编写seccomp配置文件" class="headerlink" title="编写seccomp配置文件"></a>编写seccomp配置文件</h2><p>可以从头开始编写Docker seccomp配置文件，也可以编辑现有配置文件。<br>默认的Docker seccomp配置文件的布局如下所示：</p>
+<pre><code>{
+    &quot;defaultAction&quot;: &quot;SCMP_ACT_ERRNO&quot;,
+    &quot;architectures&quot;: [
+        &quot;SCMP_ARCH_X86_64&quot;,
+        &quot;SCMP_ARCH_X86&quot;,
+        &quot;SCMP_ARCH_X32&quot;
+    ],
+    &quot;syscalls&quot;: [
+        {
+            &quot;name&quot;: &quot;accept&quot;,
+            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,
+            &quot;args&quot;: []
+        },
+        {
+            &quot;name&quot;: &quot;accept4&quot;,
+            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,
+            &quot;args&quot;: []
+        },
+        ...
+    ]
+}
+</code></pre><p>其中name是系统调用的名称，action是发生系统调用时seccomp的操作，args是系统调用的参数限制条件。</p>
+<p>seccomp profile包含3个部分:</p>
+<ol>
+<li>默认操作(default Action)</li>
+<li>系统调用所支持的Linux架构(architectures)</li>
+<li>系统调用具体规则(syscalls)</li>
+</ol>
+<p>在seccomp profile规则中，可定义以下5种行为来对进程的系统调用行为做出响应，更高的行动否决了较低的行动</p>
+<pre><code>SCMP_ACT_KILL        当进程调用某系统调用，内核会发出SIGSYS信号终止该进程，该进程不会接收到这个信号
+SCMP_ACT_TRAP        当进程调用某系统调用，该进程会接收到SIGSYS信号，并根据该信号改变自身的行为。
+SCMP_ACT_ERRNO    当进程调用某系统调用，系统调用失败，进程会接收到返回值，该返回值与Linux内核的errno对应。
+SCMP_ACT_TRACE        当进程调用某系统调用，进程会被跟踪。
+SCMP_ACT_ALLOW    进程系统调用被允许。
+</code></pre><p>配置文件可以包含基于系统调用参数值的更精细的过滤器。<br>ps.这里的知识点涉及linux系统调用知识，建议跳过，有基础了再来看</p>
+<pre><code>{
+    ...
+    &quot;syscalls&quot;: [
+        {
+            &quot;name&quot;: &quot;accept&quot;,
+            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,
+            &quot;args&quot;: [
+                {
+                    &quot;index&quot;: 0,
+                    &quot;op&quot;: &quot;SCMP_CMP_MASKED_EQ&quot;,
+                    &quot;value&quot;: 2080505856,
+                    &quot;valueTwo&quot;: 0
+                }
+            ]
+        }
+    ]
+}
+</code></pre><ul>
+<li>index 是系统调用参数的索引</li>
+<li>op是对参数执行的操作。参数列表：<ul>
+<li>SCMP_CMP_NE - not equal</li>
+<li>SCMP_CMP_LT - less than</li>
+<li>SCMP_CMP_LE - less than or equal to</li>
+<li>SCMP_CMP_EQ - equal to</li>
+<li>SCMP_CMP_GE - greater than</li>
+<li>SCMP_CMP_GT - greater or equal to</li>
+<li>SCMP_CMP_MASKED_EQ - masked equal: true if (value &amp; arg == valueTwo)</li>
+</ul>
+</li>
+<li>value 是操作的参数</li>
+<li>仅用于SCMP_cmp_masked_eq</li>
+</ul>
+<p>如何编写Docker seccomp配置文件的最权威的来源是用于反序列化JSON的结构。</p>
+<ul>
+<li><a href="https://github.com/docker/engine-api/blob/c15549e10​​366236b069e50ef26562fb24f5911d4/types/seccomp.go" target="_blank" rel="noopener">https://github.com/docker/engine-api/blob/c15549e10​​366236b069e50ef26562fb24f5911d4/types/seccomp.go</a></li>
+<li><a href="https://github.com/opencontainers/runtime-spec/blob/6be516e2237a6dd377408e455ac8b41faf48bdf6/specs-go/config.go#L502" target="_blank" rel="noopener">https://github.com/opencontainers/runtime-spec/blob/6be516e2237a6dd377408e455ac8b41faf48bdf6/specs-go/config.go#L502</a></li>
+</ul>
+<p>参考自：<br><a href="https://blog.csdn.net/fy_long/article/details/88426053" target="_blank" rel="noopener">https://blog.csdn.net/fy_long/article/details/88426053</a><br><a href="https://training.play-with-docker.com/security-seccomp/" target="_blank" rel="noopener">https://training.play-with-docker.com/security-seccomp/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/02/Docker-Dockerfile/" rel="next" title="Docker-Dockerfile命令详解">
+                <i class="fa fa-chevron-left"></i> Docker-Dockerfile命令详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/04/Docker-LinuxKernel/" rel="prev" title="Docker-Linux内核功能">
+                Docker-Linux内核功能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#克隆实验室GitHub-repo"><span class="nav-number">1.</span> <span class="nav-text">克隆实验室GitHub repo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试seccomp配置文件"><span class="nav-number">2.</span> <span class="nav-text">测试seccomp配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有选择地删除系统调用"><span class="nav-number">3.</span> <span class="nav-text">有选择地删除系统调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写seccomp配置文件"><span class="nav-number">4.</span> <span class="nav-text">编写seccomp配置文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

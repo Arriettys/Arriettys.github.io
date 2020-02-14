@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是优先队列首先让我们来看一个场景  例子： 医院看病，重症患者往往优先治疗，即使他是后来者  可以看出优先队列相对于普通队列，他是根据元素的优先级进行出队的，与入队顺序无关 也许有人会说把元素进行排序也是可以实现的，道理是没错，如果我们是要选出班级中总成绩最高的同学；但对于医院这种情况，你无法预知今天会有多少个病人和其病症程度，每来一个病人你都重新排序的话就显得麻烦了">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优先队列与堆">
+<meta property="og:url" content="http://yoursite.com/2020/02/01/PriorityQueueAndHeap/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="什么是优先队列首先让我们来看一个场景  例子： 医院看病，重症患者往往优先治疗，即使他是后来者  可以看出优先队列相对于普通队列，他是根据元素的优先级进行出队的，与入队顺序无关 也许有人会说把元素进行排序也是可以实现的，道理是没错，如果我们是要选出班级中总成绩最高的同学；但对于医院这种情况，你无法预知今天会有多少个病人和其病症程度，每来一个病人你都重新排序的话就显得麻烦了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/18/Amzm0e.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优先队列与堆">
+<meta name="twitter:description" content="什么是优先队列首先让我们来看一个场景  例子： 医院看病，重症患者往往优先治疗，即使他是后来者  可以看出优先队列相对于普通队列，他是根据元素的优先级进行出队的，与入队顺序无关 也许有人会说把元素进行排序也是可以实现的，道理是没错，如果我们是要选出班级中总成绩最高的同学；但对于医院这种情况，你无法预知今天会有多少个病人和其病症程度，每来一个病人你都重新排序的话就显得麻烦了">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/18/Amzm0e.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/01/PriorityQueueAndHeap/">
+
+
+
+
+
+  <title>优先队列与堆 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/PriorityQueueAndHeap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">优先队列与堆</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-01T10:52:00+08:00">
+                2020-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是优先队列"><a href="#什么是优先队列" class="headerlink" title="什么是优先队列"></a>什么是优先队列</h2><p>首先让我们来看一个场景</p>
+<blockquote>
+<p>例子：</p>
+<p>医院看病，重症患者往往优先治疗，即使他是后来者</p>
+</blockquote>
+<p>可以看出优先队列相对于普通队列，他是根据元素的优先级进行出队的，与入队顺序无关</p>
+<p>也许有人会说把元素进行排序也是可以实现的，道理是没错，如果我们是要选出班级中总成绩最高的同学；但对于医院这种情况，你无法预知今天会有多少个病人和其病症程度，每来一个病人你都重新排序的话就显得麻烦了</p>
+<a id="more"></a>
+<p>参考：<a href="https://www.liwei.party/2019/01/10/algorithms-and-data-structures/priority-queue/#toc-heading-7" target="_blank" rel="noopener">https://www.liwei.party/2019/01/10/algorithms-and-data-structures/priority-queue/#toc-heading-7</a></p>
+<h2 id="优先队列的主要操作"><a href="#优先队列的主要操作" class="headerlink" title="优先队列的主要操作"></a>优先队列的主要操作</h2><p>优先队列根据优先级的排序分为，最大优先队列和最小优先队列。而优先队列主要有两大操作，即入队和出对（优先级最高的元素）</p>
+<p>我们通常可以最基本的数组这种数据结构来实现优先队列</p>
+<h3 id="普通数组"><a href="#普通数组" class="headerlink" title="普通数组"></a>普通数组</h3><p>可直接加入元素，复杂度为$O(1)$；而出队时需要保证最大，所以需要比较全部元素，所以复杂度为$O(n)$</p>
+<h3 id="有序数组"><a href="#有序数组" class="headerlink" title="有序数组"></a>有序数组</h3><p>当我们插入一个元素时，需要维护数组的元素顺序，时间复杂度为$O(n)$，而出队只需获取头部元素即可，复杂度为$O(1)$</p>
+<p>可以看出两种形式的数组作为优先队列，复杂度都无法低于$O(n)$，伟大的计算机科学家平衡了入队和出队这两个操作的时间复杂度，这种数据结构就是堆</p>
+<h2 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h2><p>堆的本质其实是完全二叉树</p>
+<blockquote>
+<p>完全二叉树的性质，父结点的值大于（或小于）其子节点，而根节点即为最大值（或最小）</p>
+</blockquote>
+<p>并且完全二叉树可以使用数组实现而无需树结构，这样既可以利用数组元素可以快速访问的特点，又让结点和结点之间形成了“父”与“子”的结构关系。而最大优先队列我们也可称为最大堆，最小堆也是这样</p>
+<blockquote>
+<p>关系公式：</p>
+<p><strong>大顶堆：arr[i] &gt;= arr[2i+1] &amp;&amp; arr[i] &gt;= arr[2i+2]</strong></p>
+<p><strong>小顶堆：arr[i] &lt;= arr[2i+1] &amp;&amp; arr[i] &lt;= arr[2i+2]</strong></p>
+<p>父结点：parent[i/2]</p>
+<p>ps.以上均为向下取整</p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/03/18/Amzm0e.png" alt></p>
+<h3 id="排序思想"><a href="#排序思想" class="headerlink" title="排序思想"></a>排序思想</h3><h4 id="入队"><a href="#入队" class="headerlink" title="入队"></a>入队</h4><p>先将元素加入数组尾端（为什么我们要在数组的末尾添加一个元素呢？可不可以在开头、中间？既然我们使用数组来实现堆，对数组添加一个元素来说，实现复杂度最低的操作就是在数组的末尾添加元素，如若不然，要让数组中一部分的元素逐个后移，<strong>因此在数组的末尾加入元素是最自然的想法</strong>），随后与父结点比较，若大于（或小于）父结点则进行交换，再对父结点进行相同操作，直到其父结点大于它或其为根结点，堆调整结束，这个过程称为“上升”</p>
+<h4 id="出队"><a href="#出队" class="headerlink" title="出队"></a>出队</h4><p>直接获取数组头部元素，之后调整堆：</p>
+<p>根结点取出以后，根节点位置为空，于是我们将当前数组的最后一个元素放到 根节点的位置，这样做是<strong>因为交换和移动的次数最少</strong>；回到数组头部，先从的它的左右结点中选取最大的（或最小的），若比自身大（或小）则交换，再对交换的子节点进行相同操作，反复执行，直到子节点都大于（或小于自身）或没有子节点</p>
+<p>堆的入队和出队充分利用的二叉树的二分特性，其复杂度都为$O(log n)$</p>
+<h3 id="构建一个最大堆"><a href="#构建一个最大堆" class="headerlink" title="构建一个最大堆"></a>构建一个最大堆</h3><p>现在让我们来实现一个最大堆</p>
+<pre><code class="Python">class MaxHeap:
+    def __init__(self, capacity):
+        # 存储空间
+        self.data = [None for _ in range(capacity+1)]
+        # 堆总容量
+        self.size = capacity
+        # 当前堆中元素个数
+        self.count = 0
+    # 当前堆是否为空
+    def isEmpty(self) -&gt; bool:
+        return self.count == 0
+
+    # 元素入队
+    def push(self, item):
+        if self.count + 1 &gt; self.size:
+            raise Exception(&quot;堆的容量不够了&quot;)
+        self.count += 1
+        self.data[self.count] = item
+        self.up(self.count)
+
+    # 元素出队
+    def poll(self) -&gt; int:
+        if self.count &lt; 1:
+            raise Exception(&quot;堆中没有元素&quot;)
+        res = self.data[1]
+        self.data[1], self.data[self.count] = self.data[self.count], self.data[1]
+        self.count -= 1
+        self.down(1)
+        return res
+
+    # 上升调整
+    def up(self, k):
+        temp = self.data[k]
+        while k &gt; 1 and temp &gt; self.data[k//2]:
+            self.data[k//2], self.data[k] = self.data[k], self.data[k//2]
+            k //= 2
+        self.data[k] = temp
+
+    # 下降调整
+    def down(self, k):
+        temp = self.data[k]
+        while 2*k &lt;= self.count:
+            Max = 2*k 
+            if Max + 1 &lt;= self.count and self.data[Max + 1] &gt; self.data[Max]:
+                Max += 1
+            if self.data[Max] &gt; temp:
+                self.data[Max], self.data[k] = self.data[k], self.data[Max]
+                k = Max
+            else:
+                break
+        self.data[k] = temp   
+</code></pre>
+<p>测试数据</p>
+<pre><code class="Python">if __name__ == &#39;__main__&#39;:
+    max_heap = MaxHeap(6)
+    max_heap.push(3)
+    print(max_heap.data[1])
+    max_heap.push(5)
+    print(max_heap.data[1])
+    max_heap.push(1)
+    print(max_heap.data[1])
+    max_heap.push(8)
+    print(max_heap.data[1])
+    max_heap.push(7)
+    print(max_heap.data[1])
+    max_heap.push(12)
+    print(max_heap.data[1])
+    while not max_heap.isEmpty():
+        print(&#39;取出&#39;, max_heap.poll())
+</code></pre>
+<p>打印结果</p>
+<pre><code>3
+5
+5
+8
+8
+12
+取出 12
+取出 8
+取出 7
+取出 5
+取出 3
+取出 1
+</code></pre><p>现在我们就算完成了最大堆的入队和出队操作，最小堆将比较更改即可获得</p>
+<h3 id="优先队列的应用场景"><a href="#优先队列的应用场景" class="headerlink" title="优先队列的应用场景"></a>优先队列的应用场景</h3><p>总结下来，优先队列比较适合需要动态排序的数据，如上文提到的医院随时会来患者，而患者们的症状程度各有不同的情况，就可以使用优先队列来进行排序；又或者当数据量过于庞大且要相互组合进行比较，而你只需要前第几位或后第几位时，这是也可以使用优先队列减少排序次数</p>
+<p>如leedcode 第 719 题：<a href="https://leetcode-cn.com/problems/find-k-th-smallest-pair-distance/" target="_blank" rel="noopener">找到第k小的距离对</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/10/Algorithm-TreeAndBinaryTree/" rel="next" title="树和二叉树">
+                <i class="fa fa-chevron-left"></i> 树和二叉树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/14/New-blog/" rel="prev" title="New blog">
+                New blog <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是优先队列"><span class="nav-number">1.</span> <span class="nav-text">什么是优先队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优先队列的主要操作"><span class="nav-number">2.</span> <span class="nav-text">优先队列的主要操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通数组"><span class="nav-number">2.1.</span> <span class="nav-text">普通数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序数组"><span class="nav-number">2.2.</span> <span class="nav-text">有序数组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是堆"><span class="nav-number">3.</span> <span class="nav-text">什么是堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#排序思想"><span class="nav-number">3.1.</span> <span class="nav-text">排序思想</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#入队"><span class="nav-number">3.1.1.</span> <span class="nav-text">入队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#出队"><span class="nav-number">3.1.2.</span> <span class="nav-text">出队</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建一个最大堆"><span class="nav-number">3.2.</span> <span class="nav-text">构建一个最大堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先队列的应用场景"><span class="nav-number">3.3.</span> <span class="nav-text">优先队列的应用场景</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前几天在力扣做了一道题，查找最长回文子串，按照普通的做法是使用中心拓展算法，以每个字符作为回文子串的中心对称点，每次保存前面求得的回文子串的最大值，最后得到的就是最长回文子串，这种方式的时间复杂度是O(n^2)。这种方式的时间复杂度太高，下面介绍时间复杂度为O(n)的Manacher算法。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Manacher算法">
+<meta property="og:url" content="http://yoursite.com/2019/03/29/Algorithm-Manacher/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="前几天在力扣做了一道题，查找最长回文子串，按照普通的做法是使用中心拓展算法，以每个字符作为回文子串的中心对称点，每次保存前面求得的回文子串的最大值，最后得到的就是最长回文子串，这种方式的时间复杂度是O(n^2)。这种方式的时间复杂度太高，下面介绍时间复杂度为O(n)的Manacher算法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0Zcod.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0ZjS0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0eu0e.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0eTc6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0mQDU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/29/A0mwDO.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Manacher算法">
+<meta name="twitter:description" content="前几天在力扣做了一道题，查找最长回文子串，按照普通的做法是使用中心拓展算法，以每个字符作为回文子串的中心对称点，每次保存前面求得的回文子串的最大值，最后得到的就是最长回文子串，这种方式的时间复杂度是O(n^2)。这种方式的时间复杂度太高，下面介绍时间复杂度为O(n)的Manacher算法。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/29/A0Zcod.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/29/Algorithm-Manacher/">
+
+
+
+
+
+  <title>Manacher算法 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/29/Algorithm-Manacher/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Manacher算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-29T08:42:46+08:00">
+                2019-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前几天在力扣做了一道题，查找最长回文子串，按照普通的做法是使用中心拓展算法，以每个字符作为回文子串的中心对称点，每次保存前面求得的回文子串的最大值，最后得到的就是最长回文子串，这种方式的时间复杂度是O(n^2)。这种方式的时间复杂度太高，下面介绍时间复杂度为O(n)的Manacher算法。<br><a id="more"></a></p>
+<h2 id="1-Manacher算法中的基础概念"><a href="#1-Manacher算法中的基础概念" class="headerlink" title="1. Manacher算法中的基础概念"></a>1. Manacher算法中的基础概念</h2><p>因为回文子串中心字符可以是一个或者两个，这样就存在这奇偶性的问题，处理繁琐，所以这里我们使用一个技巧，具体做法是：在字符串首尾，及各字符间各插入一个字符。</p>
+<p>举个例子：s=”abbahopxpo”，转换为s_new=”#a#b#b#a#h#o#p#x#p#o#”，如此，s 里起初有一个偶回文abba和一个奇回文opxpo，被转换为#a#b#b#a#和#o#p#x#p#o#，长度都转换成了奇数。</p>
+<h3 id="1-1-回文半径数组radius"><a href="#1-1-回文半径数组radius" class="headerlink" title="1.1 回文半径数组radius"></a>1.1 回文半径数组radius</h3><p>回文半径数组radius是用来记录以每个位置的字符为回文中心求出的回文半径长度，如下图所示，对于p1所指的位置radius[6]的回文半径是5，每个位置的回文半径组成的数组就是回文数组，所以#a#c#b#b#c#b#d#s#的回文半径数组为[1, 2, 1, 2, 1, 2, 5, 2, 1, 4, 1, 2, 1, 2, 1, 2, 1]。<br><img src="https://s2.ax1x.com/2019/03/29/A0Zcod.png" alt></p>
+<h3 id="1-2-最右回文右边界R"><a href="#1-2-最右回文右边界R" class="headerlink" title="1.2 最右回文右边界R"></a>1.2 最右回文右边界R</h3><p>一个位置最右回文右边界指的是这个位置及之前的位置的回文子串，所到达的最右边的地方。比如对于字符串#a#c#b#b#c#b#d#s#，求它的每个位置的过程如下：<br><img src="https://s2.ax1x.com/2019/03/29/A0ZjS0.png" alt><br>最开始的时候R=-1，到p=0的位置，回文就是其本身，最右回文右边界R=0;p=1时，有回文串#a#，R=2；p=2时，R=2;P=3时，R=6;p=4时，最右回文右边界还是p=3时的右边界，R=6,依次类推。<br>ps.复杂度的n即这里的右边界移动次数</p>
+<h3 id="1-3-最右回文右边界的对称中心C"><a href="#1-3-最右回文右边界的对称中心C" class="headerlink" title="1.3 最右回文右边界的对称中心C"></a>1.3 最右回文右边界的对称中心C</h3><p>就是上面提到的最右回文右边界的中心点C，如下图，p=4时，R=6，C=3<br><img src="https://s2.ax1x.com/2019/03/29/A0eu0e.png" alt></p>
+<h2 id="2-Manacher算法的流程"><a href="#2-Manacher算法的流程" class="headerlink" title="2. Manacher算法的流程"></a>2. Manacher算法的流程</h2><p>首先大的方面分为两种情况：<br><strong>第一种情况：下一个要移动的位置在最右回文右边界R的右边</strong><br>比如在最开始时，R=-1,p的下一个移动的位置为p=0，p=0在R=-1的右边；p=0时，此时的R=0，p的下一个移动位置为p=1，也在R=0的右边。<br>在这种情况下，采用普遍的解法，将移动的位置为对称中心，向两边扩，同时更新回文半径数组，最右回文右边界R和最右回文右边界的对称中心C。<br><strong>第二种情况：下一个要移动的位置就是最右回文右边界R或是在R的左边</strong><br>在这种情况下又分为三种：<br>1、下一个要移动的位置p1在最右回文右边界R左边，且cL&lt;pL<br>p2是p1以C为对称中心的对称点；</p>
+<p>pL是以p2为对称中心的回文子串的左边界;</p>
+<p>cL是以C为对称中心的回文子串的左边界。</p>
+<p>这种情况下p1的回文半径就是p2的回文半径radius[p2]。<br><img src="https://s2.ax1x.com/2019/03/29/A0eTc6.png" alt><br>2、下一个要移动的位置票p1在最右回文右边界R的左边，且cL&lt;pL<br>p2是p1以C为对称中心的对称点；</p>
+<p>pL是以p2为对称中心的回文子串的左边界；</p>
+<p>cL是以C为对称中心的回文子串的左边界。</p>
+<p>这种情况下p1的回文半径就是p1到R的距离R-p1+1。<br><img src="https://s2.ax1x.com/2019/03/29/A0mQDU.png" alt><br>3、下一个要移动的位置票p1不在最右回文右边界R的左边，且cL=pL<br>p2是p1以C为对称中心的对称点；</p>
+<p>pL是以p2为对称中心的回文子串的左边界；</p>
+<p>cL是以C为对称中心的回文子串的左边界。</p>
+<p>这种情况下p1的回文半径就还要继续往外扩，但是只需要从R之后往外扩就可以了，扩了之后更新R和C。<br><img src="https://s2.ax1x.com/2019/03/29/A0mwDO.png" alt></p>
+<h2 id="3-Manacher时间复杂度分析"><a href="#3-Manacher时间复杂度分析" class="headerlink" title="3. Manacher时间复杂度分析"></a>3. Manacher时间复杂度分析</h2><p>从上面的分析中，可以看出，第二种情况的1，2的求某个位置的回文半径的时间复杂度是O(1)，对于第一种情况和第二种情况的3，R是不断的向外扩的，不会往回退，而且寻找回文半径时，R之内的位置是不是进行判断的，所以对整个字符串而且，R的移动是从字符串的起点移动到终点，时间复杂度是O(n),所以整个manacher的时间复杂度是O(n)。</p>
+<h2 id="4-代码实现"><a href="#4-代码实现" class="headerlink" title="4. 代码实现"></a>4. 代码实现</h2><pre><code>class Solution 
+{
+    public String longestPalindrome(String s) 
+    {
+        return manacher(s);
+    }
+
+    public static char[] manacherString(String str)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i&lt;str.length();i++)
+        {
+            sb.append(&quot;#&quot;);
+            sb.append(str.charAt(i));
+        }
+        sb.append(&quot;#&quot;);
+        return sb.toString().toCharArray();
+    }
+    public static String manacher(String str)
+    {
+        if (str==null || str.length()&lt;1) return &quot;&quot;;
+        char[] charArr = manacherString(str);
+        int C = -1;
+        int R = -1;
+        int maxRadius = -1;
+        int maxC = -1;
+        int[] radius = new int[charArr.length];
+        for (int i=0;i&lt;radius.length;i++)
+        {
+            radius[i] = R&gt;i?Math.min(radius[2*C-i],R-i+1):1;
+            while (i+radius[i]&lt;radius.length &amp;&amp; i-radius[i]&gt;-1)
+            {
+                if (charArr[i-radius[i]] == charArr[i+radius[i]]) 
+                {
+                    radius[i]++;
+                }
+                else 
+                {
+                    break;
+                }
+            }
+            if (i+radius[i]-1&gt;R)
+            {
+                R = i+radius[i]-1;
+                C = i;
+            }
+            if (radius[i]&gt;maxRadius)
+            {
+                maxRadius = radius[i];
+                maxC = i;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        char a = &#39;#&#39;;
+        for (int i=maxC-maxRadius+1;i&lt;=maxC+maxRadius-1;i++)
+        {
+            if (a!=charArr[i]) sb.append(charArr[i]);
+        }
+        return sb.toString();
+    }
+}
+</code></pre><p>以上代码通过力扣测试</p>
+<p>参考自：<br><a href="https://www.jianshu.com/p/116aa58b7d81" target="_blank" rel="noopener">https://www.jianshu.com/p/116aa58b7d81</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/28/spring-WebMvcConfigurerAdapter/" rel="next" title="Spring MVC 配置类 WebMvcConfigurerAdapter">
+                <i class="fa fa-chevron-left"></i> Spring MVC 配置类 WebMvcConfigurerAdapter
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/29/Java-BigDecimal/" rel="prev" title="Java-BigDecimal">
+                Java-BigDecimal <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Manacher算法中的基础概念"><span class="nav-number">1.</span> <span class="nav-text">1. Manacher算法中的基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-回文半径数组radius"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 回文半径数组radius</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-最右回文右边界R"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 最右回文右边界R</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-最右回文右边界的对称中心C"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 最右回文右边界的对称中心C</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Manacher算法的流程"><span class="nav-number">2.</span> <span class="nav-text">2. Manacher算法的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Manacher时间复杂度分析"><span class="nav-number">3.</span> <span class="nav-text">3. Manacher时间复杂度分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-代码实现"><span class="nav-number">4.</span> <span class="nav-text">4. 代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

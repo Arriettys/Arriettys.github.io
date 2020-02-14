@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker,">
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-使用">
+<meta property="og:url" content="http://yoursite.com/2019/04/01/Docker-Use/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsCY79.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asi8o9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsiTFs.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsiXOU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsFk6K.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsFJ0g.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsF5jK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AskZvV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AskHMV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsEgAg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsVpDK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsndyR.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asn2SH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asu9tU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsKF58.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-使用">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/01/Docker-Use/">
+
+
+
+
+
+  <title>Docker-使用 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/Docker-Use/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker-使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T09:00:07+08:00">
+                2019-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg" alt><br><a id="more"></a></p>
+<h2 id="Docker-容器使用"><a href="#Docker-容器使用" class="headerlink" title="Docker 容器使用"></a>Docker 容器使用</h2><h3 id="Docker-客户端"><a href="#Docker-客户端" class="headerlink" title="Docker 客户端"></a>Docker 客户端</h3><p>docker 客户端非常简单 ,我们可以直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。</p>
+<h4 id="运行一个web应用"><a href="#运行一个web应用" class="headerlink" title="运行一个web应用"></a>运行一个web应用</h4><p>前面我们运行的容器并没有一些什么特别的用处。<br>接下来让我们尝试使用 docker 构建一个 web 应用程序。<br>我们将在docker容器中运行一个 Python Flask 应用来运行一个web应用。</p>
+<pre><code>docker run -d -P training/webapp python app.py
+</code></pre><p><img src="https://s2.ax1x.com/2019/04/01/AsCY79.png" alt></p>
+<p>ps.training/webapp镜像若你本地没有，会自动pull官网上的<br>参数说明:</p>
+<ul>
+<li><strong>-d</strong>:让容器在后台运行。</li>
+<li><strong>-P</strong>:将容器内部使用的网络端口映射到我们使用的主机上。<br>使用 docker ps 来查看我们正在运行的容器可以看到多了端口信息<br>Docker 开放了 5000 端口（默认 Python Flask 端口）映射到主机端口 32768 上。<br>这时我们可以通过浏览器访问WEB应用</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/04/01/Asi8o9.png" alt></p>
+<p>我们也可以指定 -p 标识来绑定指定端口。</p>
+<pre><code>docker run -d -p 5000:5000 training/webapp python app.py
+</code></pre><h4 id="网络端口的快捷方式"><a href="#网络端口的快捷方式" class="headerlink" title="网络端口的快捷方式"></a>网络端口的快捷方式</h4><p>通过docker ps 命令可以查看到容器的端口映射，docker还提供了另一个快捷方式：docker port,使用 docker port 可以查看指定 （ID或者名字）容器的某个确定端口映射到宿主机的端口号。<br>上面我们创建的web应用容器ID为:b570473f8bf5 名字为：cranky_brown<br><img src="https://s2.ax1x.com/2019/04/01/AsiTFs.png" alt></p>
+<h4 id="查看WEB应用程序日志"><a href="#查看WEB应用程序日志" class="headerlink" title="查看WEB应用程序日志"></a>查看WEB应用程序日志</h4><p>docker logs [ID或者名字] 可以查看容器内部的标准输出。<br><img src="https://s2.ax1x.com/2019/04/01/AsiXOU.png" alt></p>
+<h4 id="检查WEB应用程序"><a href="#检查WEB应用程序" class="headerlink" title="检查WEB应用程序"></a>检查WEB应用程序</h4><p>使用 docker inspect 来查看Docker的底层信息。它会返回一个 JSON 文件记录着 Docker 容器的配置和状态信息</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsFk6K.png" alt></p>
+<h4 id="停止WEB应用容器"><a href="#停止WEB应用容器" class="headerlink" title="停止WEB应用容器"></a>停止WEB应用容器</h4><pre><code>docker stop b570473f8bf5
+</code></pre><h4 id="重启WEB应用容器"><a href="#重启WEB应用容器" class="headerlink" title="重启WEB应用容器"></a>重启WEB应用容器</h4><pre><code>docker start b570473f8bf5
+</code></pre><p>docker ps -l 来查看正在运行的容器<br>正在运行的容器，我们可以使用 docker restart 命令来重启</p>
+<h4 id="移除WEB应用容器"><a href="#移除WEB应用容器" class="headerlink" title="移除WEB应用容器"></a>移除WEB应用容器</h4><p>我们可以使用 docker rm 命令来删除不需要的容器</p>
+<pre><code>docker ps -a 查看所有容器，包括停止的
+</code></pre><p>删除容器时，容器必须是停止状态，否则会报如下错误</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsFJ0g.png" alt></p>
+<h3 id="Docker-镜像使用"><a href="#Docker-镜像使用" class="headerlink" title="Docker 镜像使用"></a>Docker 镜像使用</h3><p>当运行容器时，使用的镜像如果在本地中不存在，docker 就会自动从 docker 镜像仓库中下载，默认是从 Docker Hub 公共镜像源下载。</p>
+<p>下面我们来学习：</p>
+<ul>
+<li>管理和使用本地 Docker 主机镜像</li>
+<li>创建镜像</li>
+</ul>
+<h4 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h4><p>我们可以使用 docker images 来列出本地主机上的镜像<br><img src="https://s2.ax1x.com/2019/04/01/AsF5jK.png" alt><br>各个选项说明:</p>
+<ul>
+<li><strong>REPOSTITORY</strong>：表示镜像的仓库源</li>
+<li><strong>TAG</strong>：镜像的标签</li>
+<li><strong>IMAGE ID</strong>：镜像ID</li>
+<li><strong>CREATED</strong>：镜像创建时间</li>
+<li><strong>SIZE</strong>：镜像大小</li>
+</ul>
+<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，如ubuntu仓库源里，有15.10、14.04等多个不同的版本，我们使用 REPOSTITORY:TAG 来定义不同的镜像。<br>所以，我们如果要使用版本为15.10的ubuntu系统镜像来运行容器时，命令如下：</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:15.10 /bin/bash 
+root@d77ccb2e5cca:/#
+</code></pre><p>如果要使用版本为14.04的ubuntu系统镜像来运行容器时，命令如下：</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:14.04 /bin/bash 
+root@39e968165990:/#
+</code></pre><p>如果你不指定一个镜像的版本标签，例如你只使用 ubuntu，docker 将默认使用 ubuntu:latest 镜像。</p>
+<h4 id="获取一个新的镜像"><a href="#获取一个新的镜像" class="headerlink" title="获取一个新的镜像"></a>获取一个新的镜像</h4><p>我们可以从 Docker Hub 网站来搜索镜像，Docker Hub 网址为：<a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a><br>我们也可以使用 docker search 命令来搜索镜像。比如我们需要一个httpd的镜像来作为我们的web服务。我们可以通过 docker search 命令搜索 httpd 来寻找适合我们的镜像。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker search httpd
+</code></pre><p><img src="https://s2.ax1x.com/2019/04/01/AskZvV.png" alt></p>
+<p>NAME:镜像仓库源的名称</p>
+<p>DESCRIPTION:镜像的描述</p>
+<p>OFFICIAL:是否docker官方发布</p>
+<p>我们决定使用上图中的httpd 官方版本的镜像，使用命令 docker pull 来下载镜像。<br><img src="https://s2.ax1x.com/2019/04/01/AskHMV.png" alt></p>
+<h4 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h4><p>当我们从docker镜像仓库中下载的镜像不能满足我们的需求时，我们可以通过以下两种方式对镜像进行更改。</p>
+<ul>
+<li>从已经创建的容器中更新镜像，并且提交这个镜像</li>
+<li>使用 Dockerfile 指令来创建一个新的镜像</li>
+</ul>
+<h4 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h4><p>更新镜像之前，我们需要使用镜像来创建一个容器。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu /bin/bash
+root@e2532447b13a:/# 
+</code></pre><p>在运行的容器内使用 apt-get update 命令进行更新。<br>在完成操作之后，输入 exit命令来退出这个容器。<br>使用docker ps -l 查找ID<br><img src="https://s2.ax1x.com/2019/04/01/AsEgAg.png" alt><br>此时ID为e2532447b13a的容器，是按我们的需求更改的容器。我们可以通过命令 docker commit来提交容器副本。<br><img src="https://s2.ax1x.com/2019/04/01/AsVpDK.png" alt><br>各个参数说明：</p>
+<ul>
+<li><strong>-m</strong>:提交的描述信息</li>
+<li><strong>-a</strong>:指定镜像作者</li>
+<li><strong>e2532447b13a</strong>：容器ID</li>
+<li><strong>ubuntu:v2</strong>:指定要创建的目标镜像名</li>
+</ul>
+<p>使用我们的新镜像 w3cschool/ubuntu 来启动一个容器</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:v2 /bin/bash
+root@f44fe837e095:/# 
+</code></pre><p>这其实也是保存容器修改的方法</p>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>我们使用命令 docker build ， 从零开始来创建一个新的镜像。为此，我们需要创建一个 Dockerfile 文件，其中包含一组指令来告诉 Docker 如何构建我们的镜像。</p>
+<p>Dockerfile文件</p>
+<pre><code>FROM    centos:6.7
+MAINTAINER      Arrietty &quot;Arrietty.top&quot;
+
+RUN     /bin/echo &#39;root:123456&#39; | chpasswd
+RUN     useradd arrietty
+RUN     /bin/echo &#39;arrietty:123456&#39; | chpasswd
+RUN     /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local
+EXPOSE  22
+EXPOSE  80
+CMD     /usr/sbin/sshd -D
+</code></pre><p>每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。<br>第一条FROM，指定使用哪个镜像源<br>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。<br>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。<br>第一条FROM，指定使用哪个镜像源<br>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。<br>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。<br><img src="https://s2.ax1x.com/2019/04/01/AsndyR.png" alt></p>
+<p>参数说明：</p>
+<ul>
+<li>-t ：指定要创建的目标镜像名</li>
+<li>. ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径<br>使用docker images 查看创建的镜像已经在列表中存在,镜像ID为6b874d8f824c<br><img src="https://s2.ax1x.com/2019/04/01/Asn2SH.png" alt></li>
+</ul>
+<h4 id="设置镜像标签"><a href="#设置镜像标签" class="headerlink" title="设置镜像标签"></a>设置镜像标签</h4><p>我们可以使用 docker tag 命令，为镜像添加一个新的标签。<br>docker tag 镜像ID，这里是 6b874d8f824c ,用户名称、镜像源名(repository name)和新的标签名(tag)。<br>使用 docker images 命令可以看到，ID为860c279d2fec的镜像多一个标签。<br><img src="https://s2.ax1x.com/2019/04/01/Asu9tU.png" alt></p>
+<h3 id="Docker-容器连接"><a href="#Docker-容器连接" class="headerlink" title="Docker 容器连接"></a>Docker 容器连接</h3><p>前面我们实现了通过网络端口来访问运行在docker容器内的服务。下面我们来实现通过端口连接到一个docker容器</p>
+<h4 id="网络端口映射"><a href="#网络端口映射" class="headerlink" title="网络端口映射"></a>网络端口映射</h4><p>我们创建了一个 python 应用的容器。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -d -P training/webapp python app.py
+2678861473c82550489f3b0de5e96e69e64e5c64fc50e327016997f6dac89a1d
+</code></pre><p>另外，我们可以指定容器绑定的网络地址，比如绑定 127.0.0.1。<br>端口绑定的两种方式：</p>
+<ul>
+<li>-P :是容器内部端口随机映射到主机的高端口。</li>
+<li>-p : 是容器内部端口绑定到指定的主机端口。<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 5000:5000 training/webapp python app.py
+2bbb8b715e40c853baa4f41cac91b141c93d11119ace0502c830baeb348e9b6c
+</code></pre></li>
+</ul>
+<p>另外，我们可以指定容器绑定的网络地址，比如绑定127.0.0.1。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 127.0.0.1:5001:5002 training/webapp python app.py
+95c6ceef88ca3e71eaf303c2833fd6701d8d1b2572b5613b5a932dfdfe8a857c
+</code></pre><p><img src="https://s2.ax1x.com/2019/04/01/AsKF58.png" alt></p>
+<p>这样我们就可以通过访问127.0.0.1:5001来访问容器的5002端口。</p>
+<p>上面的例子中，默认都是绑定 tcp 端口，如果要绑定 UPD 端口，可以在端口后面加上 /udp。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py
+</code></pre><p>docker port 命令可以让我们快捷地查看端口的绑定情况。</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker port adoring_stonebraker 5002
+127.0.0.1:5001
+</code></pre><h4 id="Docker容器连接"><a href="#Docker容器连接" class="headerlink" title="Docker容器连接"></a>Docker容器连接</h4><p>端口映射并不是唯一把 docker 连接到另一个容器的方法。<br>docker有一个连接系统允许将多个容器连接在一起，共享连接信息。<br>docker连接会创建一个父子关系，其中父容器可以看到子容器的信息。</p>
+<p><strong>容器命名</strong><br>当我们创建一个容器的时候，docker会自动对它进行命名。另外，我们也可以使用–name标识来命名容器，例如：</p>
+<pre><code>[root@izuf60l85kxuws81mq1immz ~]# docker run -d -P --name yourname training/webapp python app.py
+</code></pre><p>参考自：<br><a href="https://www.w3cschool.cn/" target="_blank" rel="noopener">https://www.w3cschool.cn/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/31/Docker-start/" rel="next" title="Docker-Hello World">
+                <i class="fa fa-chevron-left"></i> Docker-Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/01/Alipay-Prepare/" rel="prev" title="支付宝集成-准备工作">
+                支付宝集成-准备工作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-容器使用"><span class="nav-number">1.</span> <span class="nav-text">Docker 容器使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-客户端"><span class="nav-number">1.1.</span> <span class="nav-text">Docker 客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行一个web应用"><span class="nav-number">1.1.1.</span> <span class="nav-text">运行一个web应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络端口的快捷方式"><span class="nav-number">1.1.2.</span> <span class="nav-text">网络端口的快捷方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看WEB应用程序日志"><span class="nav-number">1.1.3.</span> <span class="nav-text">查看WEB应用程序日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查WEB应用程序"><span class="nav-number">1.1.4.</span> <span class="nav-text">检查WEB应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停止WEB应用容器"><span class="nav-number">1.1.5.</span> <span class="nav-text">停止WEB应用容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启WEB应用容器"><span class="nav-number">1.1.6.</span> <span class="nav-text">重启WEB应用容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除WEB应用容器"><span class="nav-number">1.1.7.</span> <span class="nav-text">移除WEB应用容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-镜像使用"><span class="nav-number">1.2.</span> <span class="nav-text">Docker 镜像使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列出镜像列表"><span class="nav-number">1.2.1.</span> <span class="nav-text">列出镜像列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取一个新的镜像"><span class="nav-number">1.2.2.</span> <span class="nav-text">获取一个新的镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建镜像"><span class="nav-number">1.2.3.</span> <span class="nav-text">创建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新镜像"><span class="nav-number">1.2.4.</span> <span class="nav-text">更新镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建镜像"><span class="nav-number">1.2.5.</span> <span class="nav-text">构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置镜像标签"><span class="nav-number">1.2.6.</span> <span class="nav-text">设置镜像标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-容器连接"><span class="nav-number">1.3.</span> <span class="nav-text">Docker 容器连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络端口映射"><span class="nav-number">1.3.1.</span> <span class="nav-text">网络端口映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker容器连接"><span class="nav-number">1.3.2.</span> <span class="nav-text">Docker容器连接</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

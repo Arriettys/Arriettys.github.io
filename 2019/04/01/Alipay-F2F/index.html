@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Alipay,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前段时间做项目，用到AliPay的接口，手册看得很懵，东一个西一个不知道从哪开头。花了些天看了下当面付的Demo文档，总算弄明白了些AliPay接口开发的流程，这里也以当面付Demo为案例，介绍Pay的开发流程。">
+<meta name="keywords" content="Alipay">
+<meta property="og:type" content="article">
+<meta property="og:title" content="支付宝集成-当面付">
+<meta property="og:url" content="http://yoursite.com/2019/04/01/Alipay-F2F/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="前段时间做项目，用到AliPay的接口，手册看得很懵，东一个西一个不知道从哪开头。花了些天看了下当面付的Demo文档，总算弄明白了些AliPay接口开发的流程，这里也以当面付Demo为案例，介绍Pay的开发流程。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/13/ALjV6f.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/13/ALvRMV.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/13/ALxpid.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/14/AO5qX9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/14/AOIMcQ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/14/AOI4ud.png">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="支付宝集成-当面付">
+<meta name="twitter:description" content="前段时间做项目，用到AliPay的接口，手册看得很懵，东一个西一个不知道从哪开头。花了些天看了下当面付的Demo文档，总算弄明白了些AliPay接口开发的流程，这里也以当面付Demo为案例，介绍Pay的开发流程。">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/13/ALjV6f.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/01/Alipay-F2F/">
+
+
+
+
+
+  <title>支付宝集成-当面付 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/Alipay-F2F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">支付宝集成-当面付</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T15:52:24+08:00">
+                2019-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/第三方接口/" itemprop="url" rel="index">
+                    <span itemprop="name">第三方接口</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间做项目，用到AliPay的接口，手册看得很懵，东一个西一个不知道从哪开头。花了些天看了下当面付的Demo文档，总算弄明白了些AliPay接口开发的流程，这里也以当面付Demo为案例，介绍Pay的开发流程。<br><a id="more"></a><br>开发之前还需要你一些准备，如账号注册，密钥绑定等，不了解流程的可以<a href="https://arrietty.top/2019/04/01/Alipay-Prepare/" target="_blank" rel="noopener">看这里</a><br>事先申明，该文只是对AliP当面付Demo进行解析，非原创。<br>当面付的<a href="https://docs.open.alipay.com/194/105170/" target="_blank" rel="noopener">官方文档</a>，同时也是Demo下载地址。<br>事实上开发支付，有alipay-sdk-java.jar这个集成SDK就可以了，而Demo中的TradePaySDK是对alipay-sdk-java.jar进一步的封装，但同时也是我们可以参考的工程模板。开始入口看TradePayDemo中的Main.java也可以参考WebRoot下的JSP。</p>
+<h2 id="Demo结构"><a href="#Demo结构" class="headerlink" title="Demo结构"></a>Demo结构</h2><p>首先，献上个人理解的工程结构图：<br><img src="https://s2.ax1x.com/2019/04/13/ALjV6f.png" alt><br>ps.自己画的思维导图，不合理的地方还请谅解</p>
+<h3 id="状态类别"><a href="#状态类别" class="headerlink" title="状态类别"></a>状态类别</h3><p>hb包中都是用于封装交易进行时的状态常量，通常为枚举，少部分是接受支付宝端返回的参数，需要解析json数据再封装，其中的Adapter类就是为其服务的</p>
+<h3 id="Utils"><a href="#Utils" class="headerlink" title="Utils"></a>Utils</h3><p>工具包，这个不用多说吧，有过项目经验的都知道</p>
+<h3 id="request"><a href="#request" class="headerlink" title="request"></a>request</h3><p>Builder包的request请求类，负责将请求参数封装到其内部的BizContent中，同时提供输出json字符串的方法，它只是中间类，最终的请求还是要用alipay-sdk-java.jar中封装的request。</p>
+<h3 id="service"><a href="#service" class="headerlink" title="service"></a>service</h3><p>service包，其负责服务功能，如支付、查询、退款等。</p>
+<h3 id="result"><a href="#result" class="headerlink" title="result"></a>result</h3><p>result包，对支付宝响应结果进一步封装</p>
+<p>现在让我们走一遍支付流程</p>
+<h2 id="支付流程"><a href="#支付流程" class="headerlink" title="支付流程"></a>支付流程</h2><p>先看看官方的流程图<br><img src="https://s2.ax1x.com/2019/04/13/ALvRMV.jpg" alt><br>讲道理，看能看懂，但一开始却不知道怎么和Demo联系起来，后来自己总结画了一张流程图<br><img src="https://s2.ax1x.com/2019/04/13/ALxpid.png" alt><br>ps.艺术水准就这样，见谅啊~</p>
+<h3 id="参数入场"><a href="#参数入场" class="headerlink" title="参数入场"></a>参数入场</h3><p>来到TradePayDemo中的Main<br><img src="https://s2.ax1x.com/2019/04/14/AO5qX9.png" alt><br>其static块中，初始化公共参数和实例化service</p>
+<p><img src="https://s2.ax1x.com/2019/04/14/AOIMcQ.png" alt><br>main方法中提供的方法就是给我们测试的功能的，这里以支付功能为例，看看test_trade_pay(tradeService);<br><img src="https://s2.ax1x.com/2019/04/14/AOI4ud.png" alt><br>这里需要填写一大堆的参数，即请求参数，完整的参数集<a href="https://openhome.alipay.com/platform/demoManage.htm#/alipay.trade.pay" target="_blank" rel="noopener">看官方调试接口</a>。这里有些是必填，如付款码，有些则可以忽略。随后将参数传入TradePaySDK的request类封装（其实也可以用alipay-sdk-java.jar提供的ModelObject类封装，更简便，有兴趣的可以到最后看我的RESTApi项目），再交由service类处理得到result。到这，只要你zfbinfo.properties中公共参数和请求参数必填项填好，你就可以运行main方法了，不出意外你的沙盒钱包被扣0.01元哦~。</p>
+<h3 id="业务服务"><a href="#业务服务" class="headerlink" title="业务服务"></a>业务服务</h3><p>现在让我们来到TradePaySDK中的service包，接口就不说了，就是定义好提供给main方法，关键是impl中的那些抽象类。</p>
+<p>AbsAlipayService定义了支付、查询等都要用的方法，验证bizContent对象不为空，即保证参数json不为空。getResponse()则是整个工程中真正和支付宝平台交互的地方，关键语句：</p>
+<pre><code>AlipayResponse response = client.execute(request);
+</code></pre><p>相信你在查阅支付宝API在线调试时经常看到，事实上如果你只是想简单测试一下API接口，不想写一个这样的工程，一下三句就OK了</p>
+<pre><code>AlipayClient alipayClient = new DefaultAlipayClient(&quot;https://openapi.alipay.com/gateway.do&quot;,&quot;app_id&quot;,&quot;your private_key&quot;,&quot;json&quot;,&quot;GBK&quot;,&quot;alipay_public_key&quot;,&quot;RSA2&quot;);
+
+AlipayTradePayRequest request = new AlipayTradePayRequest();
+request.setBizContent(&quot;{&quot; +
+&quot;\&quot;out_trade_no\&quot;:\&quot;20150320010101001\&quot;,&quot; +
+&quot;\&quot;scene\&quot;:\&quot;bar_code\&quot;,&quot; +
+...
+&quot;  }&quot;);
+
+AlipayTradePayResponse response = alipayClient.execute(request);
+</code></pre><p>一个Client和Request发起访问，响应结果。即客户端 –&gt; 支付宝平台。都封装在alipay-sdk-java.jar</p>
+<p>AbsAlipayTradeService已经实现了接口和大部分业务流程需要的方法，相比之下感觉AlipayTradeServiceImpl有种多余的赶脚~。之后就如上面的流程图那样，tradePay()中发起支付，同步返回当然最好，但也要做好异常处理。response为null或状态吗异常则进入轮询loopQueryResult()，不断查询订单tradeQuery()，次数在zfbinfo.properties中定义。不管最后有没有查询到结果，都将返回result给main显示结果。</p>
+<p>至此完成一次支付操作，至于其他的功能，相信大家也知道怎么开始看了吧<br>以上纯属个人见解，如有错误欢迎指出<br>另外自己写了SpringBoot整合版，Swagger UI可供测试，代码地址<a href="https://github.com/Arriettys/SprintBoot-pay" target="_blank" rel="noopener">点这里</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Alipay/" rel="tag"># Alipay</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/01/Alipay-Prepare/" rel="next" title="支付宝集成-准备工作">
+                <i class="fa fa-chevron-left"></i> 支付宝集成-准备工作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/02/Docker-Dockerfile/" rel="prev" title="Docker-Dockerfile命令详解">
+                Docker-Dockerfile命令详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo结构"><span class="nav-number">1.</span> <span class="nav-text">Demo结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#状态类别"><span class="nav-number">1.1.</span> <span class="nav-text">状态类别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Utils"><span class="nav-number">1.2.</span> <span class="nav-text">Utils</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#request"><span class="nav-number">1.3.</span> <span class="nav-text">request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#service"><span class="nav-number">1.4.</span> <span class="nav-text">service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#result"><span class="nav-number">1.5.</span> <span class="nav-text">result</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支付流程"><span class="nav-number">2.</span> <span class="nav-text">支付流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数入场"><span class="nav-number">2.1.</span> <span class="nav-text">参数入场</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务服务"><span class="nav-number">2.2.</span> <span class="nav-text">业务服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>

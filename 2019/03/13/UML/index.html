@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="UML,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转载自：https://www.cnblogs.com/shindo/p/5579191.html平时阅读一些远吗分析类文章或是设计应用架构时没少与UML类图打交道。实际上，UML类图中最常用到的元素五分钟就能掌握，下面赶紧来一起认识一下它吧：">
+<meta name="keywords" content="UML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读懂UML类图">
+<meta property="og:url" content="http://yoursite.com/2019/03/13/UML/index.html">
+<meta property="og:site_name" content="烟火焚">
+<meta property="og:description" content="转载自：https://www.cnblogs.com/shindo/p/5579191.html平时阅读一些远吗分析类文章或是设计应用架构时没少与UML类图打交道。实际上，UML类图中最常用到的元素五分钟就能掌握，下面赶紧来一起认识一下它吧：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AElgbR.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AElf56.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AEl58O.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AEloxe.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AElLVI.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AE1Crj.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AE1kaq.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AE1AI0.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AE1uM4.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/15/AE11d1.jpg">
+<meta property="og:updated_time" content="2020-02-14T02:28:17.512Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读懂UML类图">
+<meta name="twitter:description" content="转载自：https://www.cnblogs.com/shindo/p/5579191.html平时阅读一些远吗分析类文章或是设计应用架构时没少与UML类图打交道。实际上，UML类图中最常用到的元素五分钟就能掌握，下面赶紧来一起认识一下它吧：">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/15/AElgbR.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/13/UML/">
+
+
+
+
+
+  <title>读懂UML类图 | 烟火焚</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">烟火焚</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/13/UML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Arrietty">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟火焚">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">读懂UML类图</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-13T14:54:25+08:00">
+                2019-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/建模语言/" itemprop="url" rel="index">
+                    <span itemprop="name">建模语言</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转载自：<a href="https://www.cnblogs.com/shindo/p/5579191.html" target="_blank" rel="noopener">https://www.cnblogs.com/shindo/p/5579191.html</a><br>平时阅读一些远吗分析类文章或是设计应用架构时没少与UML类图打交道。实际上，UML类图中最常用到的元素五分钟就能掌握，下面赶紧来一起认识一下它吧：<br><a id="more"></a></p>
+<h2 id="1-类的属性的表示方式"><a href="#1-类的属性的表示方式" class="headerlink" title="1. 类的属性的表示方式"></a>1. 类的属性的表示方式</h2><p>在UML类图中，类使用包含类名、属性(field) 和方法(method) 且带有分割线的矩形来表示，比如下图表示一个Employee类，它包含name,age和email这3个属性，以及modifyInfo()方法。</p>
+<p><img src="https://s2.ax1x.com/2019/03/15/AElgbR.jpg" alt><br>那么属性/方法名称前加的加号和减号是什么意思呢？它们表示了这个属性或方法的可见性，UML类图中表示可见性的符号有三种：</p>
+<p>· + ：表示public</p>
+<p>· - ：表示private</p>
+<p>· #：表示protected（friendly也归入这类）</p>
+<p>因此，上图中的Employee类具有3个私有属性和一个公有方法。<br>实际上，属性的完整表示方式是这样的：<br>可见性  名称 ：类型 [ = 缺省值]<br>中括号中的内容表示是可选的</p>
+<h2 id="2-类的方法的表示方式"><a href="#2-类的方法的表示方式" class="headerlink" title="2. 类的方法的表示方式"></a>2. 类的方法的表示方式</h2><p>上图中我们已经看到了方法的表示形式。实际上，方法的完整表示方式如下：<br>可见性  名称(参数列表) [ ： 返回类型]<br>同样，中括号中的内容是可选的。<br>比如在下图的Demo类中，定义了3个方法：</p>
+<p><img src="https://s2.ax1x.com/2019/03/15/AElf56.jpg" alt><br>· public方法method1接收一个类型为Object的参数，返回值类型为void</p>
+<p>· protected方法method2无参数，返回值类型为String</p>
+<p>· private方法method3接收类型分别为int、int[]的参数，返回值类型为int</p>
+<h2 id="3-类与类之间关系的表示方式"><a href="#3-类与类之间关系的表示方式" class="headerlink" title="3.类与类之间关系的表示方式"></a>3.类与类之间关系的表示方式</h2><h3 id="3-1-关联关系"><a href="#3-1-关联关系" class="headerlink" title="3.1 关联关系"></a>3.1 关联关系</h3><p>关联关系又可进一步分为单向关联、双向关联和自关联<br>（1）单相关联<br><img src="https://s2.ax1x.com/2019/03/15/AEl58O.jpg" alt><br>我们可以看到，在UML类图中单向关联用一个带箭头的直线表示。上图表示每个顾客都有一个地址，这通过让Customer类持有一个类型为Address的成员变量类实现。<br>（2）双向关联<br><img src="https://s2.ax1x.com/2019/03/15/AEloxe.jpg" alt><br>从上图中我们很容易看出，所谓的双向关联就是双方各自持有对方类型的成员变量。在UML类图中，双向关联用一个不带箭头的直线表示。上图中在Customer类中维护一个Product[]数组，表示一个顾客购买了那些产品；在Product类中维护一个Customer类型的成员变量表示这个产品被哪个顾客所购买。<br>（3）自关联<br><img src="https://s2.ax1x.com/2019/03/15/AElLVI.jpg" alt><br>自关联在UML类图中用一个带有箭头且指向自身的直线表示。上图的意思就是Node类包含类型为Node的成员变量，也就是“自己包含自己”。</p>
+<h3 id="3-2-聚合关系"><a href="#3-2-聚合关系" class="headerlink" title="3.2 聚合关系"></a>3.2 聚合关系</h3><p><img src="https://s2.ax1x.com/2019/03/15/AE1Crj.jpg" alt><br>上图中的Car类与Engine类就是聚合关系（Car类中包含一个Engine类型的成员变量）。由上图我们可以看到，UML中聚合关系用带空心菱形和箭头的直线表示。聚合关系强调是“整体”包含“部分”，但是“部分”可以脱离“整体”而单独存在。比如上图中汽车包含了发动机，而发动机脱离了汽车也能单独存在。</p>
+<h3 id="3-3-组合关系"><a href="#3-3-组合关系" class="headerlink" title="3.3 组合关系"></a>3.3 组合关系</h3><p>组合关系与聚合关系见得最大不同在于：这里的“部分”脱离了“整体”便不复存在。比如下图：<br><img src="https://s2.ax1x.com/2019/03/15/AE1kaq.jpg" alt><br>显然，嘴是头的一部分且不能脱离了头而单独存在。在UML类图中，组合关系用一个带实心菱形和箭头的直线表示。</p>
+<h3 id="3-4-依赖关系"><a href="#3-4-依赖关系" class="headerlink" title="3.4 依赖关系"></a>3.4 依赖关系</h3><p><img src="https://s2.ax1x.com/2019/03/15/AE1AI0.jpg" alt><br>从上图我们可以看到，Driver的drive方法只有传入了一个Car对象才能发挥作用，因此我们说Driver类依赖于Car类。在UML类图中，依赖关系用一条带有箭头的虚线表示。</p>
+<h3 id="3-5-继承关系"><a href="#3-5-继承关系" class="headerlink" title="3.5 继承关系"></a>3.5 继承关系</h3><p>继承关系对应的是extend关键字，在UML类图中用带空心三角形的直线表示，如下图所示中，Student类与Teacher类继承了Person类。<br><img src="https://s2.ax1x.com/2019/03/15/AE1uM4.jpg" alt></p>
+<h3 id="3-6-接口实现关系"><a href="#3-6-接口实现关系" class="headerlink" title="3.6 接口实现关系"></a>3.6 接口实现关系</h3><p>这种关系对应implement关键字，在UML类图中用带空心三角形的虚线表示。如下图中，Car类与Ship类都实现了Vehicle接口。<br><img src="https://s2.ax1x.com/2019/03/15/AE11d1.jpg" alt><br>到了这里，UML类图中最常见的表示方式我们就介绍完了，有了这些我们就能读懂常见的UML类图了，剩下的遇到时再查即可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Arrietty 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Arrietty 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/UML/" rel="tag"># UML</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/13/Creating-FactoryPattern/" rel="next" title="设计模式之创建型模式：工厂模式">
+                <i class="fa fa-chevron-left"></i> 设计模式之创建型模式：工厂模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/14/Creating-Singleton/" rel="prev" title="设计模式之创建型模式：单例模式">
+                设计模式之创建型模式：单例模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://s2.ax1x.com/2019/03/10/ApaXFK.jpg" alt="Arrietty">
+            
+              <p class="site-author-name" itemprop="name">Arrietty</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Arriettys" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-类的属性的表示方式"><span class="nav-number">1.</span> <span class="nav-text">1. 类的属性的表示方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-类的方法的表示方式"><span class="nav-number">2.</span> <span class="nav-text">2. 类的方法的表示方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-类与类之间关系的表示方式"><span class="nav-number">3.</span> <span class="nav-text">3.类与类之间关系的表示方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-关联关系"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 关联关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-聚合关系"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 聚合关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-组合关系"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 组合关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-依赖关系"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-继承关系"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 继承关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-接口实现关系"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 接口实现关系</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arrietty</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
