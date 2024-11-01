@@ -6,7 +6,7 @@
   
   
   <title>这个页面走丢了呢… | Arrietty&#39;s blog</title>
-  <link rel="canonical" href="http://example.com/404.html">
+  
   <meta name="author" content="Arrietty" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -25,56 +25,43 @@
 <meta property="article:author" content="Arrietty">
 <meta name="twitter:card" content="summary">
   
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
   <!-- 样式表文件 -->
-  <link rel="stylesheet" id="kratos-css" href="/css/kr-core.min.css" media="all"></link>
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
   
-    <link rel="stylesheet" id="highlight-css" href="/css/highlight/highlight.js/night-eighties.min.css" media="all"></link>
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
   
-  <link rel="stylesheet" id="theme-light-css" href="/css/kr-theme/light.min.css" media="all"></link>
-  <link rel="stylesheet" id="theme-dark-css" href="/css/kr-theme/dark.min.css" media="(prefers-color-scheme: dark)"></link>
-  <script src="/js/kr-theme.min.js"></script>
-  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></link>
   
-    <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></link>
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
   
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
   
   <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
   
-    <script src="/vendors/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
   
-  <!-- 自定义站点横幅和背景 -->
+  
   <style>
     
-      .kratos-cover.kratos-cover-2 {
-        background-image: url('');
-      }
-      html[data-theme="dark"] .kratos-cover.kratos-cover-2 {
-        background-image: url('');
-      }
-    
-    
-      @media(min-width:768px) {
-        body.custom-background {
-          background-image: url('');
-        }
-        html[data-theme="dark"] body.custom-background {
-          background-image: url('');
-        }
-      }
-    
-    
-      .widget-kratos-about .photo-background {
-        background-image: url('/images/default.webp');
-      }
-      html[data-theme="dark"] .widget-kratos-about .photo-background {
-        background-image: url('/images/default.webp');
-      }
     
   </style>
-
-  <!-- 额外的追加注入项 -->
   
 <meta name="generator" content="Hexo 7.3.0"></head>
+
 
     <body class="custom-background">
         <div id="kratos-wrapper">
@@ -86,6 +73,9 @@
                         <nav id="kratos-menu-wrap">
                             <ul id="kratos-primary-menu" class="sf-menu">
                                 
+                                    
+                                    
+                                
                             </ul>
                         </nav>
                     </div>
@@ -94,8 +84,8 @@
             <header id="kratos-mobile-topnav" class="kratos-topnav">
                 <div class="container">
                     <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
-                    <div id="kratos-nav-toggle-wrapper" class="nav-toggle">
-                        <a id="kratos-nav-toggle" class="kratos-nav-toggle">
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
                             <i></i>
                         </a>
                     </div>
@@ -117,56 +107,54 @@
         <div id="kratos-blog-post">
             <div class="container">
                 <div id="main" class="row">
-
+                    
 
         
 
-            <style>
-  .page404 {
-    padding: 0 5%;
-  }
+            <!-- Additional Style -->
+<style>
+    .page404 {
+        padding: 0 5%
+    }
 
-  .page404 img {
-    width: 100%;
-    border-radius: 15px;
-    background-color: white;
-  }
+    .page404 img {
+        width:100%;
+        border-radius:15px;
+    }
 
-  .page404 .back-p {
-    margin-right: 15px;
-    padding: 10px 20px;
-    border: 1px solid #51aded;
-    background: #51aded;
-    color: #fff;
-    line-height: 3;
-  }
+    .page404 .back-p {
+        margin-right: 15px;
+        padding: 10px 20px;
+        border: 1px solid #51aded;
+        background: #51aded;
+        color: #fff;
+        line-height: 3
+    }
 
-  .page404 .back-p:hover {
-    background: #489cd7;
-    color: #fff !important;
-  }
+    .page404 .back-p:hover {
+        background: #489cd7;
+        color: #fff !important
+    }
 
-  .page404 .back-index {
-    margin-left: 15px;
-    padding: 10px 20px;
-    border: 1px solid #f0f0f0;
-    background-color: #fafafa;
-    color: #767676;
-    line-height: 3;
-  }
+    .page404 .back-index {
+        margin-left: 15px;
+        padding: 10px 20px;
+        border: 1px solid #f0f0f0;
+        background-color: #fafafa;
+        color: #767676;
+        line-height: 3
+    }
 
-  .page404 .back-index:hover {
-    border-color: #0092ee;
-    color: #0092ee;
-  }
-
-  .page404 .errtxt {
-    margin-top: 10%;
-  }
+    .page404 .back-index:hover {
+        border-color: #0092ee;
+        color: #0092ee
+    }
 </style>
 
+<!-- Main Content -->
+
 <div class="page404">
-    <div class="kratos-hentry kratos-page-inner clearfix">
+    <div class="kratos-hentry kratos-post-inner clearfix">
         <div class="col-md-7">
             <img src="/images/404.webp" loading="eager" decoding="auto" />
         </div>
@@ -184,29 +172,46 @@
 
         
 
-                </div>
+                
+        </div>
     </div>
 </div>
-
 <footer>
-    <div id="footer">
+    <div id="footer"  class="ap-lrc"  >
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 footer-list text-center">
                     <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
                         
                     </ul>
                     <ul class="kratos-copyright">
                         <div>
                             <li>&copy; 2024 Arrietty's blog 版权所有.</li>
-                            <li>本站已运行<span id="kr-since">Loading...</span></li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
                         </div>
                         <div>
-                            <li>自豪地使用 <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a> 主题</li>
-                            <li>站点由 Arrietty 用 <i class="fa fa-heart" style="color:#d43f57"></i> 搭建</li>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
                         </div>
-                        <!-- 额外的追加注入项 -->
-                        
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -215,16 +220,20 @@
             <div class="tool">
                 
                     <div class="box search-box">
-                        <a href="/search">
+                        <a href="/search/">
                             <span class="fa fa-search"></span>
                         </a>
                     </div>
                 
-                <div class="box theme-box" id="theme-toggle">
-                    <span class="fa fa-adjust"></span>
-                </div>
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
             </div>
-            <div id="gotop-box" class="box gotop-box">
+            <div class="box gotop-box">
                 <span class="fa fa-chevron-up"></span>
             </div>
         </div>
@@ -233,64 +242,9 @@
 </div>
 </div>
 
-
-    <div id="kr-donate-modal" class="kr-modal">
-    <div class="kr-modal-bg" onclick="krCloseDonateModal()"></div>
-    <div class="kr-modal-content">
-        <div class="kr-modal-header">
-            <div class="kr-modal-icon">
-                <i class="fa fa-bitcoin"></i>
-            </div>
-            <div class="kr-modal-title">打赏</div>
-            <button class="kr-modal-close" onclick="krCloseDonateModal()">
-                <i class="fa fa-times-circle"></i>
-            </button>
-        </div>
-        <div class="kr-modal-body">
-            <div class="kr-donate-message">打赏提示信息</div>
-            <div class="kr-donate-qr" id="kr-donate-qr">
-                
-            </div>
-            <div class="kr-donate-platforms">
-                
-            </div>
-        </div>
-    </div>
-</div>
-<script defer src="/js/kr-modal/donate.min.js"></script>
-
-
-
-
-    <div id="kr-share-modal" class="kr-modal">
-    <div class="kr-modal-bg" onclick="krCloseShareModal()"></div>
-    <div class="kr-modal-content">
-        <div class="kr-modal-header">
-            <div class="kr-modal-icon">
-                <i class="fa fa-share-alt"></i>
-            </div>
-            <div class="kr-modal-title">分享</div>
-            <button class="kr-modal-close" onclick="krCloseShareModal()">
-                <i class="fa fa-times-circle"></i>
-            </button>
-        </div>
-        <div class="kr-modal-body">
-            <div class="kr-share-message">分享提示信息</div>
-            <div class="kr-share-qr" id="kr-share-qr"></div>
-            <div class="kr-share-platforms">
-                
-            </div>
-        </div>
-    </div>
-</div>
-<script defer src="/js/kr-modal/share.min.js"></script>
-
-
-
-<!-- 额外的追加注入项 -->
-
-
-        <script>
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
     if (!window.kr) {
         window.kr = {};
     }
@@ -299,18 +253,30 @@
 </script>
 
 
-  <script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+    <script async src="/js/candy.min.js"></script>
 
 
 
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
 
-<script defer src="/js/kr-core.min.js"></script>
 
 
-  <script defer src="/js/kr-pjax.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
 
 
-<!-- 额外的追加注入项 -->
+
+<!-- Extra support for third-party plguins  -->
 
 
     </body>
