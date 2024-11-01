@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Docker-Hello World | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Docker" />
+  
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Hello World">
+<meta property="og:url" content="http://example.com/2019/03/31/Docker-start/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsMalQ.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/AD7Bid.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/AD7IWn.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/AD7LeU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/ADHWX6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/ADbmEF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/ADbJHO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/Arhhhq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/Arhx9x.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/Ar4ZCt.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/31/Ar4MDg.png">
+<meta property="article:published_time" content="2019-03-31T13:48:39.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.203Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/01/AsMalQ.jpg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/03/31/Docker-start/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Docker-Hello World</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-03-31T13:48:39.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-03-31</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~2.94K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727203"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p><img src="https://s2.ax1x.com/2019/04/01/AsMalQ.jpg"></p>
+<span id="more"></span>
+<h2 id="要想入门Docker，首先你需要理解Docker！"><a href="#要想入门Docker，首先你需要理解Docker！" class="headerlink" title="要想入门Docker，首先你需要理解Docker！"></a>要想入门Docker，首先你需要理解Docker！</h2><p>Docker，可以说是一个终端命令行的虚拟机，但更准确的说法，其实应该是一个虚拟环境。比如，你想要在PC上无缝使用Linux么？那么虚拟机并不是你唯一的出路，你还有Docker！我更愿意称Docker为一个容器，当然这只是Docker的一个狭义解释，Docker不止是一个容器。Docker包含3个重要概念：</p>
+<ul>
+<li>一个，是镜像（Image），镜像是静态的、可以被用户互相分享的文件。我们玩过双系统和虚拟机的人都知道，首先你需要一个.iso镜像，才能安装系统。Docker中的镜像也是这个东西，镜像是静态的，你不能对他操作，只能pull别人的镜像或者push自己的镜像。</li>
+<li>还有一个，是容器（Container），前面说过，镜像是静态不可操作的，只能被分享和下载，那什么是能被操作的呢？就是容器里！容器可以理解为镜像的动态状态，也就是我们虚拟机中系统装好后的状态，其实这么说是不对的，容器最符合的描述应该是Linux的iso文件的Live CD模式，比如我们玩双系统时都进入过Live CD模式，不安装系统而直接进入系统，很神奇是吧，Docker的容器就是这个概念，只不过更加轻量更加迅速便捷。但是Live CD的害处就是你关机后作出的修改安装的软件全部gg，容器也是一样，一旦被直接推出，之前安装的gcc啊vim啊啥的就会全部gg掉。如果要保存修改，就需要将当前容器封装成一个新的镜像，这样下次启动这个新的镜像后之前作出的修改还都在。</li>
+<li>最后，是仓库（Repository）。各位在前面看到我写的pull和push什么的，有没有晕？不知道各位对于git熟悉不熟悉，Docker中的仓库很像git的代码仓库，你可以pull自己之前push到自己仓库的镜像到本地，也可以pull别人push到公共仓库的镜像到自己本地。说白了就是百度云盘，你可以上传（push）自己做好环境的Docker上去，也可以下载（pull）自己云端的镜像到本地。同时，我们知道百度云最大的特点就是分享（你懂的嘿嘿嘿），类比Docker，如果你得到百度云分享链接（别人的镜像名字、标签和别人的用户名），你还可以下载（pull）别人分享的镜像到自己的本地，别人也可以下载（pull）你的镜像，因为Docker仓库都是公共的。当然，每个免费用户有一个名额把自己的一个镜像设为私有，也就是禁止被分享给别人，类比百度云上你自己保存的而没有被生成分享链接的小姐姐。</li>
+</ul>
+<h2 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h2><h3 id="CentOS-Docker-安装"><a href="#CentOS-Docker-安装" class="headerlink" title="CentOS Docker 安装"></a>CentOS Docker 安装</h3><p>Docker支持以下的CentOS版本：</p>
+<ul>
+<li>CentOS 7 (64-bit)</li>
+<li>CentOS 6.5 (64-bit) 或更高的版本</li>
+</ul>
+<h4 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h4><p>目前，CentOS 仅发行版本中的内核支持 Docker。<br>Docker 运行在 CentOS 7 上，要求系统为64位、系统内核版本为 3.10 以上。<br>Docker 运行在 CentOS-6.5 或更高的版本的 CentOS 上，要求系统为64位、系统内核版本为 2.6.32-431 或者更高版本。</p>
+<h4 id="使用-yum-安装（CentOS-7下）"><a href="#使用-yum-安装（CentOS-7下）" class="headerlink" title="使用 yum 安装（CentOS 7下）"></a>使用 yum 安装（CentOS 7下）</h4><p>Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 uname -r 命令查看你当前的内核版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r 3.10.0-327.el7.x86_64</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/31/AD7Bid.png"></p>
+<h5 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br></pre></td></tr></table></figure>
+<p>ps. 安装之前可以 yum update一下<br>安装完成<br><img src="https://s2.ax1x.com/2019/03/31/AD7IWn.png"><br>启动docker服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service docker start</span><br></pre></td></tr></table></figure>
+<p>测试运行hello-world</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/31/AD7LeU.png"><br>ps.第一次运行，会花些时间下载hello-world镜像</p>
+<h3 id="Ubuntu-Docker-安装"><a href="#Ubuntu-Docker-安装" class="headerlink" title="Ubuntu Docker 安装"></a>Ubuntu Docker 安装</h3><h4 id="前提条件-1"><a href="#前提条件-1" class="headerlink" title="前提条件"></a>前提条件</h4><p>Docker 要求 Ubuntu 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的 Ubuntu 版本是否支持 Docker。</p>
+<p>通过 uname -r 命令查看你当前的内核版本</p>
+<h4 id="使用脚本安装-Docker"><a href="#使用脚本安装-Docker" class="headerlink" title="使用脚本安装 Docker"></a>使用脚本安装 Docker</h4><p>1、获取最新版本的 Docker 安装包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y docker.io</span><br></pre></td></tr></table></figure>
+<p>2、启动docker 后台服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker使用"><a href="#Docker使用" class="headerlink" title="Docker使用"></a>Docker使用</h2><h3 id="Docker-Hello-World"><a href="#Docker-Hello-World" class="headerlink" title="Docker Hello World"></a>Docker Hello World</h3><p>首先，下载容器镜像Docker官方网站专门有一个页面来存储所有可用的镜像，网址是： index.docker.io。你可以通过浏览这个网页来查找你想要使用的镜像，或者使用命令行的工具来检索。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search ubuntu15.10</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/31/ADHWX6.png"><br>通过docker命令下载ubuntu镜像<br>ps.执行pull命令的时候要写完整的名字，比如”ubuntu或i386&#x2F;ubuntu”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu</span><br></pre></td></tr></table></figure>
+<p>镜像查看命令：docker images</p>
+<p>Docker 允许你在容器内运行应用程序， 使用 docker run 命令来在容器内运行一个应用程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ubuntu /bin/echo &quot;Hello World&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/31/ADbmEF.png"></p>
+<p>各个参数解析：</p>
+<ul>
+<li>docker: Docker 的二进制执行文件</li>
+<li>run:与前面的 docker 组合来运行一个容器</li>
+<li>ubuntu指定要运行的镜像</li>
+<li>&#x2F;bin&#x2F;echo “Hello world”: 在启动的容器里执行的命令</li>
+</ul>
+<h4 id="运行交互式的容器"><a href="#运行交互式的容器" class="headerlink" title="运行交互式的容器"></a>运行交互式的容器</h4><p>我们通过docker的两个参数 -i -t，让docker运行的容器实现”对话”的能力</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -i -t ubuntu /bin/bash</span><br><span class="line">root@5a1be259f672:/# </span><br></pre></td></tr></table></figure>
+<p>各个参数解析：</p>
+<ul>
+<li>-t:在新容器内指定一个伪终端或终端</li>
+<li>-i:允许你对容器内的标准输入 (STDIN) 进行交互</li>
+</ul>
+<p>此时我们已进入一个 ubuntu15.10系统的容器<br>我们尝试在容器中运行命令ls查看当前系统的版本信息和当前目录下的文件列表<br><img src="https://s2.ax1x.com/2019/03/31/ADbJHO.png"><br>我们可以通过运行exit命令或者使用CTRL+D来退出容器</p>
+<h4 id="启动容器（后台模式）"><a href="#启动容器（后台模式）" class="headerlink" title="启动容器（后台模式）"></a>启动容器（后台模式）</h4><p>使用以下命令创建一个以进程方式运行的容器<br><img src="https://s2.ax1x.com/2019/03/31/Arhhhq.png"></p>
+<p>在输出中，我们没有看到期望的”hello world”，而是一串长字符<br>这个长字符串叫做容器ID，对每个容器来说都是唯一的，我们可以通过容器ID来查看对应的容器发生了什么。</p>
+<p>首先，我们需要确认容器有在运行，可以通过 docker ps 来查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/03/31/Arhx9x.png"></p>
+<p><strong>CONTAINER ID</strong>:容器ID<br><strong>NAMES</strong>:自动分配的容器名称</p>
+<p>在容器内使用docker logs命令，查看容器内的标准输出<br><img src="https://s2.ax1x.com/2019/03/31/Ar4ZCt.png"></p>
+<h4 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h4><p>我们使用 <strong>docker stop</strong> 命令来停止容器:<br><img src="https://s2.ax1x.com/2019/03/31/Ar4MDg.png"></p>
+<p>通过docker ps查看，容器已经停止工作</p>
+<p>参考自：<br><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/">https://www.w3cschool.cn/</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/03/31/Docker-start/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/03/31/Docker-start/";
+            const title         = "「Docker-Hello World」";
+            const excerpt       = ``;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.203Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" SpringBoot-Swagger2" href="/2019/03/30/SpringBoot-Swagger2/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Docker-使用" href="/2019/04/01/Docker-Use/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

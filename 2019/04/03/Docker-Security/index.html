@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Docker-安全性 | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Docker" />
+  
+  <meta name="description" content="实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器&#x2F;应用程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-安全性">
+<meta property="og:url" content="http://example.com/2019/04/03/Docker-Security/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:description" content="实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器&#x2F;应用程序。">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcNvXq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcUcD0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/03/AcUvPe.png">
+<meta property="article:published_time" content="2019-04-03T00:22:52.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.202Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/03/AcNvXq.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/03/Docker-Security/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Docker-安全性</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-04-03T00:22:52.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-04-03</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~4.63K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727202"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p><strong>实验环境：Seccomp</strong><br>seccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器&#x2F;应用程序。</p>
+<span id="more"></span>
+<p><strong>先决条件</strong><br>只有在使用 seccomp 构建 Docker 并且内核配置了 CONFIG_SECCOMP 的情况下，此功能才可用。要检查你的内核是否支持 seccomp：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat /boot/config-`uname -r` | grep CONFIG_SECCOMP=</span><br><span class="line"></span><br><span class="line">CONFIG_SECCOMP=y</span><br></pre></td></tr></table></figure>
+<p><strong>为容器传递配置文件</strong><br>默认的 seccomp 配置文件为使用 seccomp 运行容器提供了一个合理的设置，并禁用了大约 44 个超过 300+ 的系统调用。它具有适度的保护性，同时提供广泛的应用兼容性。默认的 Docker 配置文件可以在 <a target="_blank" rel="noopener" href="https://github.com/moby/moby/blob/master/profiles/seccomp/default.json">这里 </a>找到</p>
+<p>该配置文件是白名单，默认情况下阻止访问所有的系统调用，然后将特定的系统调用列入白名单。</p>
+<p>seccomp 有助于以最小权限运行 Docker 容器。不建议更改默认的 seccomp 配置文件，但你可以通过将–security-opt标志传递给docker run命令来覆盖它</p>
+<p>以下示例命令基于Alpine映像启动交互式容器并启动shell进程。它还应用了描述的seccomp配置文件<profile>.json</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --security-opt seccomp=&lt;profile&gt;.json alpine sh ...</span><br></pre></td></tr></table></figure>
+
+<p>Docker支持许多与安全相关的技术。其他安全相关技术可能会干扰对seccomp配置文件的测试。因此，测试seccomp配置文件效果的最佳方法是添加所有功能并禁用apparmor（一个高效和易于使用的Linux系统安全应用程序）。</p>
+<p>以下docker run命令添加所有功能并禁用apparmor的参数 : –cap-add ALL –security-opt apparmor&#x3D;unconfined.</p>
+<h2 id="克隆实验室GitHub-repo"><a href="#克隆实验室GitHub-repo" class="headerlink" title="克隆实验室GitHub repo"></a>克隆实验室GitHub repo</h2><p>clone 实验室的GitHub仓库，以便你拥有将用于本实验其余部分的seccomp配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/docker/labs</span><br></pre></td></tr></table></figure>
+<p>切换到labs&#x2F;security&#x2F;seccomp目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd labs/security/seccomp</span><br></pre></td></tr></table></figure>
+<p>再次目录中，docker run在整个实验中引用各种命令的seccomp配置文件</p>
+<h2 id="测试seccomp配置文件"><a href="#测试seccomp配置文件" class="headerlink" title="测试seccomp配置文件"></a>测试seccomp配置文件</h2><p>此步骤中，将使用seccomp-profiles&#x2F;deny.json包含的seccomp配置文件。此配置文件具有空的系统调用白名单，这意味着将阻止所有系统调用。作为演示的一部分，将添加所有功能并有效地禁用apparmor，以便你知道只有你的seccomp配置文件阻止了系统调用。</p>
+<p>使用该docker run命令尝试启动一个新容器，其中添加了所有功能，apparmor unconfined，并应用了seccomp-profiles&#x2F;deny.jsonseccomp配置文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --rm -it --cap-add ALL --security-opt apparmor=unconfined --security-opt seccomp=seccomp-profiles/deny.json alpine sh</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/03/AcNvXq.png"><br>在这种情况下，Docker实际上没有足够的系统调用来启动容器！</p>
+<h2 id="有选择地删除系统调用"><a href="#有选择地删除系统调用" class="headerlink" title="有选择地删除系统调用"></a>有选择地删除系统调用</h2><p>在此步骤中，你将看到如何对default.json配置文件应用更改是一种很好的方法，可以微调容器可用的系统调用。<br>对default.json概要文件的修改，其中chmod（）、fchmod（）和chmodat（）系统调用从其白名单中删除，得到default-no-chmod.json。</p>
+<p>使用default-no-chmod.json配置文件启动新容器并尝试运行该chmod 777 &#x2F; -v命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --rm -it --security-opt seccomp=./seccomp-profiles/default-no-chmod.json alpine sh</span><br></pre></td></tr></table></figure>
+<p>然后从容器内部：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 777 / -v</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/03/AcUcD0.png"><br>因为chmod 777 &#x2F; -v命令使用了一些chmod()，fchmod()和chmodat()已经从的白名单中删除的系统调用所以失败。</p>
+<p>退出容器，使用default.json配置文件启动另一个新容器并运行相同的容器chmod 777 &#x2F; -v<br><img src="https://s2.ax1x.com/2019/04/03/AcUvPe.png"><br>该命令成功</p>
+<p>检查两个配置文件的存在chmod()，fchmod()以及chmodat()系统调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat ./seccomp-profiles/default.json | grep chmod</span><br><span class="line">$ cat ./seccomp-profiles/default-no-chmod.json | grep chmod</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写seccomp配置文件"><a href="#编写seccomp配置文件" class="headerlink" title="编写seccomp配置文件"></a>编写seccomp配置文件</h2><p>可以从头开始编写Docker seccomp配置文件，也可以编辑现有配置文件。<br>默认的Docker seccomp配置文件的布局如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;defaultAction&quot;: &quot;SCMP_ACT_ERRNO&quot;,</span><br><span class="line">    &quot;architectures&quot;: [</span><br><span class="line">        &quot;SCMP_ARCH_X86_64&quot;,</span><br><span class="line">        &quot;SCMP_ARCH_X86&quot;,</span><br><span class="line">        &quot;SCMP_ARCH_X32&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;syscalls&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;accept&quot;,</span><br><span class="line">            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,</span><br><span class="line">            &quot;args&quot;: []</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;accept4&quot;,</span><br><span class="line">            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,</span><br><span class="line">            &quot;args&quot;: []</span><br><span class="line">        &#125;,</span><br><span class="line">        ...</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中name是系统调用的名称，action是发生系统调用时seccomp的操作，args是系统调用的参数限制条件。</p>
+<p>seccomp profile包含3个部分:</p>
+<ol>
+<li>默认操作(default Action)</li>
+<li>系统调用所支持的Linux架构(architectures)</li>
+<li>系统调用具体规则(syscalls)</li>
+</ol>
+<p>在seccomp profile规则中，可定义以下5种行为来对进程的系统调用行为做出响应，更高的行动否决了较低的行动</p>
+<pre><code>SCMP_ACT_KILL		当进程调用某系统调用，内核会发出SIGSYS信号终止该进程，该进程不会接收到这个信号
+SCMP_ACT_TRAP		当进程调用某系统调用，该进程会接收到SIGSYS信号，并根据该信号改变自身的行为。
+SCMP_ACT_ERRNO	当进程调用某系统调用，系统调用失败，进程会接收到返回值，该返回值与Linux内核的errno对应。
+SCMP_ACT_TRACE		当进程调用某系统调用，进程会被跟踪。
+SCMP_ACT_ALLOW	进程系统调用被允许。
+</code></pre>
+<p>配置文件可以包含基于系统调用参数值的更精细的过滤器。<br>ps.这里的知识点涉及linux系统调用知识，建议跳过，有基础了再来看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    &quot;syscalls&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;name&quot;: &quot;accept&quot;,</span><br><span class="line">            &quot;action&quot;: &quot;SCMP_ACT_ALLOW&quot;,</span><br><span class="line">            &quot;args&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;index&quot;: 0,</span><br><span class="line">                    &quot;op&quot;: &quot;SCMP_CMP_MASKED_EQ&quot;,</span><br><span class="line">                    &quot;value&quot;: 2080505856,</span><br><span class="line">                    &quot;valueTwo&quot;: 0</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>index 是系统调用参数的索引</li>
+<li>op是对参数执行的操作。参数列表：<ul>
+<li>SCMP_CMP_NE - not equal</li>
+<li>SCMP_CMP_LT - less than</li>
+<li>SCMP_CMP_LE - less than or equal to</li>
+<li>SCMP_CMP_EQ - equal to</li>
+<li>SCMP_CMP_GE - greater than</li>
+<li>SCMP_CMP_GT - greater or equal to</li>
+<li>SCMP_CMP_MASKED_EQ - masked equal: true if (value &amp; arg &#x3D;&#x3D; valueTwo)</li>
+</ul>
+</li>
+<li>value 是操作的参数</li>
+<li>仅用于SCMP_cmp_masked_eq</li>
+</ul>
+<p>如何编写Docker seccomp配置文件的最权威的来源是用于反序列化JSON的结构。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/docker/engine-api/blob/c15549e10%E2%80%8B%E2%80%8B366236b069e50ef26562fb24f5911d4/types/seccomp.go">https://github.com/docker/engine-api/blob/c15549e10​​366236b069e50ef26562fb24f5911d4/types/seccomp.go</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/opencontainers/runtime-spec/blob/6be516e2237a6dd377408e455ac8b41faf48bdf6/specs-go/config.go#L502">https://github.com/opencontainers/runtime-spec/blob/6be516e2237a6dd377408e455ac8b41faf48bdf6/specs-go/config.go#L502</a></li>
+</ul>
+<p>参考自：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/fy_long/article/details/88426053">https://blog.csdn.net/fy_long/article/details/88426053</a><br><a target="_blank" rel="noopener" href="https://training.play-with-docker.com/security-seccomp/">https://training.play-with-docker.com/security-seccomp/</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/04/03/Docker-Security/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/04/03/Docker-Security/";
+            const title         = "「Docker-安全性」";
+            const excerpt       = `实验环境：Seccompseccomp是Linux内核中的沙盒工具，其作用类似于系统调用的防火墙（系统调用）。它使用Berkeley Packet Filter（BPF）规则来过滤系统调用并控制它们的处理方式。这些过滤器可以显著限制容器访问Docker Host的Linux内核 - 特别是对于简单的容器&#x2F;应用程序。`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.202Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Docker-Dockerfile命令详解" href="/2019/04/02/Docker-Dockerfile/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Docker-Linux内核功能" href="/2019/04/04/Docker-LinuxKernel/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

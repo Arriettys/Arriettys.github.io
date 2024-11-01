@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Hadoop-配置文件 | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Hadoop" />
+  
+  <meta name="description" content="最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop-配置文件">
+<meta property="og:url" content="http://example.com/2019/04/17/Hadoop-ConfigurationFile/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:description" content="最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-17T01:26:36.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.204Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Hadoop">
+<meta name="twitter:card" content="summary">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/17/Hadoop-ConfigurationFile/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Hadoop-配置文件</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-04-17T01:26:36.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-04-17</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~12.66K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727204"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p>最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下</p>
+<span id="more"></span>
+<h2 id="etc-hadoop-core-site-xml"><a href="#etc-hadoop-core-site-xml" class="headerlink" title="etc&#x2F;hadoop&#x2F;core-site.xml"></a>etc&#x2F;hadoop&#x2F;core-site.xml</h2><p>顾名思义，是全局配置文件</p>
+<p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>fs.defaultFS	|	NameNode URI	|	hdfs:&#x2F;&#x2F;host:port&#x2F;<br>io.file.buffer.size	|	131072		|	SequenceFiles文件中.读写缓存size设定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://192.168.1.100:9000&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;192.168.1.100为服务器IP地址，其实也可以使用主机名，不能填localhost&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;io.file.buffer.size&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;131072&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;该属性值单位为KB，131072KB即为默认的64M&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>ps.以上只是列出了常用的几个，完整的参数解释<a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-common/core-default.xml">看这里</a>，后面的配置文件也是如此</p>
+<h2 id="etc-hadoop-hdfs-site-xml"><a href="#etc-hadoop-hdfs-site-xml" class="headerlink" title="etc&#x2F;hadoop&#x2F;hdfs-site.xml"></a>etc&#x2F;hadoop&#x2F;hdfs-site.xml</h2><p>对hdfs的局部配置<br>###配置NameNode</p>
+<p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>dfs.namenode.name.dir	|	在本地文件系统所在的NameNode的存储空间和持续化处理日志	|	如果这是一个以逗号分隔的目录列表，然后将名称表被复制的所有目录，以备不时之需。<br>dfs.namenode.hosts&#x2F;dfs.namenode.hosts.exclude	|	Datanodes permitted&#x2F;excluded列表		|	如有必要，可以使用这些文件来控制允许 数据节点的列表<br>dfs.blocksize	|	268435456	|	大型的文件系统HDFS块大小为256MB<br>dfs.namenode.handler.count	|	100		|	设置更多的namenode线程，处理从 datanode发出的大量RPC请求</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;分片数量，伪分布式将其配置成1即可&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:///usr/local/hadoop/tmp/namenode&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;命名空间和事务在本地文件系统永久存储的路径，ps.file://为开头&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.hosts&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;datanode1, datanode2&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;datanode1, datanode2分别对应DataNode所在服务器主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.blocksize&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;268435456&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;大文件系统HDFS块大小为256M，默认值为64M&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.handler.count&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;100&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;更多的NameNode服务器线程处理来自DataNodes的RPCS&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置DataNode"><a href="#配置DataNode" class="headerlink" title="配置DataNode"></a>配置DataNode</h3><p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>dfs.datanode.data.dir	|	逗号分隔的一个DataNode上，它应该保存它的块的本地文件系统的路径列表	|	如果这是一个以逗号分隔的目录列表，那么数据将被存储在所有命名的目录，通常在不同的设备</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:///usr/local/hadoop/tmp/datanode&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;DataNode在本地文件系统中存放块的路径&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<p>完整参数<a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/r3.1.2/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml">看这里</a></p>
+<h2 id="etc-hadoop-yarn-site-xml"><a href="#etc-hadoop-yarn-site-xml" class="headerlink" title="etc&#x2F;hadoop&#x2F;yarn-site.xml"></a>etc&#x2F;hadoop&#x2F;yarn-site.xml</h2><p>配置yarn，yarn是一种新的 Hadoop 资源管理器，职能就是将资源调度和任务调度分开。资源管理器ResourceManager全局管理所有应用程序计算资源的分配，每一个job的ApplicationMaster负责相应任务的调度和协调。</p>
+<ul>
+<li>ResourceManager做的事情是负责协调集群上计算资源的分配。调度、启动每一个 Job 所属的 ApplicationMaster、另外监控 ApplicationMaster 的存在情况。</li>
+<li>NodeManager 功能比较专一，根据要求启动和监视集群中机器的计算容器container。负责 Container 状态的维护，并向 RM 保持心跳汇报该节点资源使用情况。</li>
+<li>ApplicationMaster 负责一个 Job 生命周期内的所有工作。注意每一个Job都有一个 ApplicationMaster。它和MapReduce任务一样在容器中运行。AM通过与RM交互获取资源，然后然后通过与NM交互，启动计算任务。</li>
+<li>容器是由ResourceManager进行统一管理和分配的。有两类container：一类是AM运行需要的container；另一类是AP为执行任务向RM申请的。</li>
+</ul>
+<h3 id="配置ResourceManager"><a href="#配置ResourceManager" class="headerlink" title="配置ResourceManager"></a>配置ResourceManager</h3><p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>yarn.resourcemanager.address	|	客户端对ResourceManager主机通过 host:port 提交作业	|	host:port<br>yarn.resourcemanager.scheduler.address	|	ApplicationMasters 通过ResourceManager主机访问host:port跟踪调度程序获资源	|	host:port<br>yarn.resourcemanager.resource-tracker.address	|	NodeManagers通过ResourceManager主机访问host:port	|	host:port<br>yarn.resourcemanager.admin.address	|	管理命令通过ResourceManager主机访问host:port	|	host:port<br>yarn.resourcemanager.webapp.address	|	ResourceManager web页面host:port	|	host:port<br>yarn.resourcemanager.scheduler.class	|	ResourceManager 调度类（Scheduler class）	|	CapacityScheduler（推荐），FairScheduler（也推荐），orFifoScheduler<br>yarn.scheduler.minimum-allocation-mb	|	每个容器内存最低限额分配到的资源管理器要求	|	以MB为单位<br>yarn.scheduler.maximum-allocation-mb	|	资源管理器分配给每个容器的内存最大限制	|	以MB为单位<br>yarn.resourcemanager.nodes.include-path&#x2F;yarn.resourcemanager.nodes.exclude-path	|	NodeManagers的permitted&#x2F;excluded列表	|	如有必要，可使用这些文件来控制允许NodeManagers列表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:8081&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:8082&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:8083&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:8084&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:8085&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100也可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.scheduler.class&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;FairScheduler&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;常用类：CapacityScheduler、FairScheduler、orFifoScheduler&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.scheduler.minimum&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;100&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;单位：MB&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.scheduler.maximum&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;256&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;单位：MB&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.resourcemanager.nodes.include-path&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;nodeManager1, nodeManager2&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;nodeManager1, nodeManager2分别对应服务器主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置NodeManager"><a href="#配置NodeManager" class="headerlink" title="配置NodeManager"></a>配置NodeManager</h3><p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>yarn.nodemanager.resource.memory-mb	|	givenNodeManager即资源的可用物理内存，以MB为单位	|	定义在节点管理器总的可用资源，以提供给运行容器<br>yarn.nodemanager.vmem-pmem-ratio	|	最大比率为一些任务的虚拟内存使用量可能会超过物理内存率	|	每个任务的虚拟内存的使用可以通过这个比例超过了物理内存的限制。虚拟内存的使用上的节点管理器任务的总量可以通过这个比率超过其物理内存的使用<br>yarn.nodemanager.local-dirs	|	数据写入本地文件系统路径的列表用逗号分隔	|	多条存储路径可以提高磁盘的读写速度<br>yarn.nodemanager.log-dirs	|	本地文件系统日志路径的列表逗号分隔	|	多条存储路径可以提高磁盘的读写速度<br>yarn.nodemanager.log.retain-seconds	|	10800	|	如果日志聚合被禁用。默认的时间（以秒为单位）保留在节点管理器只适用日志文件<br>yarn.nodemanager.remote-app-log-dir	|	logs	|	HDFS目录下的应用程序日志移动应用上完成。需要设置相应的权限。仅适用日志聚合功能<br>yarn.nodemanager.remote-app-log-dir-suffix	|	logs	|	后缀追加到远程日志目录。日志将被汇总到yarn.nodemanager.remote­app­logdir&#x2F;{user}&#x2F;${thisParam} 仅适用日志聚合功能。<br>yarn.nodemanager.aux-services	|	mapreduce-shuffle	|	Shuffle service 需要加以设置的Map Reduce的应用程序服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.resource.memory-mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;256&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;单位为MB&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;90&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;百分比&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.local-dirs&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/tmp/nodemanager&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;列表用逗号分隔&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.log-dirs&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/tmp/nodemanager/logs&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;列表用逗号分隔&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.log.retain-seconds&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;10800&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;单位为S&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;mapreduce-shuffle&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;Shuffle service 需要加以设置的MapReduce的应用程序服务&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>完整参数<a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/r3.1.2/hadoop-yarn/hadoop-yarn-common/yarn-default.xml">看这里</a></p>
+<h2 id="etc-hadoop-mapred-site-xml"><a href="#etc-hadoop-mapred-site-xml" class="headerlink" title="etc&#x2F;hadoop&#x2F;mapred-site.xml"></a>etc&#x2F;hadoop&#x2F;mapred-site.xml</h2><p>MapReduce的局部配置，MapReduce是一个分布式的计算框架，核心功能是将用户编写的业务逻辑代码和自带默认组件整合成一个完整的分布式运算框架，并发运行在hadoop集群上。引入MapReduce框架后，开发人员可以将绝大部分的工作集中于业务逻辑上的开发，具体的计算只需要交给框架就可以。</p>
+<h3 id="配置mapreduce"><a href="#配置mapreduce" class="headerlink" title="配置mapreduce"></a>配置mapreduce</h3><p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>mapreduce.framework.name	|	yarn	|	执行框架设置为 Hadoop YARN.<br>mapreduce.map.memory.mb	|	1536	|	对maps更大的资源限制的.<br>mapreduce.map.java.opts		|	-Xmx2014M	|	maps中对jvm child设置更大的堆大小<br>mapreduce.reduce.memory.mb	|	3072	|	设置 reduces对于较大的资源限制<br>mapreduce.reduce.java.opts	|	-Xmx2560M	|	reduces对 jvm child设置更大的堆大小<br>mapreduce.task.io.sort.mb	|	512	|	更高的内存限制，而对数据进行排序的效率<br>mapreduce.task.io.sort.factor	|100	|	在文件排序中更多的流合并为一次<br>mapreduce.reduce.shuffle.parallelcopies	|	50	|	通过reduces从很多的map中读取较多的平行 副本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt; mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;执行框架设置为Hadoop YARN&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1536&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;对maps更大的资源限制的&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.map.java.opts&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;-Xmx2014M&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;maps中对jvm child设置更大的堆大小&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3072&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;设置 reduces对于较大的资源限制&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.reduce.java.opts&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;-Xmx2560M&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;reduces对 jvm child设置更大的堆大小&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.task.io.sort&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;512&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;更高的内存限制，而对数据进行排序的效率&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.task.io.sort.factor&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;100&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;在文件排序中更多的流合并为一次&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.reduce.shuffle.parallelcopies&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;50&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;通过reduces从很多的map中读取较多的平行副本&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置mapreduce的JobHistory服务器"><a href="#配置mapreduce的JobHistory服务器" class="headerlink" title="配置mapreduce的JobHistory服务器"></a>配置mapreduce的JobHistory服务器</h3><p>参数	|	属性值	|	解释<br>——	|	——	|	——<br>maprecude.jobhistory.address	|	MapReduce JobHistory Server host:port	|	默认端口号 10020<br>mapreduce.jobhistory.webapp.address	|	MapReduce JobHistory Server Web UIhost:port	|	默认端口号 19888<br>mapreduce.jobhistory.intermediate-done-dir	|	&#x2F;mr­history&#x2F;tmp	|	在历史文件被写入由MapReduce作业<br>mapreduce.jobhistory.done-dir	|	&#x2F;mr­history&#x2F;done	|	目录中的历史文件是由MR JobHistory Server管理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt; mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:10200&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;192.168.1.100:19888&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;IP地址192.168.1.100可替换为主机名&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobhistory.intermediate-done-dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/mr­history/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;在历史文件被写入由MapReduce作业&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobhistory.done-dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/usr/local/hadoop/mr­history/done&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;目录中的历史文件是由MR JobHistoryServer管理&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>完整参数<a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/r3.1.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml">看这里</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/04/17/Hadoop-ConfigurationFile/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/04/17/Hadoop-ConfigurationFile/";
+            const title         = "「Hadoop-配置文件」";
+            const excerpt       = `最近在看Hadoop，实验分布集群的时候经常要配一些配置文件，但通常对这些文件参数都是不都意思的，直接照抄教程，有种死记硬背的赶脚。网上查找了下资料，这边就总结下`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Hadoop/" rel="tag">Hadoop</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.204Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Hadoop-分布式模式" href="/2019/04/16/Hadoop-Mode-PseudoDistrubuted/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" JDK-命令行工具" href="/2019/06/02/JVM-LineTools/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

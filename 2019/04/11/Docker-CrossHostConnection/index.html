@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Docker-跨主机连接 | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Docker" />
+  
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Docker-跨主机连接">
+<meta property="og:url" content="http://example.com/2019/04/11/Docker-CrossHostConnection/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/02/18/kcaap8.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/11/AHiDAg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/11/AHic3n.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/11/AHi5EF.png">
+<meta property="article:published_time" content="2019-04-11T02:15:35.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.200Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/02/18/kcaap8.jpg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/11/Docker-CrossHostConnection/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Docker-跨主机连接</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-04-11T02:15:35.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-04-11</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~3.31K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727200"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p><img src="https://s2.ax1x.com/2019/02/18/kcaap8.jpg"></p>
+<span id="more"></span>
+<p>这里指的是不同宿主机之间的容器连接</p>
+<h2 id="Docker网桥实现跨主机容器连接"><a href="#Docker网桥实现跨主机容器连接" class="headerlink" title="Docker网桥实现跨主机容器连接"></a>Docker网桥实现跨主机容器连接</h2><p>docker网桥实现跨主机连接的网络拓扑图如下：<br><img src="https://s2.ax1x.com/2019/04/11/AHiDAg.png"><br>在同一个docker主机中，docker容器通过虚拟网桥连接(docker0)，如果将连接容器的网桥docker0也桥接到宿主机提供的网卡上，将docker0分配的IP地址和宿主机的IP地址设置为同一个网段，就相当于将docker容器和宿主机连接到了一起，这样就可以实现跨主机的docker容器通信。</p>
+<p>主机端，修改&#x2F;etc&#x2F;network&#x2F;interfaces 文件添加网桥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">auto br0	//名称</span><br><span class="line">iface br0 inet static	//ip分配方式</span><br><span class="line">address 10.211.55.3	//ip</span><br><span class="line">netmask 255.255.255.0	//子网掩码</span><br><span class="line">gateway 10.211.55.1	//默认的网关</span><br><span class="line">bridge_ports eth0		//指明将本地的物理网卡eth0连接到新建的网桥之上</span><br></pre></td></tr></table></figure>
+<p>docker端，修改&#x2F;etc&#x2F;default&#x2F;docker 文件</p>
+<ul>
+<li><strong>-b</strong>：指定使用宿主机的网桥名<br>  -b &#x3D; br0</li>
+<li><strong>–fixed-cidr</strong>：指定对docker容器分配的ip段<br>  -fixed-cidr&#x3D;172.25.11.1&#x2F;24</li>
+</ul>
+<p>另一台也是同样方法设置，之后随意进入一个容器ping另一台容器ip测试即可</p>
+<p><strong>网桥配置跨主机容器连接的优点：</strong></p>
+<ul>
+<li><p>配置简单，不依赖第三方软件<br><strong>网桥配置跨主机容器连接的缺点：</strong></p>
+</li>
+<li><p>容器和主机在同一网段，划分IP需要特别小心</p>
+</li>
+<li><p>需要网段控制权，在生产环境中不容易实现</p>
+</li>
+<li><p>不容易管理，兼容性不佳</p>
+</li>
+</ul>
+<h2 id="Open-vSwitch实现跨主机容器连接"><a href="#Open-vSwitch实现跨主机容器连接" class="headerlink" title="Open vSwitch实现跨主机容器连接"></a>Open vSwitch实现跨主机容器连接</h2><p>Open vSwitch是一个高质量、多层虚拟交换机。使用Apache2.0许可协议，旨在通过编程扩展，使庞大的网络自动化（配置、管理、维护），同时还支持标准的管理接口和协议。<br>网络拓扑如下：<br><img src="https://s2.ax1x.com/2019/04/11/AHic3n.jpg"><br>这张图中蓝色部分就是我们上一节介绍的虚拟网桥br0，容器通过虚拟网桥实现同主机之间的连接。而其上层黄色部分open vSwitch创建的ovs网桥obr0，ovs通过gre隧道协议接口实现跨主机的网络连接。</p>
+<p>GRE是通用路由协议封装；隧道技术（Tunneling）是一种通过使用互联网络的基础设施在网络之间传递数据的方式。使用隧道传递的数据（或负载）可以是不同协议的数据帧或包。隧道协议将其它协议的数据帧或包重新封装然后通过隧道发送。新的帧头提供路由信息，以便通过互联网传递被封装的负载数据。</p>
+<h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>A、B两台主机<br>A：192.168.59.103	docker网段：192.168.1.1<br>B：192.168.59.103	docker网段：192.168.2.4<br>以下以A实验<br>确认安装了Open vSwitch</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install openvswitch-switch</span><br></pre></td></tr></table></figure>
+<p>1.建立网桥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ovs-vsctl add-br obr0</span><br></pre></td></tr></table></figure>
+<p>2.添加gre接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ovs-vsctl add-port obr0 gre0</span><br><span class="line">$ sudo ovs-vsctl set interface gre0 type=gre options:remote_ip=address	//设置远程主机ip，address处填ip</span><br></pre></td></tr></table></figure>
+<p>3.本机docker容器需要的网桥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo brctl addbr br0</span><br><span class="line">$ sudo ifconfig br0 192.168.1.1/24 netmask 255.255.255.0</span><br><span class="line">$ sudo brctl addif br0 obr0		//添加ovs网桥连接</span><br><span class="line">$ sudo brctl show 				//查看</span><br></pre></td></tr></table></figure>
+<p>4.修改docker容器网桥，编辑&#x2F;etc&#x2F;default&#x2F;docker</p>
+<p>5.开启一个docker容器ping测试<br>B主机的ip虽然能ping通，但其docker容器的却不能，因为不同网段需要查找路由表确定地址，故还需要将docker容器的网段</p>
+<p>6.添加不同Docker容器网段路由<br>在A中添加B的docker路由，B相反</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ip route add 192.168.2.0/24 via 192.168.59.104(主机) </span><br></pre></td></tr></table></figure>
+
+<h2 id="使用weave实现跨主机容器连接"><a href="#使用weave实现跨主机容器连接" class="headerlink" title="使用weave实现跨主机容器连接"></a>使用weave实现跨主机容器连接</h2><p>Weave是由weaveworks公司开发的解决Docker跨主机网络的解决方案，它能够创建一个虚拟网络，用于连接多台主机上的Docker容器，这样容器就像被接入了同一个网络交换机，那些使用网络的应用程序不必去配置端口映射和链接等信息。<br><img src="https://s2.ax1x.com/2019/04/11/AHi5EF.png"><br>Weave会在主机上创建一个网桥,每一个容器通过 veth pair 连接到该网桥上，同时网桥上有个 Weave router 的容器与之连接，该router会通过连接在网桥上的接口来抓取网络包(该接口工作在Promiscuous模式)。</p>
+<p>在每一个部署Docker的主机(可能是物理机也可能是虚拟机)上都部署有一个W(即Weave router)，它本身也可以以一个容器的形式部署。Weave run的时候就可以给每个veth的容器端分配一个ip和相应的掩码。veth的网桥这端就是Weave router容器，并在Weave launch的时候分配好ip和掩码。</p>
+<p>Weave网络是由这些weave routers组成的对等端点(peer)构成，每个对等的一端都有自己的名字，其中包括一个可读性好的名字用于表示状态和日志的输出，一个唯一标识符用于运行中相互区别，即使重启Docker主机名字也保持不变，这些名字默认是mac地址。</p>
+<p>每个部署了Weave router的主机都需要将TCP和UDP的6783端口的防火墙设置打开，保证Weave router之间控制面流量和数据面流量的通过。控制面由weave routers之间建立的TCP连接构成，通过它进行握手和拓扑关系信息的交换通信。 这个通信可以被配置为加密通信。而数据面由Weave routers之间建立的UDP连接构成，这些连接大部分都会加密。这些连接都是全双工的，并且可以穿越防火墙。</p>
+<p>对每一个weave网络中的容器，weave都会创建一个网桥，并且在网桥和每个容器之间创建一个veth pair，一端作为容器网卡加入到容器的网络命名空间中，并为容器网卡配置ip和相应的掩码，一端连接在网桥上，最终通过宿主机上weave router将流量转发到对端主机上。<br>其基本过程如下：</p>
+<pre><code>1，容器流量通过veth pair到达宿主机上weave router网桥上。
+2，weave router在混杂模式下使用pcap在网桥上截获网络数据包，并排除由内核直接通过网桥转发的数据流量，例如本子网内部、本地容器之间的数据以及宿主机和本地容器之间的流量。捕获的包通过UDP转发到所其他主机的weave router端。
+3，在接收端，weave router通过pcap将包注入到网桥上的接口，通过网桥的上的veth pair，将流量分发到容器的网卡上。
+</code></pre>
+<p>weave默认基于UDP承载容器之间的数据包，并且可以完全自定义整个集群的网络拓扑，但从性能和使用角度来看，还是有比较大的缺陷的：</p>
+<ul>
+<li>weave自定义容器数据包的封包解包方式，不够通用，传输效率比较低，性能上的损失也比较大。</li>
+<li>集群配置比较负载，需要通过weave命令行来手工构建网络拓扑，在大规模集群的情况下，加重了管理员的负担。</li>
+</ul>
+<p>Weave优劣势：</p>
+<ul>
+<li>Weave优势</li>
+</ul>
+<p>支持主机间通信加密。</p>
+<p>支持container动态加入或者剥离网络。</p>
+<p>支持跨主机多子网通信。</p>
+<ul>
+<li>Weave劣势</li>
+</ul>
+<p>只能通过weave launch或者weave connect加入weave网络。</p>
+<p>转载自：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/fsx2550553488/article/details/80474773">https://blog.csdn.net/fsx2550553488/article/details/80474773</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/04/11/Docker-CrossHostConnection/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/04/11/Docker-CrossHostConnection/";
+            const title         = "「Docker-跨主机连接」";
+            const excerpt       = ``;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.200Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Docker核心-资源隔离和限制" href="/2019/04/10/DockerCore-ResourcesIsolation/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Docker-私有仓库" href="/2019/04/13/Docker-Registry/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

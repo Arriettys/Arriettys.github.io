@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Docker-使用 | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Docker" />
+  
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Docker-使用">
+<meta property="og:url" content="http://example.com/2019/04/01/Docker-Use/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsCY79.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asi8o9.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsiTFs.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsiXOU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsFk6K.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsFJ0g.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsF5jK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AskZvV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AskHMV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsEgAg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsVpDK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsndyR.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asn2SH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asu9tU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsKF58.png">
+<meta property="article:published_time" content="2019-04-01T01:00:07.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.202Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/01/Docker-Use/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Docker-使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-04-01T01:00:07.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-04-01</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~4.88K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727202"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p><img src="https://s2.ax1x.com/2019/04/01/AsQyDA.jpg"></p>
+<span id="more"></span>
+<h2 id="Docker-容器使用"><a href="#Docker-容器使用" class="headerlink" title="Docker 容器使用"></a>Docker 容器使用</h2><h3 id="Docker-客户端"><a href="#Docker-客户端" class="headerlink" title="Docker 客户端"></a>Docker 客户端</h3><p>docker 客户端非常简单 ,我们可以直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。</p>
+<h4 id="运行一个web应用"><a href="#运行一个web应用" class="headerlink" title="运行一个web应用"></a>运行一个web应用</h4><p>前面我们运行的容器并没有一些什么特别的用处。<br>接下来让我们尝试使用 docker 构建一个 web 应用程序。<br>我们将在docker容器中运行一个 Python Flask 应用来运行一个web应用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -P training/webapp python app.py</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsCY79.png"></p>
+<p>ps.training&#x2F;webapp镜像若你本地没有，会自动pull官网上的<br>参数说明:</p>
+<ul>
+<li><strong>-d</strong>:让容器在后台运行。</li>
+<li><strong>-P</strong>:将容器内部使用的网络端口映射到我们使用的主机上。<br>使用 docker ps 来查看我们正在运行的容器可以看到多了端口信息<br>Docker 开放了 5000 端口（默认 Python Flask 端口）映射到主机端口 32768 上。<br>这时我们可以通过浏览器访问WEB应用</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/04/01/Asi8o9.png"></p>
+<p>我们也可以指定 -p 标识来绑定指定端口。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<h4 id="网络端口的快捷方式"><a href="#网络端口的快捷方式" class="headerlink" title="网络端口的快捷方式"></a>网络端口的快捷方式</h4><p>通过docker ps 命令可以查看到容器的端口映射，docker还提供了另一个快捷方式：docker port,使用 docker port 可以查看指定 （ID或者名字）容器的某个确定端口映射到宿主机的端口号。<br>上面我们创建的web应用容器ID为:b570473f8bf5 名字为：cranky_brown<br><img src="https://s2.ax1x.com/2019/04/01/AsiTFs.png"></p>
+<h4 id="查看WEB应用程序日志"><a href="#查看WEB应用程序日志" class="headerlink" title="查看WEB应用程序日志"></a>查看WEB应用程序日志</h4><p>docker logs [ID或者名字] 可以查看容器内部的标准输出。<br><img src="https://s2.ax1x.com/2019/04/01/AsiXOU.png"></p>
+<h4 id="检查WEB应用程序"><a href="#检查WEB应用程序" class="headerlink" title="检查WEB应用程序"></a>检查WEB应用程序</h4><p>使用 docker inspect 来查看Docker的底层信息。它会返回一个 JSON 文件记录着 Docker 容器的配置和状态信息</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsFk6K.png"></p>
+<h4 id="停止WEB应用容器"><a href="#停止WEB应用容器" class="headerlink" title="停止WEB应用容器"></a>停止WEB应用容器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop b570473f8bf5</span><br></pre></td></tr></table></figure>
+
+<h4 id="重启WEB应用容器"><a href="#重启WEB应用容器" class="headerlink" title="重启WEB应用容器"></a>重启WEB应用容器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start b570473f8bf5</span><br></pre></td></tr></table></figure>
+<p>docker ps -l 来查看正在运行的容器<br>正在运行的容器，我们可以使用 docker restart 命令来重启</p>
+<h4 id="移除WEB应用容器"><a href="#移除WEB应用容器" class="headerlink" title="移除WEB应用容器"></a>移除WEB应用容器</h4><p>我们可以使用 docker rm 命令来删除不需要的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a 查看所有容器，包括停止的</span><br></pre></td></tr></table></figure>
+<p>删除容器时，容器必须是停止状态，否则会报如下错误</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsFJ0g.png"></p>
+<h3 id="Docker-镜像使用"><a href="#Docker-镜像使用" class="headerlink" title="Docker 镜像使用"></a>Docker 镜像使用</h3><p>当运行容器时，使用的镜像如果在本地中不存在，docker 就会自动从 docker 镜像仓库中下载，默认是从 Docker Hub 公共镜像源下载。</p>
+<p>下面我们来学习：</p>
+<ul>
+<li>管理和使用本地 Docker 主机镜像</li>
+<li>创建镜像</li>
+</ul>
+<h4 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h4><p>我们可以使用 docker images 来列出本地主机上的镜像<br><img src="https://s2.ax1x.com/2019/04/01/AsF5jK.png"><br>各个选项说明:</p>
+<ul>
+<li><strong>REPOSTITORY</strong>：表示镜像的仓库源</li>
+<li><strong>TAG</strong>：镜像的标签</li>
+<li><strong>IMAGE ID</strong>：镜像ID</li>
+<li><strong>CREATED</strong>：镜像创建时间</li>
+<li><strong>SIZE</strong>：镜像大小</li>
+</ul>
+<p>同一仓库源可以有多个 TAG，代表这个仓库源的不同个版本，如ubuntu仓库源里，有15.10、14.04等多个不同的版本，我们使用 REPOSTITORY:TAG 来定义不同的镜像。<br>所以，我们如果要使用版本为15.10的ubuntu系统镜像来运行容器时，命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:15.10 /bin/bash </span><br><span class="line">root@d77ccb2e5cca:/#</span><br></pre></td></tr></table></figure>
+<p>如果要使用版本为14.04的ubuntu系统镜像来运行容器时，命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:14.04 /bin/bash </span><br><span class="line">root@39e968165990:/#</span><br></pre></td></tr></table></figure>
+<p>如果你不指定一个镜像的版本标签，例如你只使用 ubuntu，docker 将默认使用 ubuntu:latest 镜像。</p>
+<h4 id="获取一个新的镜像"><a href="#获取一个新的镜像" class="headerlink" title="获取一个新的镜像"></a>获取一个新的镜像</h4><p>我们可以从 Docker Hub 网站来搜索镜像，Docker Hub 网址为：<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a><br>我们也可以使用 docker search 命令来搜索镜像。比如我们需要一个httpd的镜像来作为我们的web服务。我们可以通过 docker search 命令搜索 httpd 来寻找适合我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker search httpd</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/01/AskZvV.png"></p>
+<p>NAME:镜像仓库源的名称</p>
+<p>DESCRIPTION:镜像的描述</p>
+<p>OFFICIAL:是否docker官方发布</p>
+<p>我们决定使用上图中的httpd 官方版本的镜像，使用命令 docker pull 来下载镜像。<br><img src="https://s2.ax1x.com/2019/04/01/AskHMV.png"></p>
+<h4 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h4><p>当我们从docker镜像仓库中下载的镜像不能满足我们的需求时，我们可以通过以下两种方式对镜像进行更改。</p>
+<ul>
+<li>从已经创建的容器中更新镜像，并且提交这个镜像</li>
+<li>使用 Dockerfile 指令来创建一个新的镜像</li>
+</ul>
+<h4 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h4><p>更新镜像之前，我们需要使用镜像来创建一个容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu /bin/bash</span><br><span class="line">root@e2532447b13a:/# </span><br></pre></td></tr></table></figure>
+<p>在运行的容器内使用 apt-get update 命令进行更新。<br>在完成操作之后，输入 exit命令来退出这个容器。<br>使用docker ps -l 查找ID<br><img src="https://s2.ax1x.com/2019/04/01/AsEgAg.png"><br>此时ID为e2532447b13a的容器，是按我们的需求更改的容器。我们可以通过命令 docker commit来提交容器副本。<br><img src="https://s2.ax1x.com/2019/04/01/AsVpDK.png"><br>各个参数说明：</p>
+<ul>
+<li><strong>-m</strong>:提交的描述信息</li>
+<li><strong>-a</strong>:指定镜像作者</li>
+<li><strong>e2532447b13a</strong>：容器ID</li>
+<li><strong>ubuntu:v2</strong>:指定要创建的目标镜像名</li>
+</ul>
+<p>使用我们的新镜像 w3cschool&#x2F;ubuntu 来启动一个容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -t -i ubuntu:v2 /bin/bash</span><br><span class="line">root@f44fe837e095:/# </span><br></pre></td></tr></table></figure>
+<p>这其实也是保存容器修改的方法</p>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>我们使用命令 docker build ， 从零开始来创建一个新的镜像。为此，我们需要创建一个 Dockerfile 文件，其中包含一组指令来告诉 Docker 如何构建我们的镜像。</p>
+<p>Dockerfile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM    centos:6.7</span><br><span class="line">MAINTAINER      Arrietty &quot;Arrietty.top&quot;</span><br><span class="line"></span><br><span class="line">RUN     /bin/echo &#x27;root:123456&#x27; | chpasswd</span><br><span class="line">RUN     useradd arrietty</span><br><span class="line">RUN     /bin/echo &#x27;arrietty:123456&#x27; | chpasswd</span><br><span class="line">RUN     /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line">EXPOSE  22</span><br><span class="line">EXPOSE  80</span><br><span class="line">CMD     /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+<p>每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。<br>第一条FROM，指定使用哪个镜像源<br>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。<br>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。<br>第一条FROM，指定使用哪个镜像源<br>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。<br>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。<br><img src="https://s2.ax1x.com/2019/04/01/AsndyR.png"></p>
+<p>参数说明：</p>
+<ul>
+<li>-t ：指定要创建的目标镜像名</li>
+<li>. ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径<br>使用docker images 查看创建的镜像已经在列表中存在,镜像ID为6b874d8f824c<br><img src="https://s2.ax1x.com/2019/04/01/Asn2SH.png"></li>
+</ul>
+<h4 id="设置镜像标签"><a href="#设置镜像标签" class="headerlink" title="设置镜像标签"></a>设置镜像标签</h4><p>我们可以使用 docker tag 命令，为镜像添加一个新的标签。<br>docker tag 镜像ID，这里是 6b874d8f824c ,用户名称、镜像源名(repository name)和新的标签名(tag)。<br>使用 docker images 命令可以看到，ID为860c279d2fec的镜像多一个标签。<br><img src="https://s2.ax1x.com/2019/04/01/Asu9tU.png"></p>
+<h3 id="Docker-容器连接"><a href="#Docker-容器连接" class="headerlink" title="Docker 容器连接"></a>Docker 容器连接</h3><p>前面我们实现了通过网络端口来访问运行在docker容器内的服务。下面我们来实现通过端口连接到一个docker容器</p>
+<h4 id="网络端口映射"><a href="#网络端口映射" class="headerlink" title="网络端口映射"></a>网络端口映射</h4><p>我们创建了一个 python 应用的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -d -P training/webapp python app.py</span><br><span class="line">2678861473c82550489f3b0de5e96e69e64e5c64fc50e327016997f6dac89a1d</span><br></pre></td></tr></table></figure>
+<p>另外，我们可以指定容器绑定的网络地址，比如绑定 127.0.0.1。<br>端口绑定的两种方式：</p>
+<ul>
+<li>-P :是容器内部端口随机映射到主机的高端口。</li>
+<li>-p : 是容器内部端口绑定到指定的主机端口。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 5000:5000 training/webapp python app.py</span><br><span class="line">2bbb8b715e40c853baa4f41cac91b141c93d11119ace0502c830baeb348e9b6c</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>另外，我们可以指定容器绑定的网络地址，比如绑定127.0.0.1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 127.0.0.1:5001:5002 training/webapp python app.py</span><br><span class="line">95c6ceef88ca3e71eaf303c2833fd6701d8d1b2572b5613b5a932dfdfe8a857c</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsKF58.png"></p>
+<p>这样我们就可以通过访问127.0.0.1:5001来访问容器的5002端口。</p>
+<p>上面的例子中，默认都是绑定 tcp 端口，如果要绑定 UPD 端口，可以在端口后面加上 &#x2F;udp。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>docker port 命令可以让我们快捷地查看端口的绑定情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker port adoring_stonebraker 5002</span><br><span class="line">127.0.0.1:5001</span><br></pre></td></tr></table></figure>
+
+<h4 id="Docker容器连接"><a href="#Docker容器连接" class="headerlink" title="Docker容器连接"></a>Docker容器连接</h4><p>端口映射并不是唯一把 docker 连接到另一个容器的方法。<br>docker有一个连接系统允许将多个容器连接在一起，共享连接信息。<br>docker连接会创建一个父子关系，其中父容器可以看到子容器的信息。</p>
+<p><strong>容器命名</strong><br>当我们创建一个容器的时候，docker会自动对它进行命名。另外，我们也可以使用–name标识来命名容器，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@izuf60l85kxuws81mq1immz ~]# docker run -d -P --name yourname training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>参考自：<br><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/">https://www.w3cschool.cn/</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/04/01/Docker-Use/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/04/01/Docker-Use/";
+            const title         = "「Docker-使用」";
+            const excerpt       = ``;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Docker/" rel="tag">Docker</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.202Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Docker-Hello World" href="/2019/03/31/Docker-start/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 支付宝集成-准备工作" href="/2019/04/01/Alipay-Prepare/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

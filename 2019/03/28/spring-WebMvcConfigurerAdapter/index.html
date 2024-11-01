@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Spring MVC 配置类 WebMvcConfigurerAdapter | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="SpringBoot" />
+  
+  <meta name="description" content="WebMvcConfigurerAdapter配置类是spring提供的一种配置方式，采用JavaBean的方式替代传统的基于xml的配置来对spring框架进行自定义的配置。因此，在spring boot提倡的基于注解的配置，采用“约定大于配置”的风格下，当需要进行自定义的配置时，便可以继承WebMvcConfigurerAdapter这个抽象类，通过JavaBean来实现需要的配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC 配置类 WebMvcConfigurerAdapter">
+<meta property="og:url" content="http://example.com/2019/03/28/spring-WebMvcConfigurerAdapter/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:description" content="WebMvcConfigurerAdapter配置类是spring提供的一种配置方式，采用JavaBean的方式替代传统的基于xml的配置来对spring框架进行自定义的配置。因此，在spring boot提倡的基于注解的配置，采用“约定大于配置”的风格下，当需要进行自定义的配置时，便可以继承WebMvcConfigurerAdapter这个抽象类，通过JavaBean来实现需要的配置。">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/28/AwofxS.png">
+<meta property="article:published_time" content="2019-03-28T11:50:39.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.208Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="SpringBoot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/28/AwofxS.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/03/28/spring-WebMvcConfigurerAdapter/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Spring MVC 配置类 WebMvcConfigurerAdapter</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-03-28T11:50:39.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-03-28</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~6.76K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727208"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p>WebMvcConfigurerAdapter配置类是spring提供的一种配置方式，采用JavaBean的方式替代传统的基于xml的配置来对spring框架进行自定义的配置。因此，在spring boot提倡的基于注解的配置，采用“约定大于配置”的风格下，当需要进行自定义的配置时，便可以继承WebMvcConfigurerAdapter这个抽象类，通过JavaBean来实现需要的配置。</p>
+<span id="more"></span>
+<h2 id="1-WebMvcConfigurerAdapter常用的方法"><a href="#1-WebMvcConfigurerAdapter常用的方法" class="headerlink" title="1. WebMvcConfigurerAdapter常用的方法"></a>1. WebMvcConfigurerAdapter常用的方法</h2><h3 id="1-1-addInterceptors：拦截器"><a href="#1-1-addInterceptors：拦截器" class="headerlink" title="1.1 addInterceptors：拦截器"></a>1.1 addInterceptors：拦截器</h3><p>在之前Xml配置形式天下的时候，我们都是在spring-mvc.xml配置文件内添加<a href="mvc:interceptor\">mvc:interceptor\</a>标签配置拦截器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void addInterceptors(InterceptorRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">	super.addInterceptors(registry);</span><br><span class="line">	registry.addInterceptor(new TestInterceptor()).addPathPatterns(&quot;/**&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>InterceptorRegistry内的addInterceptor需要一个实现HandlerInterceptor接口的拦截器实例，addPathPatterns方法用于设置拦截器的过滤路径规则。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class LoginInterceptor extends HandlerInterceptorAdapter </span><br><span class="line">&#123;</span><br><span class="line">	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);</span><br><span class="line">	@Override</span><br><span class="line">    	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception </span><br><span class="line">    	&#123;</span><br><span class="line">        logger.info(&quot;-----------------------------&quot;);</span><br><span class="line">        logger.info(request.getRequestedSessionId());</span><br><span class="line">        logger.info(&quot;-----------------------------&quot;);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-addCorsMappings：跨域"><a href="#1-2-addCorsMappings：跨域" class="headerlink" title="1.2 addCorsMappings：跨域"></a>1.2 addCorsMappings：跨域</h3><p>CORS（Cross-Origin Resource Sharing）”跨域资源共享”，是一个W3C标准，它允许浏览器向跨域服务器发送Ajax请求，打破了Ajax只能访问本站内的资源限制，CORS在很多地方都有被使用，微信支付的JS支付就是通过JS向微信服务器发送跨域请求。开放Ajax访问可被跨域访问的服务器大大减少了后台开发的工作，前后台工作也可以得到很好的明确以及分工</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 跨域CORS配置</span><br><span class="line"> * @param registry</span><br><span class="line"> */</span><br><span class="line">@Override</span><br><span class="line">public void addCorsMappings(CorsRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">        super.addCorsMappings(registry);</span><br><span class="line">        registry.addMapping(&quot;/**&quot;)</span><br><span class="line">                .allowedHeaders(&quot;*&quot;)</span><br><span class="line">                .allowedMethods(&quot;POST&quot;,&quot;GET&quot;)</span><br><span class="line">                .allowedOrigins(&quot;http://...&quot;)</span><br><span class="line">                .allowCredentials(true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样是在上面的webConfig中重写</p>
+<h3 id="1-3-addViewControllers：跳转指定页面"><a href="#1-3-addViewControllers：跳转指定页面" class="headerlink" title="1.3 addViewControllers：跳转指定页面"></a>1.3 addViewControllers：跳转指定页面</h3><p>这一个配置在之前是经常被使用到的，最经常用到的就是”&#x2F;“、”&#x2F;index”路径请求时不通过@RequestMapping配置，而是直接通过配置文件映射指定请求路径到指定View页面，当然也是在请求目标页面时不需要做什么数据处理才可以这样使用，配置内容如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * 视图控制器配置</span><br><span class="line">  * @param registry</span><br><span class="line">  */</span><br><span class="line">@Override</span><br><span class="line">public void addViewControllers(ViewControllerRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">        super.addViewControllers(registry);</span><br><span class="line">        registry.addViewController(&quot;/&quot;).setViewName(&quot;/index&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-resourceViewResolver：视图解析器"><a href="#1-4-resourceViewResolver：视图解析器" class="headerlink" title="1.4 resourceViewResolver：视图解析器"></a>1.4 resourceViewResolver：视图解析器</h3><p>这个对我们来说很熟悉，只要我们配置html、Jsp页面视图时就会用到WebMvcConfigurerAdapte里InternalResourceViewResolver配置类（内部类），然后设置preffix、suffix参数进行配置视图文件路径前缀与后缀。这个我们以前经常在xml文件中配置</p>
+<p><img src="https://s2.ax1x.com/2019/03/28/AwofxS.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * 配置请求视图映射</span><br><span class="line">  * @return</span><br><span class="line">  */</span><br><span class="line">@Bean</span><br><span class="line">public InternalResourceViewResolver resourceViewResolver()</span><br><span class="line">&#123;</span><br><span class="line">        InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();</span><br><span class="line">        //请求视图文件的前缀地址</span><br><span class="line">        internalResourceViewResolver.setPrefix(&quot;/WEB-INF/jsp/&quot;);</span><br><span class="line">        //请求视图文件的后缀</span><br><span class="line">        internalResourceViewResolver.setSuffix(&quot;.jsp&quot;);</span><br><span class="line">        return internalResourceViewResolver;</span><br><span class="line">&#125;</span><br><span class="line">/**</span><br><span class="line">  * 视图配置</span><br><span class="line">  * @param registry</span><br><span class="line">  */</span><br><span class="line">@Override</span><br><span class="line">public void configureViewResolvers(ViewResolverRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">        super.configureViewResolvers(registry);</span><br><span class="line">        registry.viewResolver(resourceViewResolver());</span><br><span class="line">        /*registry.jsp(&quot;/WEB-INF/jsp/&quot;,&quot;.jsp&quot;);*/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码中方法resourceViewResolver上配置了@Bean注解，该注解会将方法返回值加入到SpringIoc容器内。<br>而在configureViewResolvers方法内配置视图映射为resourceViewResolver方法返回的InternalResourceViewResolver实例，这样完成了视图的配置。在下面还有注释掉的一部分代码，这块代码很神奇，我们先来看看org.springframework.web.servlet.config.annotation.ViewResolverRegistry源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package org.springframework.web.servlet.config.annotation;</span><br><span class="line"></span><br><span class="line">public class ViewResolverRegistry </span><br><span class="line">&#123;</span><br><span class="line">    ...//省略代码</span><br><span class="line">    public UrlBasedViewResolverRegistration jsp() </span><br><span class="line">    &#123;</span><br><span class="line">        return this.jsp(&quot;/WEB-INF/&quot;, &quot;.jsp&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public UrlBasedViewResolverRegistration jsp(String prefix, String suffix) </span><br><span class="line">    &#123;</span><br><span class="line">        InternalResourceViewResolver resolver = new InternalResourceViewResolver();</span><br><span class="line">        resolver.setPrefix(prefix);</span><br><span class="line">        resolver.setSuffix(suffix);</span><br><span class="line">        this.viewResolvers.add(resolver);</span><br><span class="line">        return new UrlBasedViewResolverRegistration(resolver);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">...//省略代码</span><br></pre></td></tr></table></figure>
+<p>可以看到上述源码中有两个jsp方法，而没有参数的方法恰恰跟我们配置的内容一样，这一点看来是Spring早就根据用户使用习惯添加的默认配置，同样也提供了自定义配置Jsp相关的前缀、后缀内容的方法，<br>方法内部同样是实例化了一个InternalResourceViewResolver视图映射类，并将实例添加到了viewResolvers集合内。</p>
+<h3 id="1-5-configureMessageConverters：信息转换器"><a href="#1-5-configureMessageConverters：信息转换器" class="headerlink" title="1.5 configureMessageConverters：信息转换器"></a>1.5 configureMessageConverters：信息转换器</h3><p>这个配置一般针对于Api接口服务程序，配置在请求返回时内容采用什么转换器进行转换，我们最常用到的就是fastJson的转换，配置如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * 消息内容转换配置</span><br><span class="line">  * 配置fastJson返回json转换</span><br><span class="line">  * @param converters</span><br><span class="line">  */</span><br><span class="line">@Override</span><br><span class="line">public void configureMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) </span><br><span class="line">&#123;</span><br><span class="line">        //调用父类的配置</span><br><span class="line">        super.configureMessageConverters(converters);</span><br><span class="line">        //创建fastJson消息转换器</span><br><span class="line">        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();</span><br><span class="line">        //创建配置类</span><br><span class="line">        FastJsonConfig fastJsonConfig = new FastJsonConfig();</span><br><span class="line">        //修改配置返回内容的过滤</span><br><span class="line">        fastJsonConfig.setSerializerFeatures(</span><br><span class="line">                SerializerFeature.DisableCircularReferenceDetect,</span><br><span class="line">                SerializerFeature.WriteMapNullValue,</span><br><span class="line">                SerializerFeature.WriteNullStringAsEmpty</span><br><span class="line">        );</span><br><span class="line">        fastConverter.setFastJsonConfig(fastJsonConfig);</span><br><span class="line">        //将fastjson添加到视图消息转换器列表内</span><br><span class="line">        converters.add(fastConverter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>内容转换都是针对面向接口进行编写的实现类，都必须implements HttpMessageConverter接口完成方法的实现。有关HttpMessageConverter接口的讲解可以<a target="_blank" rel="noopener" href="https://my.oschina.net/lichhao/blog/172562">看这里</a></p>
+<h3 id="1-6-addFormatters"><a href="#1-6-addFormatters" class="headerlink" title="1.6 addFormatters"></a>1.6 addFormatters</h3><p>当请求的参数中带有日期的参数的时候，可以在此配置formatter使得接收到日期参数格式统一。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void addFormatters(FormatterRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">        registry.addFormatter(new Formatter&lt;Date&gt;() </span><br><span class="line">        &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public Date parse(String date, Locale locale) </span><br><span class="line">            &#123;</span><br><span class="line">                return new Date(Long.parseLong(date));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public String print(Date date, Locale locale) </span><br><span class="line">            &#123;</span><br><span class="line">                return Long.valueOf(date.getTime()).toString();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-7-addResourceHandlers：静态资源"><a href="#1-7-addResourceHandlers：静态资源" class="headerlink" title="1.7 addResourceHandlers：静态资源"></a>1.7 addResourceHandlers：静态资源</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void addResourceHandlers(ResourceHandlerRegistry registry) </span><br><span class="line">&#123;</span><br><span class="line">	//处理静态资源的，例如：图片，js，css等</span><br><span class="line">    	registry.addResourceHandler(&quot;/resource/**&quot;).addResourceLocations(&quot;/WEB-INF/static/&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-WebMvcConfigurerAdapter使用方式"><a href="#2-WebMvcConfigurerAdapter使用方式" class="headerlink" title="2. WebMvcConfigurerAdapter使用方式"></a>2. WebMvcConfigurerAdapter使用方式</h2><h3 id="2-1-过时方式：继承WebMvcConfigurerAdapter"><a href="#2-1-过时方式：继承WebMvcConfigurerAdapter" class="headerlink" title="2.1 过时方式：继承WebMvcConfigurerAdapter"></a>2.1 过时方式：继承WebMvcConfigurerAdapter</h3><p><strong>Spring 5.0 以后WebMvcConfigurerAdapter会取消掉<br>WebMvcConfigurerAdapter是实现WebMvcConfigurer接口</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebConfig extends WebMvcConfigurerAdapter </span><br><span class="line">&#123;</span><br><span class="line">	//TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-实现WebMvcConfigurer"><a href="#2-2-实现WebMvcConfigurer" class="headerlink" title="2.2 实现WebMvcConfigurer"></a>2.2 实现WebMvcConfigurer</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebMvcConfg implements WebMvcConfigurer </span><br><span class="line">&#123;</span><br><span class="line">	//TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-直接继承WebMvcConfigurationSupport"><a href="#2-3-直接继承WebMvcConfigurationSupport" class="headerlink" title="2.3 直接继承WebMvcConfigurationSupport"></a>2.3 直接继承WebMvcConfigurationSupport</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebMvcConfg extends WebMvcConfigurationSupport </span><br><span class="line">&#123;</span><br><span class="line">        //TODO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>建议后两种</p>
+<p>参考自：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2c2cdb80fe47">https://www.jianshu.com/p/2c2cdb80fe47</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jy107600/p/9484850.html">https://www.cnblogs.com/jy107600/p/9484850.html</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/03/28/spring-WebMvcConfigurerAdapter/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/03/28/spring-WebMvcConfigurerAdapter/";
+            const title         = "「Spring MVC 配置类 WebMvcConfigurerAdapter」";
+            const excerpt       = `WebMvcConfigurerAdapter配置类是spring提供的一种配置方式，采用JavaBean的方式替代传统的基于xml的配置来对spring框架进行自定义的配置。因此，在spring boot提倡的基于注解的配置，采用“约定大于配置”的风格下，当需要进行自定义的配置时，便可以继承WebMvcConfigurerAdapter这个抽象类，通过JavaBean来实现需要的配置。`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.208Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Hexo博客多台电脑设备同步管理" href="/2019/03/25/HexoSynchronize/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Manacher算法" href="/2019/03/29/Algorithm-Manacher/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

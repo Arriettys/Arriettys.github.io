@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>支付宝集成-准备工作 | Arrietty&#39;s blog</title>
+  
+  <meta name="author" content="Arrietty" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Alipay" />
+  
+  <meta property="og:type" content="article">
+<meta property="og:title" content="支付宝集成-准备工作">
+<meta property="og:url" content="http://example.com/2019/04/01/Alipay-Prepare/index.html">
+<meta property="og:site_name" content="Arrietty&#39;s blog">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AymbnI.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsD0oT.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsDfw6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsDofe.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsDjTf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsrK1J.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsrDBt.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsspE6.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AssYbq.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsswPU.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AssfPO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AssjJS.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/Asyid0.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/04/01/AsyofU.png">
+<meta property="article:published_time" content="2019-04-01T06:25:23.000Z">
+<meta property="article:modified_time" content="2024-10-31T06:55:27.197Z">
+<meta property="article:author" content="Arrietty">
+<meta property="article:tag" content="Alipay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/04/01/AymbnI.jpg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Arrietty&#39;s blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Arrietty&#39;s blog</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/01/Alipay-Prepare/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">支付宝集成-准备工作</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2019-04-01T06:25:23.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2019-04-01</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Arrietty</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~2.25K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1730357727197"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p><img src="https://s2.ax1x.com/2019/04/01/AymbnI.jpg"></p>
+<span id="more"></span>
+<h2 id="注册账号-创建应用"><a href="#注册账号-创建应用" class="headerlink" title="注册账号&amp;创建应用"></a>注册账号&amp;创建应用</h2><p>集成第三方的功能(无论是集成支付宝还是微信或者其他的都是一样)的第一步一般都是要跑到其类似于开放平台的官网上进行注册账号，并创建应用，然后提交审核，来获取应用的一些配置信息，如AppId、AppSecret等。</p>
+<ol>
+<li><strong>打开蚂蚁金服开放平台(<a target="_blank" rel="noopener" href="https://open.alipay.com)并点击最顶端最右侧的【免费入住】按钮/">https://open.alipay.com)并点击最顶端最右侧的【免费入住】按钮</a>, 然后选择【自研开发者】【开始入住】</strong><br><img src="https://s2.ax1x.com/2019/04/01/AsD0oT.png"></li>
+<li><strong>登录成功之后会进行实名认证(一般这个时候都认证过了)、完善身份信息、签署协议，按着提示将该流程走完即可</strong></li>
+<li><strong>点击 蚂蚁金服开放平台的【首页】，选择【网页&amp;移动应用列表】，选择【支付接入】，创建应用</strong><br><img src="https://s2.ax1x.com/2019/04/01/AsDfw6.png"></li>
+</ol>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsDofe.png"></p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsDjTf.png"><br>4. <strong>创建成功后紧接着需要完善应用的信息，如应用图表，需要接入的支付宝功能、以及一些参数配置等，配置完成后【提交审核】，然后等待审核结果</strong><br>关于功能列表，默认提供 APP支付、手机网站支付、当面付三种功能，如果需要其他更多功能可以通过【添加功能】添加上来，常用的功能有 电脑网站支付、APP支付宝登录、获取会员信息、单笔转账到支付宝账户等<br><img src="https://s2.ax1x.com/2019/04/01/AsrK1J.png"><br>上图添加功能，三个都选或者只选当面付都行</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsrDBt.png"><br>关于开发配置<br>应用网关：一般是项目上线对应的域名(如：<a target="_blank" rel="noopener" href="http://www.example.com/">http://www.example.com</a>), 注意在设置应用网关前会先【设置应用公钥】，关于应用公钥的生成可以通过【查看密钥生成方法】来生成，将生成后的公钥(注意是公钥公钥公钥，重要的事情说三遍，不要复制成私钥了)粘贴过来，然后保存即可</p>
+<p>授权回调地址：是自己项目的一个能访问的url地址，当支付宝支付成功后会异步通知到这个地址上，告诉此次支付的结果是成功还是失败，配置距离(<a target="_blank" rel="noopener" href="http://www.example.com/pay/alipay/notify">http://www.example.com/pay/alipay/notify</a>)</p>
+<p>这里我们先空着不填，后面用到再填，但应用公钥是一定要填的<br><img src="https://s2.ax1x.com/2019/04/01/AsspE6.png"><br>公钥可以使用openssl 生成，或者使用支付宝提供的一键生成工具<a target="_blank" rel="noopener" href="https://docs.open.alipay.com/291/105971%E3%80%82%E4%BD%86%E9%9C%80%E6%B3%A8%E6%84%8F%EF%BC%8C%E6%94%AF%E4%BB%98%E5%AE%9D%E8%A6%81%E6%B1%82%E5%AF%86%E9%92%A5%E4%BD%8D%E6%95%B0%E4%B8%BA2048%E4%BD%8D%EF%BC%8C%E5%9C%A8%E7%94%A8java%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%AF%AD%E8%A8%80%EF%BC%8C%E5%AF%B9%E8%AE%A2%E5%8D%95%E4%BF%A1%E6%81%AF%E8%BF%9B%E8%A1%8CRSA%E7%AD%BE%E5%90%8D%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E7%A7%81%E9%92%A5%E8%A6%81%E6%B1%82%E6%98%AFPKCS8%E6%A0%BC%E5%BC%8F%E7%9A%84%E3%80%82">https://docs.open.alipay.com/291/105971。但需注意，支付宝要求密钥位数为2048位，在用java作为服务器端语言，对订单信息进行RSA签名的时候，私钥要求是PKCS8格式的。</a></p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AssYbq.png"><br>在线生成非对称加密公钥私钥对：<a target="_blank" rel="noopener" href="http://web.chacuo.net/netrsakeypair">http://web.chacuo.net/netrsakeypair</a></p>
+<p>生成后公私密钥分别保存<br><img src="https://s2.ax1x.com/2019/04/01/AsswPU.png"></p>
+<p>再将公钥输入保存<br><img src="https://s2.ax1x.com/2019/04/01/AssfPO.png"></p>
+<p>之后提交审核，通常需要一个工作日</p>
+<h2 id="功能签约"><a href="#功能签约" class="headerlink" title="功能签约"></a>功能签约</h2><p>当审核通过时，还需要签约，有些功能是需要签约，有些功能不需要签约，点击【开发者中心 &#x2F; 网页&amp;移动应用 &#x2F; 应用列表】查看详情</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AssjJS.png"></p>
+<p><img src="https://s2.ax1x.com/2019/04/01/Asyid0.png"></p>
+<p>在签约的时候需要提供经营信息和服务接入渠道对应的信息，经营信息一般需要人事或者老板提供、服务接入渠道一般需要产品来提供，但如果我们并没有经营什么只是纯属学习设计又或者老板这些资料可能不会立马能给到你，如果签约不成功就没法测试，基于此，支付宝提供了一个【沙箱环境】。</p>
+<h2 id="沙箱环境"><a href="#沙箱环境" class="headerlink" title="沙箱环境"></a>沙箱环境</h2><p>所谓的沙箱环境就是支付宝帮你创建了一个临时用于开发测试的应用,称为沙箱应用，并签约了所有功能，并提供一套账号信息(包括卖家账号和买家账号)称之为沙箱账号，还提供一个沙箱支付宝安卓版的应用，可以使用沙箱账号登录沙箱应用来进行支付操作，所有的支付都是假的，你也不用担心你的钱会扣掉，因为登录的是沙箱账号而不是自己的账号，也不用担心买家的钱不够用，因为自己可以随意充值，沙箱环境用于前期的研发以及个人学习研究使用。</p>
+<p>【发者中心 &#x2F; 研发服务 &#x2F; 沙箱环境 &#x2F; 沙箱应用】</p>
+<p>注意：沙箱环境已经创建好了一个测试应用并签约了所有功能，但是仍然有一些信息还需自己完善，如秘钥、应用网关、授权回调地址（选看部分的RSA(SHA1)密钥、AES密钥不是必须设置的）这些参数在上面已经讲过了，将这些信息配置完成后就可以开发了</p>
+<p><img src="https://s2.ax1x.com/2019/04/01/AsyofU.png"></p>
+<p>关于网关和授权回调地址必须是外网，个人开发和学习是如果没有外网，可使用natapp软件，这是一款能够免费提供外网域名，并将外网域名绑定到本机局域网IP地址的一款软件，非常适用用于调试支付宝回调，具体使用参考博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/vbirdbest/article/details/80635880">https://blog.csdn.net/vbirdbest/article/details/80635880</a></p>
+<h2 id="文档中心"><a href="#文档中心" class="headerlink" title="文档中心"></a>文档中心</h2><p>阿里提供了非常详细的各种功能的开发文档 蚂蚁开放平台开发文档 <a target="_blank" rel="noopener" href="https://docs.open.alipay.com/%EF%BC%8C%E4%BB%8E%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3%E4%B8%AD%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E6%94%AF%E4%BB%98%E6%96%B9%E5%BC%8F%E6%9C%89%E5%9B%9B%E7%A7%8D%EF%BC%8C%E6%AF%8F%E4%B8%80%E7%A7%8D%E9%83%BD%E6%9C%89%E5%BA%94%E7%94%A8%E7%9A%84%E5%9C%BA%E6%99%AF">https://docs.open.alipay.com/，从开发文档中可以看到支付方式有四种，每一种都有应用的场景</a></p>
+<p>当面付<br>条码支付：使用场景为商家使用扫码枪等条码识别设备扫描用户支付宝钱包上的付钱-条码&#x2F;二维码，完成收款。一般在超市、便利店、店铺等使用。<br>扫码支付：使用场景为用户打开支付宝钱包中的“扫一扫”功能，扫描商家展示在某收银场景下的二维码并进行支付的模式。一般在类似于无人售货机上使用，像地铁中的无人售货饮料机、医院中的自助挂号收费机等<br>声波支付<br>APP支付：适用于商家在App应用中集成支付宝支付功能<br>手机网站支付：适用于商家在移动端网页应用中集成支付宝支付功能<br>电脑网站支付: 用户通过支付宝PC收银台完成支付，交易款项即时给到商户支付宝账户<br>每种支付方式都提供了SDK&amp;Demo和API列表，集成时我们只需要下载Demo并熟悉好之后将Demo集成到自己的项目中即可。</p>
+<p>参考自：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/vbirdbest/article/details/80635194">https://blog.csdn.net/vbirdbest/article/details/80635194</a></p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://example.com/2019/04/01/Alipay-Prepare/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://example.com/2019/04/01/Alipay-Prepare/";
+            const title         = "「支付宝集成-准备工作」";
+            const excerpt       = ``;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Alipay/" rel="tag">Alipay</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2024-10-31T06:55:27.197Z" itemprop="dateModified">最后编辑：2024-10-31</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Docker-使用" href="/2019/04/01/Docker-Use/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 支付宝集成-当面付" href="/2019/04/01/Alipay-F2F/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">分布式集群</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BB%BA%E6%A8%A1%E8%AF%AD%E8%A8%80/">建模语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">第三方接口</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Python-OpenCV/" style="font-size: 0.65em;">-Python -OpenCV</a> <a href="/tags/Alipay/" style="font-size: 0.65em;">Alipay</a> <a href="/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/tags/Github/" style="font-size: 0.6em;">Github</a> <a href="/tags/Hadoop/" style="font-size: 0.65em;">Hadoop</a> <a href="/tags/Hexo/" style="font-size: 0.7em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/NexT/" style="font-size: 0.6em;">NexT</a> <a href="/tags/Node-js/" style="font-size: 0.6em;">Node.js</a> <a href="/tags/OpenCV/" style="font-size: 0.7em;">OpenCV</a> <a href="/tags/Python/" style="font-size: 0.75em;">Python</a> <a href="/tags/SpringBoot/" style="font-size: 0.7em;">SpringBoot</a> <a href="/tags/SpringSourceCode/" style="font-size: 0.6em;">SpringSourceCode</a> <a href="/tags/Themes/" style="font-size: 0.6em;">Themes</a> <a href="/tags/UML/" style="font-size: 0.6em;">UML</a> <a href="/tags/object-Object/" style="font-size: 0.6em;">[object Object]</a> <a href="/tags/%E9%B8%A1%E6%B1%A4/" style="font-size: 0.6em;">鸡汤</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2020/02/01/PriorityQueueAndHeap/"><i class="fa  fa-book"></i> 优先队列与堆</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/10/Algorithm-TreeAndBinaryTree/"><i class="fa  fa-book"></i> 树和二叉树</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/06/OpenCV-CoreOperation/"><i class="fa  fa-book"></i> OpenCV-核心操作</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/05/OpenCV-MousePaint/"><i class="fa  fa-book"></i> OpenCV-鼠标作画和滑块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2019/11/04/OpenCV-DrawingFunction/"><i class="fa  fa-book"></i> OpenCV-画几何图</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2024 Arrietty's blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Arrietty.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
